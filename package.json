@@ -4,8 +4,9 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "dev": "npm run delete && concurrently \"npm run node-dev\" \"npm run tsc-dev\"",
-    "node-dev": "nodemon ./dist/server",
+    "predev": "npm run delete && tsc",
+    "dev": "concurrently \"npm run nodemon\" \"npm run tsc-dev\"",
+    "nodemon": "nodemon ./dist/server",
     "tsc-dev": "tsc -w",
     "prestart": "npm run delete && tsc",
     "start": "node ./dist/server",

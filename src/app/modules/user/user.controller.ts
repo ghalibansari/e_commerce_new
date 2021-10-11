@@ -28,7 +28,7 @@ export class UserController extends BaseController<IUser> {
         // this.router.get("/index", TryCatch.tryCatchGlobe(this.index));
         // this.router.post("/", validation.createUser, transaction.startTransaction, TryCatch.tryCatchGlobe(this.create));
         // this.router.put("/", validation.updateUser, transaction.startTransaction, TryCatch.tryCatchGlobe(this.update));
-        this.router.delete("/", TryCatch.tryCatchGlobe(this.deleteBC));
+        this.router.delete("/by-id/:id", TryCatch.tryCatchGlobe(this.deleteByIdBC));
     }
 
 //     async find(req: Request, res: Response){

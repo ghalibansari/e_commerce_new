@@ -326,10 +326,9 @@ export abstract class BaseController<T> {
     //     await JsonResponse.jsonSuccess(req, res, `{this.url}.updateBC`);
     // }
 
-    deleteBC = async (req: Request, res: Response): Promise<void> => {
+    deleteByIdBC = async (req: Request, res: Response): Promise<void> => {
         res.locals = { status: false, data: 0, message: Messages.DELETE_FAILED}
-        //@ts-expect-error
-        const data = await this.repo.deleteByIdBR({ [this.primaryKey]: req.query.id })
+        const data = await this.repo.deleteByIdBR({ [this.primaryKey]: req.params.id })
         if(data) res.locals = { status: true, data, message: Messages.DELETE_SUCCESSFUL}
         else res.locals = { status: false, data, message: Messages.DELETE_FAILED}
         await JsonResponse.jsonSuccess(req, res, `{this.url}.deleteBC`);
