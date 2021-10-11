@@ -3,9 +3,6 @@ import {IUser, UserInstance} from "./user.types";
 import UserMd from "./user.model";
 
 
-
-
-
 export class UserRepository extends BaseRepository<IUser, UserInstance> {
     constructor () {
         super(UserMd);

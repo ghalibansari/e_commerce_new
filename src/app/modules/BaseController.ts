@@ -11,7 +11,7 @@ export abstract class BaseController<T> {
 
     protected router: Router
 
-    abstract register(express: Application): void
+    abstract register(express: Application): Application
     abstract init(): void
 
     public constructor(
@@ -28,7 +28,7 @@ export abstract class BaseController<T> {
 
     findBC = async (req: Request, res: Response): Promise<void> => {
         // await new BaseValidation().findBC(req, res)
-        let { where, attributes, sort: order, search, pageSize, pageNumber }: any = req.query;
+        let { where, attributes, order, search, pageSize, pageNumber }: any = req.query;
         let offset, limit, totalPage = 0, hasNextPage = false
 
         order ||= this.order
