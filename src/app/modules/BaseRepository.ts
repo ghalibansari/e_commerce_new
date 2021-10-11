@@ -10,7 +10,6 @@ export class BaseRepository<T extends ModelCtor, U extends Model> implements IWr
 
     protected constructor(private _model: ModelCtor<U>) { }
     //Todo implement concurrently.
-    // find
     // findOne
     // create
     // createOne
