@@ -1,11 +1,16 @@
 {
-  "name": "new",
+  "name": "e_commerce_new",
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
   "scripts": {
-    "dev": "nodemon ./dist/server",
-    "tsc": "tsc -w"
+    "dev": "npm run delete && concurrently \"npm run node-dev\" \"npm run tsc-dev\"",
+    "node-dev": "nodemon ./dist/server",
+    "tsc-dev": "tsc -w",
+    "prestart": "npm run delete && tsc",
+    "start": "node ./dist/server",
+    "delete": "rimraf ./dist",
+    "tsc": "tsc"
   },
   "keywords": [],
   "author": "",
@@ -31,6 +36,7 @@
     "@types/node": "^16.10.3",
     "@types/uuid": "^8.3.1",
     "@types/validator": "^13.6.3",
+    "concurrently": "^6.3.0",
     "mongoose": "^6.0.10",
     "nodemon": "^2.0.13",
     "sequelize-cli": "^6.2.0"
