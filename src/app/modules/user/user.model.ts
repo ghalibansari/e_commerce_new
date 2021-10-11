@@ -1,5 +1,5 @@
 import { model, Schema, Document } from "mongoose";
-import { IUser, UserInstance } from './user.types'
+import { IUser, TUser } from './user.types'
 import { TableName } from "../../constants";
 // import { fingerPrintSchema } from "../fingerPrint/fingerPrint.model";
 // //@ts-expect-error
@@ -16,7 +16,7 @@ import { v4 as uuidv4 } from 'uuid';
 
 
 
-const UserMd = DB.define<UserInstance>(
+const UserMd = DB.define<TUser>(
     TableName.USER,
     {
         user_id: {

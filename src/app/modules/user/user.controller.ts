@@ -16,7 +16,7 @@ export class UserController extends BaseController<IUser> {
 
     constructor() {
         //primary-key, url, user0repo, attributes/columns, include/joints, sort, search-columns 
-        super("user_id", "user", new UserRepository(), ['*'], [], [['last_name','DESC']], ['first_name', 'last_name'])
+        super("user_id", "user", new UserRepository(), ['*'], [], [['last_name', 'DESC']], ['first_name', 'last_name'])
         this.init()
     }
 
@@ -31,10 +31,10 @@ export class UserController extends BaseController<IUser> {
         this.router.delete("/by-id/:id", TryCatch.tryCatchGlobe(this.deleteByIdBC));
     }
 
-//     async find(req: Request, res: Response){
-//         let populate = [{path: 'addressId'}, {path: 'companyId'}, {path: 'roleId'}];
-//         await new UserController().findBC(req, res, populate)
-//     }
+    // async find(req: Request, res: Response){
+    //     let populate = [{path: 'addressId'}, {path: 'companyId'}, {path: 'roleId'}];
+    //     await new UserController().findBC(req, res, populate)
+    // }
 
 //     async index(req: Request, res: Response): Promise<void> {
 //         res.locals = {status: false, message: Messages.FETCH_FAILED};

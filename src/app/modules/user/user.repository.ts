@@ -1,9 +1,9 @@
 import {BaseRepository} from "../BaseRepository";
-import {IUser, UserInstance} from "./user.types";
+import {IUser, TUser} from "./user.types";
 import UserMd from "./user.model";
 
 
-export class UserRepository extends BaseRepository<IUser, UserInstance> {
+export class UserRepository extends BaseRepository<IUser, TUser> {
     constructor () {
         super(UserMd);
     }

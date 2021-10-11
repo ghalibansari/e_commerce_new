@@ -3,20 +3,11 @@ import { IRead } from '../interfaces/IRead'
 import { IWrite } from "../interfaces/IWrite"
 import { ICounter } from "./baseTypes";
 import { Constant } from "../constants";
-import { ClientSession, Aggregate } from 'mongoose'
 
 //@ts-expect-error
 export class BaseRepository<T extends ModelCtor, U extends Model> implements IWrite<T>, IRead<T> {
 
-    protected constructor(private _model: ModelCtor<U>) { }
-    //Todo implement concurrently.
-    // findOne
-    // create
-    // createOne
-    // update
-    // updateOne
-    // delete
-    // deleteOne
+    protected constructor(protected readonly _model: ModelCtor<U>) { }
 
     findBR = async (
         where: object = {},

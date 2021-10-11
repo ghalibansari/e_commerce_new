@@ -6,7 +6,6 @@ import moment from 'moment';
 import { BaseRepository } from './BaseRepository';
 import { Op } from "sequelize";
 
-
 export abstract class BaseController<T> {
 
     protected router: Router
@@ -15,11 +14,11 @@ export abstract class BaseController<T> {
     abstract init(): void
 
     public constructor(
-        protected readonly primaryKey: string,
+        protected readonly primaryKey: keyof T,
         protected readonly url: string,
         protected readonly repo: BaseRepository<T, any>,
-        private readonly attributes: any[] = ['created_on'],
-        private readonly include: any[] = [],
+        private readonly attributes: string[] = ['created_on'],
+        protected readonly include: any[] = [],
         private readonly order: string[] | [string, 'ASC'|'DESC'][] = [],
         protected readonly searchColumn: string[] = []
     ) {
@@ -35,7 +34,6 @@ export abstract class BaseController<T> {
         search ||= ''
         attributes ||= this.attributes
         where ||= {}
-
 
         //search
         if(search && search.length > 2 && this.searchColumn.length){
@@ -61,6 +59,7 @@ export abstract class BaseController<T> {
         limit = pageNumber * pageSize;
         if (limit < count) hasNextPage = true
 
+        //response
         res.locals.page = { hasNextPage, totalCount, count, currentPage: pageNumber, totalPage }
         res.locals.data = await this.repo.findBR(where, attributes, this.include, order, limit, offset)
         res.locals.message = Messages.FETCH_SUCCESSFUL;

@@ -1,0 +1,16 @@
+
+// Implement all this in base repo
+// findOne
+// create
+// createOne
+// update
+// updateOne
+// delete
+// deleteOne
+// groupBR
+// groupCount
+
+
+
+// Ghalib
+// Implement base validation in base controller for all method with using Closure joi validation

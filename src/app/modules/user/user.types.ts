@@ -11,7 +11,7 @@ import { Model, Optional } from "sequelize";
 
 interface IUserCreateAttribute extends Optional<IUser, 'user_id'> {}
 
-interface UserInstance extends Model<IUser, IUserCreateAttribute>, IUser {
+interface TUser extends Model<IUser, IUserCreateAttribute>, IUser {
     created_by: IUser['user_id']
     created_on: Date;
     updated_by: IUser['user_id']
@@ -20,4 +20,4 @@ interface UserInstance extends Model<IUser, IUserCreateAttribute>, IUser {
     deleted_on: Date | null
 }
 
-export type { IUser, UserInstance }
+export type { IUser, TUser }
