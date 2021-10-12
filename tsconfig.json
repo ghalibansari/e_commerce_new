@@ -101,7 +101,7 @@
   "exclude": [
     "node_modules",
     "src/web",
-    "src/app/modules - Copy"
+    "src/app/modules2"
   ],
   "include": [
     "src/**/*.ts", "src/config.js",

@@ -9,18 +9,19 @@ import { Op } from "sequelize";
 export abstract class BaseController<T> {
 
     protected router: Router
+    protected readonly pageNumber = Constant.DEFAULT_PAGE_NUMBER
 
     abstract register(express: Application): Application
     abstract init(): void
 
     public constructor(
-        protected readonly primaryKey: keyof T,
         protected readonly url: string,
         protected readonly repo: BaseRepository<T, any>,
-        private readonly attributes: string[] = ['created_on'],
-        protected readonly include: any[] = [],
-        private readonly order: string[] | [string, 'ASC'|'DESC'][] = [],
-        protected readonly searchColumn: string[] = []
+        private readonly attributes = repo.attributes,
+        private readonly order = repo.order,
+        protected readonly include = repo.include,
+        protected readonly searchColumn: Array<keyof T> = [],
+        protected readonly pageSize = Constant.DEFAULT_PAGE_SIZE
     ) {
         this.router = Router();
     }
@@ -28,41 +29,24 @@ export abstract class BaseController<T> {
     findBC = async (req: Request, res: Response): Promise<void> => {
         // await new BaseValidation().findBC(req, res)
         let { where, attributes, order, search, pageSize, pageNumber }: any = req.query;
-        let offset, limit, totalPage = 0, hasNextPage = false
 
-        order ||= this.order
-        search ||= ''
-        attributes ||= this.attributes
         where ||= {}
+        search ||= ''
+        order ||= this.order
+        attributes ||= this.attributes
+        pageNumber ||= this.pageNumber 
+        pageSize ||= this.pageNumber
 
         //search
-        if(search && search.length > 2 && this.searchColumn.length){
+        if (search && search.length > 2 && this.searchColumn.length) {
             where[Op.or] = []
-            for (const col of this.searchColumn){
-                where[Op.or].push({[col]: { [Op.iLike]: `%${search}%` }})
+            for (const col of this.searchColumn) {
+                where[Op.or].push({ [col]: { [Op.iLike]: `%${search}%` } })
             }
         }
 
-        //Page variables
-        pageNumber = Number(pageNumber) || Constant.DEFAULT_PAGE_NUMBER
-        pageSize = Number(pageSize) || Constant.DEFAULT_PAGE_SIZE;
-
-        //get total count and count based on condition
-        const [totalCount, count] = await Promise.all([
-            await this.repo.CountAllBR(),
-            await this.repo.CountBR(where)
-        ])
-
-        //calculate pagination.
-        totalPage = (count % pageSize === 0) ? count / pageSize : Math.ceil(count / pageSize);
-        offset = (pageNumber - 1) * pageSize;
-        limit = pageNumber * pageSize;
-        if (limit < count) hasNextPage = true
-
-        //response
-        res.locals.page = { hasNextPage, totalCount, count, currentPage: pageNumber, totalPage }
-        res.locals.data = await this.repo.findBR(where, attributes, this.include, order, limit, offset)
-        res.locals.message = Messages.FETCH_SUCCESSFUL;
+        const { page, data } = await this.repo.findBR(where, attributes, this.include, order, pageNumber, pageSize)
+        res.locals = { page, data, message: Messages.FETCH_SUCCESSFUL }
         await JsonResponse.jsonSuccess(req, res, `{this.url}.findBC`)
     };
 
@@ -326,10 +310,10 @@ export abstract class BaseController<T> {
     // }
 
     deleteByIdBC = async (req: Request, res: Response): Promise<void> => {
-        res.locals = { status: false, data: 0, message: Messages.DELETE_FAILED}
-        const data = await this.repo.deleteByIdBR({ [this.primaryKey]: req.params.id })
-        if(data) res.locals = { status: true, data, message: Messages.DELETE_SUCCESSFUL}
-        else res.locals = { status: false, data, message: Messages.DELETE_FAILED}
+        res.locals = { status: false, data: 0, message: Messages.DELETE_FAILED }
+        const data = await this.repo.deleteByIdBR({ [this.repo.primary_key]: req.params.id })
+        if (data) res.locals = { status: true, data, message: Messages.DELETE_SUCCESSFUL }
+        else res.locals = { status: false, data, message: Messages.DELETE_FAILED }
         await JsonResponse.jsonSuccess(req, res, `{this.url}.deleteBC`);
     }
 

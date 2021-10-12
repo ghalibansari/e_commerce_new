@@ -5,7 +5,7 @@ import UserMd from "./user.model";
 
 export class UserRepository extends BaseRepository<IUser, TUser> {
     constructor () {
-        super(UserMd);
+        super(UserMd, "user_id", ['*'], [['last_name', 'DESC']], [])
     }
 
 

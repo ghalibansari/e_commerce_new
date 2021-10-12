@@ -7,33 +7,49 @@ import { Constant } from "../constants";
 //@ts-expect-error
 export class BaseRepository<T extends ModelCtor, U extends Model> implements IWrite<T>, IRead<T> {
 
-    protected constructor(protected readonly _model: ModelCtor<U>) { }
+    protected readonly pageNumber = Constant.DEFAULT_PAGE_NUMBER
+
+    protected constructor(
+        protected readonly _model: ModelCtor<U>,
+        public readonly primary_key: keyof T,
+        public readonly attributes: string[] = ['created_on'],
+        public readonly order: string[] | [string, 'ASC' | 'DESC'][] = [],
+        public readonly include: any[] = [],
+    ) { }
 
     findBR = async (
         where: object = {},
-        attributes: string[] = ['*'],
-        include: string[] = [],
-        order: string[] = ['created_on'],
-        limit: number = 10,
-        offset: number = 0
+        attributes = this.attributes,
+        include = this.include,
+        order = this.order,
+        pageNumber = Constant.DEFAULT_PAGE_NUMBER,
+        pageSize = Constant.DEFAULT_PAGE_SIZE
     ): Promise<any> => {
-        return this._model.findAll({
-            where,
-            attributes,
-            include,
-            offset,
-            limit,
-            order,
-            raw: true
-        })
-    }
+        let offset, limit, totalPage = 0, hasNextPage = false
+
+        //get total count and count based on condition
+        const [totalCount, count] = await Promise.all([
+            await this._model.count(),
+            await this._model.count(where)
+        ])
+
+        //calculate pagination.
+        totalPage = (count % pageSize === 0) ? count / pageSize : Math.ceil(count / pageSize)
+        offset = (pageNumber - 1) * pageSize
+        limit = pageNumber * pageSize
+        if (limit < count) hasNextPage = true
+
+        const data = await this._model.findAll({ where, attributes, include, offset, limit, order, raw: true })
+
+        return { data, page: { hasNextPage, totalCount, count, currentPage: pageNumber, totalPage } }
+    };
 
     //Todo need to work on it
     findOneBR = async (
         where: object = {},
         attributes: string[] = ['created_on'],
         include: string[] = []
-    ): Promise<Model<T, U>|null> => {
+    ): Promise<Model<T, U> | null> => {
         return this._model.findOne({
             where, attributes, include, raw: true
         })
@@ -43,15 +59,15 @@ export class BaseRepository<T extends ModelCtor, U extends Model> implements IWr
     findByPkBR = async (
         where: object = {},
         attributes: string[] = ['created_on'],
-    ): Promise<Model<T, U>|null> => {
+    ): Promise<Model<T, U> | null> => {
         //@ts-expect-error
         return this._model.findByPk({ user_id: '', attributes, raw: true })
     }
 
-    deleteBR = async (where:{}) => this._model.destroy({where});
+    deleteBR = async (where: {}) => this._model.destroy({ where });
 
     // Todo implement update user on delete docs
-    deleteByIdBR = async (id: {[key: string]: string}): Promise<number> => this.deleteBR(id);
+    deleteByIdBR = async (id: { [key: string]: string }): Promise<number> => this.deleteBR(id);
 
     CountBR = async (where: object = {}): Promise<number> => this._model.count({ where });
 

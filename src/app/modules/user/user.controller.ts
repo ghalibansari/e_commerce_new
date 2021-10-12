@@ -15,8 +15,8 @@ import { ErrorCodes } from "../../constants/ErrorCodes";
 export class UserController extends BaseController<IUser> {
 
     constructor() {
-        //primary-key, url, user0repo, attributes/columns, include/joints, sort, search-columns 
-        super("user_id", "user", new UserRepository(), ['*'], [], [['last_name', 'DESC']], ['first_name', 'last_name'])
+        //url, user0repo, attributes/columns, include/joints, sort, search-columns 
+        super("user", new UserRepository(), ['*'], [], [['last_name', 'DESC']], ['first_name', 'last_name'])
         this.init()
     }
 
