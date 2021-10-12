@@ -64,10 +64,10 @@ export class BaseRepository<T extends ModelCtor, U extends Model> implements IWr
         return this._model.findByPk({ user_id: '', attributes, raw: true })
     }
 
-    deleteBR = async (where: {}) => this._model.destroy({ where });
+    deleteBR = async (where: object) => this._model.destroy({ where });
 
     // Todo implement update user on delete docs
-    deleteByIdBR = async (id: { [key: string]: string }): Promise<number> => this.deleteBR(id);
+    deleteByIdBR = async (id: string): Promise<number> => this.deleteBR({[this.primary_key]: id});
 
     CountBR = async (where: object = {}): Promise<number> => this._model.count({ where });
 
