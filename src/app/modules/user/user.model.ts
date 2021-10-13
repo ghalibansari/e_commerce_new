@@ -1,22 +1,16 @@
-import { model, Schema, Document } from "mongoose";
-import { IUser, TUser } from './user.types'
+import { IMUser } from './user.types'
 import { TableName } from "../../constants";
 // import { fingerPrintSchema } from "../fingerPrint/fingerPrint.model";
 // //@ts-expect-error
 // import bcrypt, {genSaltSync, hashSync} from "bcrypt";
 // import { string } from "joi";
 
-import { Model, Optional, DataTypes, Sequelize } from 'sequelize';
+import { DataTypes } from 'sequelize';
 import { DB } from "../../../configs/DB";
 import { v4 as uuidv4 } from 'uuid';
 
 
-
-
-
-
-
-const UserMd = DB.define<TUser>(
+const UserMd = DB.define<IMUser>(
     TableName.USER,
     {
         user_id: {
@@ -45,7 +39,19 @@ const UserMd = DB.define<TUser>(
         password: {
             allowNull: false,
             type: DataTypes.TEXT,
-        }
+        },
+        created_by: {
+            allowNull: false,
+            type: DataTypes.UUID,
+        },
+        updated_by: {
+            allowNull: false,
+            type: DataTypes.UUID,
+        },
+        deleted_by: {
+            allowNull: true,
+            type: DataTypes.UUID,
+        },
     },
     {
         timestamps: true,
@@ -70,7 +76,9 @@ async function doStuffWithUserModel() {
         last_name: "John",
         mobile: 8754219635,
         email: "email",
-        password: "wwwww"
+        password: "wwwww",
+        created_by: '',
+        updated_by: ''
     });
     // console.log(newUser);
 

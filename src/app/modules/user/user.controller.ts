@@ -24,8 +24,9 @@ export class UserController extends BaseController<IUser> {
 
     init() {
         const validation: UserValidation = new UserValidation();
-        this.router.get("/", TryCatch.tryCatchGlobe(this.findBC));
+        this.router.get("/", TryCatch.tryCatchGlobe(this.indexBC));
         this.router.get("/:id", TryCatch.tryCatchGlobe(this.findByIdBC))
+        this.router.post("/", TryCatch.tryCatchGlobe(this.createOneBC))
         // this.router.get("/index", TryCatch.tryCatchGlobe(this.index));
         // this.router.post("/", validation.createUser, transaction.startTransaction, TryCatch.tryCatchGlobe(this.create));
         // this.router.put("/", validation.updateUser, transaction.startTransaction, TryCatch.tryCatchGlobe(this.update));

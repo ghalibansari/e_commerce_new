@@ -1,10 +1,10 @@
 
 // Implement all this in base repo
-// create
+// createmany bulk
 // createOne
-// update
+// updatemany
 // updateOne
-// delete
+// deletemany
 // groupBR
 // groupCount
 

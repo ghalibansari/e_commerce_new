@@ -27,7 +27,7 @@ export abstract class BaseController<T> {
     }
 
 
-    findBC = async (req: Request, res: Response): Promise<void> => {
+    indexBC = async (req: Request, res: Response): Promise<void> => {
         // await new BaseValidation().findBC(req, res)
         let { where, attributes, order, search, pageSize, pageNumber }: any = req.query;
 
@@ -46,18 +46,24 @@ export abstract class BaseController<T> {
             }
         }
 
-        const { page, data } = await this.repo.findBR(where, attributes, this.include, order, pageNumber, pageSize)
+        const { page, data } = await this.repo.indexBR(where, attributes, this.include, order, pageNumber, pageSize)
         res.locals = { page, data, message: Messages.FETCH_SUCCESSFUL }
-        await JsonResponse.jsonSuccess(req, res, `{this.url}.findBC`)
+        return await JsonResponse.jsonSuccess(req, res, `{this.url}.indexBC`)
     };
 
     findByIdBC = async (req: Request, res: Response): Promise<void> => {
         // await new BaseValidation().findBC(req, res)
         const { params: { id }, query: { attributes = this.attributes } }: any = req
-
-        const data = await this.repo.findOneByIdBR(id, attributes, this.include)
+        const data = await this.repo.findByIdBR(id, attributes, this.include)
         res.locals = { data, message: Messages.FETCH_SUCCESSFUL }
-        await JsonResponse.jsonSuccess(req, res, `{this.url}.findOneByIdBC`)
+        return await JsonResponse.jsonSuccess(req, res, `{this.url}.findByIdBC`)
+    };
+
+    createOneBC = async (req: Request, res: Response): Promise<void> => {
+        const newData: any = req.body
+        const data = await this.repo.createOneBR(newData)
+        res.locals = { data, message: Messages.CREATE_SUCCESSFUL }
+        return await JsonResponse.jsonSuccess(req, res, `{this.url}.createOneBC`)
     };
 
     // exportBC = async (req: Request, res: Response, populate: object[] = []): Promise<any> => {
@@ -324,7 +330,7 @@ export abstract class BaseController<T> {
         const data = await this.repo.deleteByIdBR(req.params.id)
         if (data) res.locals = { status: true, data, message: Messages.DELETE_SUCCESSFUL }
         else res.locals = { status: false, data, message: Messages.DELETE_FAILED }
-        await JsonResponse.jsonSuccess(req, res, `{this.url}.deleteBC`);
+        return await JsonResponse.jsonSuccess(req, res, `{this.url}.deleteBC`);
     }
 
     // findByIdBC = async (req: Request, res: Response, populate: object[] = []): Promise<void> => {

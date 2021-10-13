@@ -22,7 +22,7 @@ export class TryCatch{
                 // const createdBy = loggedInUserId, updatedBy = loggedInUserId
                 // delete body.loggedInUser
                 // const [,,,module,] = originalUrl.split('/')
-                console.log(err)
+                console.log("errors......................",err)
                 // if(err instanceof Object) loggerModel.create({body: JSON.stringify(body||''), url: originalUrl, method, query: JSON.stringify(query), message: err.stack, createdBy, updatedBy, level: loggerLevelEnum.api, module})
                 //     .catch((err:any) => console.log('Logging Failed', err))
                 // logger.error({loggedInUserId, originalUrl, method, query, error: err, body})

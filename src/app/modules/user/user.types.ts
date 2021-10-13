@@ -1,23 +1,24 @@
 import { Model, Optional } from "sequelize";
 
- interface IUser {
+ interface IBUser {
     user_id: string
     first_name: string
     last_name: string
     mobile: number
     email: string
     password: string
+    created_by: IBUser['user_id']
+    updated_by: IBUser['user_id']
+    deleted_by?: IBUser['user_id'] | null
 }
 
-interface IUserCreateAttribute extends Optional<IUser, 'user_id'> {}
+interface IUser extends Optional<IBUser, 'user_id'> {}
 
-interface TUser extends Model<IUser, IUserCreateAttribute>, IUser {
-    created_by: IUser['user_id']
+interface IMUser extends Model<IBUser, IUser>, IBUser {
+    deleted_by: IBUser['user_id'] | null
     created_on: Date;
-    updated_by: IUser['user_id']
     updated_on: Date;
-    deleted_by: IUser['user_id']
     deleted_on: Date | null
 }
 
-export type { IUser, TUser }
+export type { IUser, IMUser }
