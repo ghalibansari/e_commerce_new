@@ -51,7 +51,7 @@ export abstract class BaseController<T> {
         await JsonResponse.jsonSuccess(req, res, `{this.url}.findBC`)
     };
 
-    findOneByIdBC = async (req: Request, res: Response): Promise<void> => {
+    findByIdBC = async (req: Request, res: Response): Promise<void> => {
         // await new BaseValidation().findBC(req, res)
         const { params: { id }, query: { attributes = this.attributes } }: any = req
 
