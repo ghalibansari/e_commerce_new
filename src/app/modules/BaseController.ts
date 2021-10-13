@@ -26,6 +26,7 @@ export abstract class BaseController<T> {
         this.router = Router();
     }
 
+
     findBC = async (req: Request, res: Response): Promise<void> => {
         // await new BaseValidation().findBC(req, res)
         let { where, attributes, order, search, pageSize, pageNumber }: any = req.query;
@@ -34,8 +35,8 @@ export abstract class BaseController<T> {
         search ||= ''
         order ||= this.order
         attributes ||= this.attributes
-        pageNumber ||= this.pageNumber 
-        pageSize ||= this.pageNumber
+        pageNumber ||= this.pageNumber
+        pageSize ||= this.pageSize
 
         //search
         if (search && search.length > 2 && this.searchColumn.length) {
@@ -48,6 +49,15 @@ export abstract class BaseController<T> {
         const { page, data } = await this.repo.findBR(where, attributes, this.include, order, pageNumber, pageSize)
         res.locals = { page, data, message: Messages.FETCH_SUCCESSFUL }
         await JsonResponse.jsonSuccess(req, res, `{this.url}.findBC`)
+    };
+
+    findOneByIdBC = async (req: Request, res: Response): Promise<void> => {
+        // await new BaseValidation().findBC(req, res)
+        const { params: { id }, query: { attributes = this.attributes } }: any = req
+
+        const data = await this.repo.findOneByIdBR(id, attributes, this.include)
+        res.locals = { data, message: Messages.FETCH_SUCCESSFUL }
+        await JsonResponse.jsonSuccess(req, res, `{this.url}.findOneByIdBC`)
     };
 
     // exportBC = async (req: Request, res: Response, populate: object[] = []): Promise<any> => {

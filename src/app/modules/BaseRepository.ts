@@ -1,7 +1,7 @@
 import { Model, ModelCtor } from 'sequelize'
 import { IRead } from '../interfaces/IRead'
 import { IWrite } from "../interfaces/IWrite"
-import { ICounter } from "./baseTypes";
+import { NonEmptyArray } from "./baseTypes";
 import { Constant } from "../constants";
 
 //@ts-expect-error
@@ -13,9 +13,10 @@ export class BaseRepository<T extends ModelCtor, U extends Model> implements IWr
         protected readonly _model: ModelCtor<U>,
         public readonly primary_key: keyof T,
         public readonly attributes: string[] = ['created_on'],
-        public readonly order: string[] | [string, 'ASC' | 'DESC'][] = [],
-        public readonly include: any[] = [],
+        public readonly order: NonEmptyArray<keyof T> | NonEmptyArray<[keyof T, 'ASC' | 'DESC']>,
+        public readonly include: object[] = [],
     ) { }
+
 
     findBR = async (
         where: object = {},
@@ -29,8 +30,8 @@ export class BaseRepository<T extends ModelCtor, U extends Model> implements IWr
 
         //get total count and count based on condition
         const [totalCount, count] = await Promise.all([
-            await this._model.count(),
-            await this._model.count(where)
+            await this.CountAllBR(),
+            await this.CountBR(where)
         ])
 
         //calculate pagination.
@@ -39,20 +40,20 @@ export class BaseRepository<T extends ModelCtor, U extends Model> implements IWr
         limit = pageNumber * pageSize
         if (limit < count) hasNextPage = true
 
+        console.log(pageSize,"pageSize")
+        //@ts-expect-error
         const data = await this._model.findAll({ where, attributes, include, offset, limit, order, raw: true })
 
         return { data, page: { hasNextPage, totalCount, count, currentPage: pageNumber, totalPage } }
     };
 
     //Todo need to work on it
-    findOneBR = async (
-        where: object = {},
-        attributes: string[] = ['created_on'],
-        include: string[] = []
-    ): Promise<Model<T, U> | null> => {
-        return this._model.findOne({
-            where, attributes, include, raw: true
-        })
+    findOneBR = async (where: object = {}, attributes = this.attributes, include = this.include): Promise<Model<T, U> | null> => {
+        return this._model.findOne({ where, attributes, include, raw: true })
+    }
+
+    findOneByIdBR = async (id: keyof T, attributes = this.attributes, include = this.include): Promise<Model<T, U> | null> => {
+        return this.findOneBR({[this.primary_key]: id}, attributes, include)
     }
 
     //Todo need to work on it
@@ -67,11 +68,11 @@ export class BaseRepository<T extends ModelCtor, U extends Model> implements IWr
     deleteBR = async (where: object) => this._model.destroy({ where });
 
     // Todo implement update user on delete docs
-    deleteByIdBR = async (id: string): Promise<number> => this.deleteBR({[this.primary_key]: id});
+    deleteByIdBR = async (id: string): Promise<number> => this.deleteBR({ [this.primary_key]: id });
 
     CountBR = async (where: object = {}): Promise<number> => this._model.count({ where });
 
-    CountAllBR = async (): Promise<number> => this._model.count();
+    CountAllBR = async (): Promise<number> => this.CountBR({});
 
 
 

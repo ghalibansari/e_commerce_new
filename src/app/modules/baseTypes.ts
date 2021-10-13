@@ -2,6 +2,8 @@ import {ClientSession} from "mongoose";
 // import { IRole } from "./role/role.types";
 import { IUser } from "./user/user.types";
 
+
+export type NonEmptyArray<T> = [T, ...T[]];
 export interface ICounter{
     key: string;
     value: string

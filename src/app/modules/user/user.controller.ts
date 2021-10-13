@@ -16,7 +16,7 @@ export class UserController extends BaseController<IUser> {
 
     constructor() {
         //url, user0repo, attributes/columns, include/joints, sort, search-columns 
-        super("user", new UserRepository(), ['*'], [], [['last_name', 'DESC']], ['first_name', 'last_name'])
+        super("user", new UserRepository(), ['*'], [['last_name', 'DESC']], [], ['first_name', 'last_name'])
         this.init()
     }
 
@@ -25,10 +25,11 @@ export class UserController extends BaseController<IUser> {
     init() {
         const validation: UserValidation = new UserValidation();
         this.router.get("/", TryCatch.tryCatchGlobe(this.findBC));
+        this.router.get("/:id", TryCatch.tryCatchGlobe(this.findOneByIdBC))
         // this.router.get("/index", TryCatch.tryCatchGlobe(this.index));
         // this.router.post("/", validation.createUser, transaction.startTransaction, TryCatch.tryCatchGlobe(this.create));
         // this.router.put("/", validation.updateUser, transaction.startTransaction, TryCatch.tryCatchGlobe(this.update));
-        this.router.delete("/by-id/:id", TryCatch.tryCatchGlobe(this.deleteByIdBC));
+        this.router.delete("/:id", TryCatch.tryCatchGlobe(this.deleteByIdBC));
     }
 
     // async find(req: Request, res: Response){
