@@ -28,6 +28,7 @@ export class UserController extends BaseController<IUser> {
         this.router.get("/:id", TryCatch.tryCatchGlobe(this.findByIdBC))
         this.router.post("/", TryCatch.tryCatchGlobe(this.createOneBC))
         this.router.post("/bulk", TryCatch.tryCatchGlobe(this.createBulkBC))
+        this.router.put("/:id", TryCatch.tryCatchGlobe(this.updateByIdkBC))
         // this.router.get("/index", TryCatch.tryCatchGlobe(this.index));
         // this.router.post("/", validation.createUser, transaction.startTransaction, TryCatch.tryCatchGlobe(this.create));
         // this.router.put("/", validation.updateUser, transaction.startTransaction, TryCatch.tryCatchGlobe(this.update));

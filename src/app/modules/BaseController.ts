@@ -71,6 +71,12 @@ export abstract class BaseController<T> {
         return await JsonResponse.jsonSuccess(req, res, `{this.url}.createOneBC`)
     };
 
+    updateByIdkBC = async (req: Request, res: Response): Promise<void> => {
+        const data = await this.repo.updateByIdBR(req.params.id as any, req.body)
+        res.locals = { data, message: Messages.CREATE_SUCCESSFUL }
+        return await JsonResponse.jsonSuccess(req, res, `{this.url}.createOneBC`)
+    };
+
     // exportBC = async (req: Request, res: Response, populate: object[] = []): Promise<any> => {
     //     await new BaseValidation().findBC(req, res)
     //     // @ts-expect-error

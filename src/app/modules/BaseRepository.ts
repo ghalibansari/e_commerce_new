@@ -1,4 +1,4 @@
-import { Model, ModelCtor } from 'sequelize'
+import { BelongsToManyHasAssociationsMixin, Model, ModelCtor } from 'sequelize'
 import { IRead } from '../interfaces/IRead'
 import { IWrite } from "../interfaces/IWrite"
 import { NonEmptyArray } from "./baseTypes";
@@ -65,15 +65,6 @@ export class BaseRepository<T extends ModelCtor, U extends Model> implements IWr
 
     findByIdBR = async (id: keyof T, attributes = this.attributes, include = this.include): Promise<Model<T, U> | null> => {
         return await this.findOneBR({ [this.primary_key]: id }, attributes, include)
-    }
-
-
-    createBulkBR = async(newData: T[]) => await this._model.bulkCreate(newData);
-
-
-    createOneBR = async(newData: T): Promise<U> => {
-        const [data] = await this.createBulkBR([newData])
-        return data
     };
 
 
@@ -87,14 +78,35 @@ export class BaseRepository<T extends ModelCtor, U extends Model> implements IWr
     }
 
 
-    deleteBR = async (where: object) => await this._model.destroy({ where });
+    createBulkBR = async (newData: T[]) => await this._model.bulkCreate(newData);
+
+
+    createOneBR = async (newData: T): Promise<U> => {
+        const [data] = await this.createBulkBR([newData])
+        return data
+    };
+
+
+    updateBulkBR = async (where: U["_attributes"], newData: any): Promise<{ count: number, updated: U[] }> => {
+        const data = await this._model.update(newData, { where, returning: true })
+        return { count: data[0], updated: data[1] }
+    };
+
+
+    updateByIdBR = async (id: any, newData: Partial<U>): Promise<any> => {
+        const { count, updated } = await this.updateBulkBR({ [this.primary_key]: id }, newData)
+        return { count, updated: updated[0] }
+    };
+
+
+    deleteBulkBR = async (where: U["_attributes"]): Promise<number> => await this._model.destroy({ where });
 
 
     // Todo implement update user on delete docs
-    deleteByIdBR = async (id: string): Promise<number> => await this.deleteBR({ [this.primary_key]: id });
+    deleteByIdBR = async (id: string): Promise<number> => await this.deleteBulkBR({ [this.primary_key]: id });
 
 
-    CountBR = async (where: object = {}): Promise<number> => await this._model.count({ where });
+    CountBR = async (where: U["_attributes"] = {}): Promise<number> => await this._model.count({ where });
 
 
     CountAllBR = async (): Promise<number> => await this.CountBR({});

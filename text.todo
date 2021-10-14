@@ -1,6 +1,5 @@
 
 // Implement all this in base repo
-// createmany bulk
 // updatemany
 // updateOne
 // deletemany
@@ -8,6 +7,8 @@
 // groupCount
 
 
+
+//implement transaction support everywhere
 
 // Ghalib
 // Implement base validation in base controller for all method with using Closure joi validation
