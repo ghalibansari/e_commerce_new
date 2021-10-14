@@ -30,10 +30,12 @@ const UserMd = DB.define<IMUser>(
         },
         mobile: {
             allowNull: false,
+            unique: true,
             type: DataTypes.TEXT,
         },
         email: {
             allowNull: false,
+            unique: true,
             type: DataTypes.TEXT,
         },
         password: {
@@ -72,13 +74,13 @@ const UserMd = DB.define<IMUser>(
 async function doStuffWithUserModel() {
     // await DB.sync({ force: true })
     const newUser = await UserMd.create({
-        first_name: "wwwww",
-        last_name: "John",
-        mobile: 8754219635,
-        email: "email",
-        password: "wwwww",
-        created_by: '',
-        updated_by: ''
+        "first_name": "Yo",
+        "last_name": "John",
+        "mobile": 8754219635,
+        "email": "email",
+        "password": "ddd",
+        "created_by": "c1cc539a-caaa-4738-a4af-a1a39c9edc2d",
+        "updated_by": "c1cc539a-caaa-4738-a4af-a1a39c9edc2c"
     });
     // console.log(newUser);
 
