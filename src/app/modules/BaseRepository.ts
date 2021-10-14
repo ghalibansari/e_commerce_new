@@ -47,7 +47,7 @@ export class BaseRepository<T extends ModelCtor, U extends Model> implements IWr
     };
 
 
-    findBulk = async (
+    findBulkBR = async (
         where: object = {},
         attributes = this.attributes,
         include = this.include,
@@ -68,10 +68,13 @@ export class BaseRepository<T extends ModelCtor, U extends Model> implements IWr
     }
 
 
-    createBulk = async(data: T[]) => await this._model.bulkCreate(data);
+    createBulkBR = async(data: T[]) => await this._model.bulkCreate(data);
 
 
-    createOneBR = async(data: T): Promise<any> => await this.createBulk([data]);
+    createOneBR = async(newData: T): Promise<U> => {
+        const [data] = await this.createBulkBR([newData])
+        return data
+    };
 
 
     //Todo need to work on it
