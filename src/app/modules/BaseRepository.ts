@@ -68,7 +68,7 @@ export class BaseRepository<T extends ModelCtor, U extends Model> implements IWr
     }
 
 
-    createBulkBR = async(data: T[]) => await this._model.bulkCreate(data);
+    createBulkBR = async(newData: T[]) => await this._model.bulkCreate(newData);
 
 
     createOneBR = async(newData: T): Promise<U> => {

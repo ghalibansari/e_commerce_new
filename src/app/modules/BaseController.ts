@@ -60,8 +60,13 @@ export abstract class BaseController<T> {
     };
 
     createOneBC = async (req: Request, res: Response): Promise<void> => {
-        const newData: any = req.body
-        const data = await this.repo.createOneBR(newData)
+        const data = await this.repo.createOneBR(req.body)
+        res.locals = { data, message: Messages.CREATE_SUCCESSFUL }
+        return await JsonResponse.jsonSuccess(req, res, `{this.url}.createOneBC`)
+    };
+
+    createBulkBC = async (req: Request, res: Response): Promise<void> => {
+        const data = await this.repo.createBulkBR(req.body)
         res.locals = { data, message: Messages.CREATE_SUCCESSFUL }
         return await JsonResponse.jsonSuccess(req, res, `{this.url}.createOneBC`)
     };

@@ -18,7 +18,7 @@ const UserMd = DB.define<IMUser>(
             autoIncrement: false,
             primaryKey: true,
             type: DataTypes.UUID,
-            defaultValue: uuidv4()
+            defaultValue: ()=>uuidv4()
         },
         first_name: {
             allowNull: false,
