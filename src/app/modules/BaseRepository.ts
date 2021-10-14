@@ -110,5 +110,4 @@ export class BaseRepository<T extends ModelCtor, U extends Model> implements IWr
 
 
     CountAllBR = async (): Promise<number> => await this.CountBR({});
-
 }
