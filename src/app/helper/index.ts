@@ -7,4 +7,5 @@ export { Upload } from './Upload';
 export * from './INotificationService';
 export * from './IApiResponse';
 export * from './FileServer';
+export * from './Validation';
 // export * from './DisplayConfigurationColumns';
