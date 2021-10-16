@@ -1,0 +1,54 @@
+<script type="text/ng-template" id="modal.html">
+
+    <div class="modal fade bs-example-modal-lg show" tabindex="-1" role="dialog">
+        <div class="modal-dialog modal-lg modal-dialog-scrollable modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header" ng-class="{'bg-primary': brand.mode == 'add', 'bg-warning': brand.mode == 'edit' }">
+                    <h5 class="modal-title mt-0 text-light" id="exampleModalScrollableTitle">{{brand.mode == 'add' ? 'Create' : 'Edit'}} Brand
+                    </h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close" ng-click="close()">
+                        <span aria-hidden="true" class="text-light">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                   <form name="form">
+                        <div class="form-row">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label for="name">Name: <i class="text-danger">*</i></label>
+                                    <input type="text" id="name" name="name" class="form-control" placeholder="Enter Name" ng-model="brand.name" autofocus required>
+                                    <div ng-if="form.name.$touched" ng-messages="form.name.$error">
+                                        <span class="error-msg" ng-message="required">Name is required.</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-12">
+                                <div class="form-group">
+                                    <label for="name">Description</label>
+                                    <input type="text" id="description" name="description" class="form-control" placeholder="Enter Description" ng-model="brand.description">
+                                    <!-- <ul class="parsley-errors-list filled" ng-if="form.lastName.$touched" ng-messages="form.lastName.$error">
+                                        <li class="parsley-required" ng-message="required">Last Name is required.</li>
+                                    </ul> -->
+                                </div>
+                            </div>
+                        </div>
+                   </form>
+  
+                </div>
+                <div class="modal-footer">
+  
+                    <button type="button" class="btn btn-primary" ng-if="brand.mode == 'add'" ng-disabled="!form.$valid || isPosting" ng-click="create()">
+                        <span ng-if="!isPosting"><i class="fa fa-save"></i> Save changes</span>
+                        <span ng-if="isPosting"><i class="fas fa-spinner fa-pulse"></i> Save changes</span>
+                    </button>
+                    <button type="button" class="btn btn-warning" ng-if="brand.mode == 'edit'" ng-disabled="!form.$valid || isPosting" ng-click="update()">
+                        <span ng-if="!isPosting"><i class="fa fa-save"></i> Save changes</span>
+                        <span ng-if="isPosting"><i class="fas fa-spinner fa-pulse"></i> Save changes</span>
+                    </button>
+                    <button type="button" class="btn btn-secondary"
+                        data-dismiss="modal" ng-click="close()"><span aria-hidden="true" class="text-light font-size-13 align-middle mr-1">&times;</span> Close</button>
+                </div>
+            </div><!-- /.modal-content -->
+        </div><!-- /.modal-dialog -->
+    </div>
+  </script>
