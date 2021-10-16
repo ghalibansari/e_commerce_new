@@ -45,6 +45,7 @@
     "@types/validator": "^13.6.3",
     "concurrently": "^6.3.0",
     "mongoose": "^6.0.10",
+    "ncp": "^2.0.0",
     "nodemon": "^2.0.13",
     "sequelize-cli": "^6.2.0"
   }
