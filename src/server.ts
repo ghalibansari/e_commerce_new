@@ -5,7 +5,7 @@ import { DB } from './configs/DB'
 // @ts-ignore
 import server from './app/app'
 
-server.listen(3000, async () => {
+server.listen(4000, async () => {
 
     //  mongoose.connect(DB_URI, DB_CONFIG)
         //  .then(() => {;
