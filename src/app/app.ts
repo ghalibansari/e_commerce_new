@@ -3,9 +3,11 @@ import {Constant} from "./constants";
 import path from 'path';
 import bodyParser from "body-parser";
 import {registerRoutes} from "./routes";
+import {registerViewRoutes} from "./viewRoutes";
 import session from "express-session";
 import {guard} from './helper/Auth'
 import { queryParser } from "./helper/QueryParser";
+import expressLayouts from 'express-ejs-layouts';
 
 
 
@@ -38,7 +40,7 @@ class App{
         //     next();
         // });    //json parser.
         // this.app.use(bodyParser.urlencoded({extended: true}));
-        // this.app.use(express.static(path.join(__dirname, '../web/build')));
+        this.app.use(express.static(path.join(__dirname, '../public')));
         // this.app.use(bodyParser.json({limit: "150mb"}));
         // this.app.use(bodyParser.urlencoded({limit: "150mb", extended: true, parameterLimit: 150000}));
         // this.app.use('/api/v1/public/excel', guard, express.static(path.join(__dirname + '/../public/excel')));
@@ -71,9 +73,10 @@ class App{
      * Register all routes
      */
     private setupWebRoute(): void {
-        // this.app.set("views", path.join(__dirname, "./views"));
-        // this.app.set("view engine", "ejs");
-        // this.app.use(expressLayouts);
+        this.app.set("views", path.join(__dirname, "../views"));
+        this.app.set("view engine", "ejs");
+        this.app.use(expressLayouts);
+        registerViewRoutes(this.app);
         // this.app.all('/*', (req: Request, res: Response) => res.sendFile(path.join(__dirname, '../web/build', 'index.html')))   //website here.
         // this.app.all('*', (req: Request, res: Response) => res.redirect('/'))   //website here.
     }

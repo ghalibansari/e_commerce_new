@@ -1,0 +1,92 @@
+<%- contentFor('metaTags') %>
+    <%- contentFor('headerCSS') %>
+        <link href="/assets/extra-libs/sweetalert2/sweetalert2.min.css" rel="stylesheet" type="text/css" />
+        <!-- DataTables-->
+        <link href="/assets/extra-libs/datatables.net-bs4/css/dataTables.bootstrap4.min.css" rel="stylesheet"
+            type="text/css">
+        <link href="/assets/extra-libs/datatables.net-buttons-bs4/css/buttons.bootstrap4.min.css" rel="stylesheet"
+            type="text/css">
+
+        <!-- Responsive datatable examples -->
+        <link href="/assets/extra-libs/datatables.net-responsive-bs4/css/responsive.bootstrap4.min.css" rel="stylesheet"
+            type="text/css">
+        <link rel="stylesheet" href="/assets/extra-libs/angular-datatables/css/buttons.dataTables.min.css">
+        <link rel='stylesheet' href='/assets/extra-libs/angular-datatables/css/fixedColumns.dataTables.bootstrap4.css'>
+
+        <!-- UI-Select Styles -->
+        <link rel='stylesheet' href='/assets/extra-libs/ui-select/css/select2.min.css'>
+        <link rel='stylesheet' href='/assets/extra-libs/ui-select/css/selectize.default.css'>
+
+
+        <link rel="stylesheet" href="/assets/extra-libs/ui-select/select.css">
+        <%- contentFor('breadcrumb') %>
+            <div class="page-breadcrumb">
+                <div class="row">
+                    <div class="col-7 align-self-center">
+                        <h3 class="page-title text-truncate text-dark font-weight-medium mb-1">Products</h3>
+                        <div class="d-flex align-items-center">
+                            <nav aria-label="breadcrumb">
+                                <ol class="breadcrumb m-0 p-0">
+                                    <li class="breadcrumb-item"><a href="/products">Products</a>
+                                    </li>
+                                </ol>
+                            </nav>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <%- contentFor('body') %>
+                <div class="container-fluid" ng-app="productsApp" ng-controller="productsAppCtrlr">
+                    <div class="row">
+                        <div class="col-12">
+                            <button class="btn btn-success float-right" ng-click="onOpenModalCick('add')"><i
+                                    class="fa fa-plus"></i> Create Product</button>
+                        </div>
+                    </div>
+                    <%- include('./productFormModal')%>
+                </div>
+
+
+
+                <%- contentFor('footerJS') %>
+                    <!-- Page level plugins -->
+                    <script src="/assets/extra-libs/datatables/jquery.dataTables.min.js"></script>
+                    <script src="/assets/extra-libs/datatables/dataTables.bootstrap4.min.js"></script>
+
+                    <script src="/assets/extra-libs/angularjs/angular.min.js" type="text/javascript"></script>
+                    <script src="/assets/extra-libs/angular-datatables/js/angular-datatables.js"></script>
+                    <script src="/assets/extra-libs/angular-datatables/js/dataTables.buttons.min.js"></script>
+                    <script src="/assets/extra-libs/angular-datatables/js/jszip.min.js"></script>
+                    <script src="/assets/extra-libs/angular-datatables/js/buttons.colVis.min.js"></script>
+                    <script src="/assets/extra-libs/angular-datatables/js/buttons.flash.min.js"></script>
+                    <script src="/assets/extra-libs/angular-datatables/js/buttons.html5.min.js"></script>
+                    <script src="/assets/extra-libs/angular-datatables/js/buttons.print.min.js"></script>
+                    <script src="/assets/extra-libs/angular-datatables/js/angular-datatable-buttons.js"></script>
+                    <script src="/assets/extra-libs/angular-datatables/js/dataTables.fixedColumns.js"></script>
+                    <script
+                        src="/assets/extra-libs/angular-datatables/js/angular-datatables.fixedcolumns.min.js"></script>
+
+                    <script src="/assets/extra-libs/angularjs/angular-messages.min.js"></script>
+                    <script src='/assets/extra-libs/angularjs/angular-animate.min.js'></script>
+                    <script src='/assets/extra-libs/angularjs/angular-route.min.js'></script>
+                    <script src='/assets/extra-libs/angularjs/angular-aria.min.js'></script>
+                    <script src='/assets/extra-libs/moment/moment.js'></script>
+                    <script src='/assets/extra-libs/angularjs/angular-material.js'></script>
+                    <script src="/assets/extra-libs/angularjs/angular-sanitize.js"></script>
+                    <script src="/assets/extra-libs/angularjs/ui-bootstrap-tpls-2.1.3.js"></script>
+
+
+                    <!-- Sweet Alerts js -->
+                    <script src="/assets/extra-libs/sweetalert2/sweetalert2.min.js"></script>
+
+                    <!-- Sweet alert init js-->
+                    <script src="/assets/libs/sweetalert/sweet-alerts.init.js"></script>
+
+                    <!-- Select 2 -->
+                    <script src="/assets/extra-libs/select2/js/select2.min.js"></script>
+
+                    <script src="/assets/extra-libs/ui-select/js/select.min.js"></script>
+
+                    <script src="/assets/extra-libs/ui-select/select.js"></script>
+                    <script src="/ng-apps/products.js"></script>
