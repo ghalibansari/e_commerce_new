@@ -5,14 +5,15 @@
   "main": "index.js",
   "scripts": {
     "predev": "npm run delete && tsc && npm run copy",
-    "dev": "concurrently \"npm run nodemon\" \"npm run tsc-dev\"",
-    "nodemon": "nodemon ./dist/server",
+    "dev": "concurrently \"npm run nodemon\" \"npm run tsc-dev\" \"npm run copy-dev\"",
+    "nodemon": "nodemon -w src dist/server",
     "tsc-dev": "tsc -w",
-    "prestart": "npm run delete && tsc",
+    "prestart": "npm run delete && tsc && npm run copy",
     "start": "node ./dist/server",
     "delete": "rimraf ./dist",
     "copy": "node copyViews.js",
-    "tsc": "tsc"
+    "tsc": "tsc",
+    "copy-dev": "nodemon -e js,ejs -w src/public -w src/views copyViews.js"
   },
   "keywords": [],
   "author": "",
@@ -34,7 +35,7 @@
     "pg": "^8.7.1",
     "pg-hstore": "^2.3.4",
     "sequelize": "^6.6.5",
-    "typescript": "^4.4.3",
+    "typescript": "^4.4.4",
     "uuid": "^8.3.2"
   },
   "devDependencies": {

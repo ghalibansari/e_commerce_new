@@ -102,7 +102,8 @@
     "node_modules",
     "src/web",
     "src/app/modules2",
-    "src/public"
+    "src/public",
+    "src/views"
   ],
   "include": [
     "src/**/*.ts", "src/config.js",
