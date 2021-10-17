@@ -1,0 +1,91 @@
+<script type="text/ng-template" id="modal.html">
+
+    <div class="modal fade bs-example-modal-lg show" tabindex="-1" role="dialog">
+        <div class="modal-dialog modal-lg modal-dialog-scrollable modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header" ng-class="{'bg-primary': product.mode == 'add', 'bg-warning': product.mode == 'edit' }">
+                    <h5 class="modal-title mt-0 text-light" id="exampleModalScrollableTitle">{{product.mode == 'add' ? 'Create' : 'Edit'}} Product
+                    </h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close" ng-click="close()">
+                        <span aria-hidden="true" class="text-light">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                   <form name="form">
+                        <div class="form-row">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label for="name">Name: <i class="text-danger">*</i></label>
+                                    <input type="text" id="name" name="name" class="form-control" placeholder="Enter Product Name" ng-model="product.name" autofocus required>
+                                    <div ng-if="form.name.$touched" ng-messages="form.name.$error">
+                                        <span class="error-msg" ng-message="required">Product Name is required.</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label class="label-control" for="option">City: <i class="text-danger">*</i>
+                                    </label>
+                                    <ui-select name="citySelect" ng-model="citySelect" theme="selectize" on-select="onCityChanged($item)" title="Select City" required>
+                                        <ui-select-match placeholder="Select city in the list or search City Name...">{{$select.selected.name}}</ui-select-match>
+                                        <ui-select-choices repeat="item._id as item in citiesList |  filter: $select.search">
+                                            <h6 ng-bind-html="item.name | highlight: $select.search"></h6>
+                                            <small>
+                                                Desc.: <span ng-bind-html="''+item.description | highlight: $select.search"></span>
+                                            </small>
+                                        </ui-select-choices>
+                                    </ui-select>
+                                    <input type="hidden" id="cityId" name="cityId" ng-model="product.cityId" required/>
+                                    <div class="invalid-feedback" ng-messages="form.cityId.$error" style="color:red" ng-if="!form.cityId.$valid && form.citySelect.$touched">
+                                        <div class="invalid-feedback" ng-message="required">Please Select City</div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-12">
+                                <div class="form-group">
+                                    <label for="name">Description</label>
+                                    <input type="text" id="description" name="description" class="form-control" placeholder="Enter Product Description" ng-model="product.description">
+                                    <!-- <ul class="parsley-errors-list filled" ng-if="form.lastName.$touched" ng-messages="form.lastName.$error">
+                                        <li class="parsley-required" ng-message="required">Last Name is required.</li>
+                                    </ul> -->
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="col-md-6 pt-2" ng-repeat="Product in product.pinCodes track by $index">
+                                <label for="name" class="mt-1">Pin Code: <i class="text-danger">*</i></label>
+                                <div class="input-group">
+                                    <input type="text" id="pinCode{{$index}}" name="pinCode{{$index}}" class="form-control" placeholder="Enter Pin Code" ng-model="product.pinCodes[$index]" ng-pattern="/^[1-9][0-9]{5}$/" required>
+                                    <div class="input-group-append" ng-if="$index == product.pinCodes.length - 1">
+                                        <button class="btn btn-outline-info" type="button" ng-click="product.pinCodes.push('')"><i class="bx bx-plus"></i> Add</button>
+                                    </div>
+                                    <div class="input-group-append" ng-if="$index != product.pinCodes.length - 1">
+                                        <button class="btn btn-outline-danger" type="button" ng-click="product.pinCodes.splice($index, 1)"><i class="bx bx-trash"></i> Delete</button>
+                                    </div>
+                                </div>
+                                <ul class="parsley-errors-list filled" ng-if="form['pinCode' + $index].$touched" ng-messages="form['pinCode' + $index].$error">
+                                    <li class="parsley-required" ng-message="required">Please Enter Pin Code.</li>
+                                    <li class="parsley-required" ng-message="pattern">Invalid Pin Code.</li>
+                                </ul>
+                            </div>
+                        </div>
+                   </form>
+  
+                </div>
+                <div class="modal-footer">
+  
+                    <button type="button" class="btn btn-primary" ng-if="product.mode == 'add'" ng-disabled="!form.$valid || isPosting" ng-click="create()">
+                        <span ng-if="!isPosting"><i class="bx bx-save align-middle font-size-18 mr-1"></i>Save changes</span>
+                        <span ng-if="isPosting"><i class="bx bx-loader bx-spin align-middle font-size-18 mr-1"></i>Save changes</span>
+                    </button>
+                    <button type="button" class="btn btn-warning" ng-if="product.mode == 'edit'" ng-disabled="!form.$valid || isPosting" ng-click="update()">
+                        <span ng-if="!isPosting"><i class="bx bx-save align-middle font-size-18 mr-1"></i>Save changes</span>
+                        <span ng-if="isPosting"><i class="bx bx-loader bx-spin align-middle font-size-18 mr-1"></i>Save changes</span>
+                    </button>
+                    <button type="button" class="btn btn-secondary"
+                        data-dismiss="modal" ng-click="close()"><span aria-hidden="true" class="text-light font-size-13 align-middle mr-1">&times;</span> Close</button>
+                </div>
+            </div><!-- /.modal-content -->
+        </div><!-- /.modal-dialog -->
+    </div>
+  </script>
