@@ -31,37 +31,96 @@ app.controller("brandsAppCtrlr", [
   "$uibModal",
   "DTOptionsBuilder",
   "DTColumnBuilder",
-  ($scope, $http, $window, $uibModal, DTOptionsBuilder, DTColumnBuilder) => {
+  "$compile",
+  (
+    $scope,
+    $http,
+    $window,
+    $uibModal,
+    DTOptionsBuilder,
+    DTColumnBuilder,
+    $compile
+  ) => {
     $scope.isLoading = false;
-    /**
-     * Method To Get List Of Brands
-     */
-    $scope.getAllBrands = async () => {
-      $scope.isLoading = true;
-      $http
-        .get("/brands")
-        .then((res) => {
-          $scope.isLoading = false;
-          $scope.brands = res.data.payload;
-        })
-        .catch((err) => {
-          Swal.fire({
-            title: "Error",
-            text: err.data.message,
-            type: "error",
-            confirmButtonColor: "#556ee6",
-            allowOutsideClick: false,
-          }).then(function (data) {
-            $scope.isPosting = false;
-            $window.location.reload();
-          });
-        });
-    };
+    $scope.uri = "/api/v1/brand";
+    $scope.pageSize = 10;
 
-    // Method To Init Controller
-    $scope.init = () => {
-      $scope.getAllBrands();
-    };
+    $scope.pc = {};
+    $scope.pc.dtInstance = {};
+    $scope.instances = [];
+    $scope.pc.dtColumns = [
+      DTColumnBuilder.newColumn("name").withTitle("Name"),
+      DTColumnBuilder.newColumn("description").withTitle("Description"),
+      DTColumnBuilder.newColumn("status")
+        .withTitle("Status")
+        .renderWith(statusHtml),
+      DTColumnBuilder.newColumn(null)
+        .withTitle("Actions")
+        .notSortable()
+        .renderWith(actionsHtml),
+    ];
+    $scope.pc.dtOptions = DTOptionsBuilder.newOptions()
+      .withOption("ajax", function (data, callback, settings) {
+        $scope.pageSize = data.length;
+        let pageNum = data.start / $scope.pageSize + 1;
+        // make an ajax request using data.start and data.length
+        $http
+          .get(
+            `${$scope.uri}?pageSize=${$scope.pageSize}&pageNumber=${pageNum}`
+          )
+          .then(function (res) {
+            // $.fn.DataTable.ext.pager.numbers_length = res.data.page.totalPage % 2 == 0 ? res.data.page.totalPage + 1 : res.data.page.totalPage;
+            // map your server's response to the DataTables format and pass it to                // DataTables' callback
+            callback({
+              recordsTotal: res.data.page.totalCount,
+              data: res.data.data,
+            });
+          });
+      })
+      .withDataProp("data")
+      .withDOM("lBfrtip")
+      .withOption("processing", true) //for show progress bar
+      .withOption("serverSide", true) // for server side processing
+      .withPaginationType("simple_numbers") // for get full pagination options // first / last / prev / next and page numbers
+      .withDisplayLength($scope.pageSize) // Page size
+      .withOption("lengthMenu", [10, 20, 30, 40, 50])
+      .withOption("aaSorting", [0, "asc"]) // for default sorting column // here 0 means first column
+      .withOption("createdRow", function (row) {
+        $compile(angular.element(row).contents())($scope);
+      })
+      .withButtons([
+        {
+          extend: "copy",
+          text: '<i class="fa fa-files-o"></i> Copy',
+          titleAttr: "Copy",
+        },
+        {
+          extend: "print",
+          text: '<i class="fa fa-print" aria-hidden="true"></i> Print',
+          titleAttr: "Print",
+        },
+        {
+          extend: "excel",
+          text: '<i class="fa fa-file-text-o"></i> Excel',
+          titleAttr: "Excel",
+        },
+        {
+          extend: "csvHtml5",
+        },
+      ]);
+
+    function actionsHtml(data, type, full, meta) {
+      let obj = JSON.stringify(full);
+      return `<button class="btn btn-warning" ng-click='onOpenModalCick("edit", ${obj}, ${meta.row})' > <i class="fa fa-edit text-white"></i> </button> 
+          <button class="btn btn-danger" ng-click='delete("${full.name}", "${full.brand_id}")' > <i class="fa fa-trash text-white"></i> </button> `;
+    }
+
+    function statusHtml(data, type, full, meta) {
+      let activeClass = data ? "badge-success" : "badge-danger";
+      return `<span class="badge ${activeClass}"> <i class="fa ${
+        data ? "fa-check" : "fa-times"
+      }"> </span>`;
+    }
 
     /**
      * Method To Open Modal
@@ -92,10 +151,15 @@ app.controller("brandsAppCtrlr", [
       });
     };
 
+    //Method To Reload Datatable's Data
+    $scope.reloadData = function () {
+      $scope.pc.dtInstance.rerender();
+    };
+
     //Method To Delete Brand
-    $scope.delete = function (index, id) {
+    $scope.delete = function (name, id) {
       Swal.fire({
-        title: `Delete Brand: ${$scope.brands[index].name}?`,
+        title: `Delete Brand: ${name}?`,
         text: "You won't be able to revert this!",
         type: "warning",
         showCancelButton: 1,
@@ -106,7 +170,7 @@ app.controller("brandsAppCtrlr", [
         if (t.value) {
           $scope.isLoading = true;
           $http
-            .delete(`/brands/${id}`)
+            .delete(`${$scope.uri}/${id}`)
             .then(function (res) {
               $scope.brands.splice(index, 1);
               $scope.isLoading = false;
@@ -167,7 +231,7 @@ app.controller("brandDetails", [
     $scope.create = () => {
       $scope.isPosting = true;
       $http
-        .post("/brands", $scope.brand)
+        .post($scope.uri, $scope.brand)
         .then((res) => {
           Swal.fire({
             title: "Success",
@@ -177,7 +241,8 @@ app.controller("brandDetails", [
             allowOutsideClick: false,
           }).then(function (data) {
             $scope.isPosting = false;
-            $scope.brands.push(res.data.payload);
+            // $scope.brands.push(res.data.payload);
+            $scope.reloadData();
             $scope.close();
           });
         })
@@ -203,7 +268,7 @@ app.controller("brandDetails", [
     $scope.update = () => {
       $scope.isPosting = true;
       $http
-        .put(`/brands/${$scope.brand.id}`, $scope.brand)
+        .put(`${$scope.uri}/${$scope.brand.brand_id}`, $scope.brand)
         .then((res) => {
           Swal.fire({
             title: "Success",
@@ -213,7 +278,7 @@ app.controller("brandDetails", [
             allowOutsideClick: false,
           }).then(function (data) {
             $scope.isPosting = false;
-            $scope.brands[$scope.brand.index] = res.data.payload;
+            $scope.reloadData();
             $scope.close();
           });
         })
@@ -234,5 +299,8 @@ app.controller("brandDetails", [
           });
         });
     };
+
+    //Method to Close Modal
+    $scope.close = () => $scope.modalInstance.close();
   },
 ]);

@@ -1,7 +1,8 @@
 import {Application} from "express"
+import { BrandController } from "./modules/brand/brand.controller";
 import {UserController} from "./modules/user/user.controller";
-import { AdminRoutes } from "./view-routes/admin";
 
 export function registerRoutes(app: Application): void {
     new UserController().register(app)
+    new BrandController().register(app)
 }
