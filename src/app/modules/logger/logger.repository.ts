@@ -4,7 +4,6 @@ import { BaseRepository } from "../BaseRepository";
 
 export class LoggerRepository extends BaseRepository<ILogger, IMLogger> {
     constructor() {
-        //@ts-expect-error
         super(loggerMd, 'logger_id', ['*'], [['created_on', 'DESC']], []);
     }
 }

@@ -1,8 +1,7 @@
-import { json, Request, Response } from "express";
+import { Request, Response } from "express";
 import * as HttpStatus from 'http-status-codes';
 import {ISuccessResponse} from "./IApiResponse";
-import { MongooseTransaction } from "./MongooseTransactions";
-import {RequestWithTransaction} from "../interfaces/Request";
+import { DBTransaction } from ".";
 
 export class JsonResponse {
     /**
@@ -19,6 +18,9 @@ export class JsonResponse {
             header: res.locals.header,
             data: res.locals.data ?? null
         };
+
+        await DBTransaction.commitTransaction(req, res);
+        
         res.status(HttpStatus.OK).send(obj)     //Todo add constraint here before sending in typescript
     }
 
@@ -32,6 +34,8 @@ export class JsonResponse {
             message: res.locals.message || "Something went wrong, please contact to admin.",
             data: res.locals.data ?? null
         };
+
+        await DBTransaction.abortTransaction(req, res)
 
         if (!res.locals.code) res.status(HttpStatus.OK)
         else res.status(res.locals.code)

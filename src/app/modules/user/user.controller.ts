@@ -1,7 +1,7 @@
 
 import { BaseController } from "../BaseController";
 import { Application, Request, Response } from "express";
-import { JsonResponse, TryCatch, validateBody, validateParams } from "../../helper";
+import { DBTransaction, JsonResponse, TryCatch, validateBody, validateParams } from "../../helper";
 import { Messages } from "../../constants"
 import { UserValidation } from "./user.validation"
 import { guard } from "../../helper/Auth";
@@ -26,12 +26,20 @@ export class UserController extends BaseController<IUser> {
         this.router.get("/", TryCatch.tryCatchGlobe(this.indexBC));
         this.router.get("/:id", validateParams(UserValidation.findById), TryCatch.tryCatchGlobe(this.findByIdBC))
         this.router.post("/", validateBody(UserValidation.addUser), TryCatch.tryCatchGlobe(this.createOneBC))
+        this.router.post("/trans", validateBody(UserValidation.addUser), DBTransaction.startTransaction, TryCatch.tryCatchGlobe(this.createOne))
         this.router.post("/bulk", validateBody(UserValidation.addUserBulk), TryCatch.tryCatchGlobe(this.createBulkBC))
         this.router.put("/:id", validateParams(UserValidation.findById), validateParams(UserValidation.editUser), TryCatch.tryCatchGlobe(this.updateByIdkBC))
         this.router.delete("/:id", validateParams(UserValidation.findById), TryCatch.tryCatchGlobe(this.deleteByIdBC))
         // this.router.post("/", validation.createUser, transaction.startTransaction, TryCatch.tryCatchGlobe(this.create));
         // this.router.put("/", validation.updateUser, transaction.startTransaction, TryCatch.tryCatchGlobe(this.update));
     }
+
+    createOne = async (req: Request, res: Response): Promise<void> => {
+        const { transaction }: any = req
+        const data = await this.repo.createOneBR(req.body, transaction)
+        res.locals = { data, message: Messages.CREATE_SUCCESSFUL }
+        return await JsonResponse.jsonSuccess(req, res, `{this.url}.createOneBC`)
+    };
 
     // async find(req: Request, res: Response){
     //     let populate = [{path: 'addressId'}, {path: 'companyId'}, {path: 'roleId'}];

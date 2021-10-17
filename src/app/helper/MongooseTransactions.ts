@@ -3,16 +3,7 @@ import {ClientSession, startSession} from 'mongoose'
 import {RequestWithTransaction} from "../interfaces/Request";
 
 export class MongooseTransaction{   //Todo convert all methods to static method.
-    ////@ts-expect-error
-    // protected mongoSession: ClientSession;
-    // constructor() {
-    //     this.init().then(r => r);
-    // }
-    //
-    // async init(){
-    //     this.mongoSession = await startSession()
-    // }
-
+    
     static startTransactionNew = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
         //@ts-expect-error
         req.mongoSessionNew = await startSession();

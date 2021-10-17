@@ -13,7 +13,6 @@ export class AdminRoutes {
     register = (express: Application) => express.use('/admin', this.router)
 
     init() {
-        console.log("AAAAAAAAa");
         this.router.get("/brands", this.brandPage);
     }
 

@@ -1,8 +1,8 @@
 import { Request, Response } from "express";
 import { JsonResponse } from "./JsonResponse";
 import { v4 } from "uuid";
-import { loggerLevelEnum } from "../../app/modules/loggers/logger.types";
-import { loggerMd } from "../../app/modules/loggers/logger.model";
+import { loggerLevelEnum } from "../modules/logger/logger.types";
+import { loggerMd } from "../modules/logger/logger.model";
 
 export class TryCatch {
     /**
@@ -20,7 +20,7 @@ export class TryCatch {
                 const created_by = v4()
                 const [, , , module,] = originalUrl.split('/')
                 console.log("errors......................", err)
-                loggerMd.create({ url: originalUrl, method, query: JSON.stringify(query), body: JSON.stringify(body), module, level: loggerLevelEnum.api, message: JSON.stringify(err.message), updated_by, created_by }).catch(e => console.log(e, " Failed logging"))
+                loggerMd.create({ url: originalUrl, method, query: JSON.stringify(query), body: JSON.stringify(body), module, level: loggerLevelEnum.api, message: JSON.stringify(err.message), updated_by, created_by }).catch((e:any) => console.log(e, " Failed logging"))
                 // if(err instanceof Object) loggerModel.create({body: JSON.stringify(body||''), url: originalUrl, method, query: JSON.stringify(query), message: err.stack, createdBy, updatedBy, level: loggerLevelEnum.api, module})
                 //     .catch((err:any) => console.log('Logging Failed', err))
                 // logger.error({loggedInUserId, originalUrl, method, query, error: err, body})
