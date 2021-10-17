@@ -31,7 +31,7 @@ export abstract class BaseController<T> {
 
     indexBC = async (req: Request, res: Response): Promise<void> => {
         await BaseValidation.index.validateAsync(req.query);
-        
+
         let { where, attributes, order, search, pageSize, pageNumber }: any = req.query;
 
         where ||= {}
@@ -48,6 +48,7 @@ export abstract class BaseController<T> {
                 where[Op.or].push({ [col]: { [Op.iLike]: `%${search}%` } })
             }
         }
+        throw new Error("...error testing")
 
         const { page, data } = await this.repo.indexBR(where, attributes, this.include, order, pageNumber, pageSize)
         res.locals = { page, data, message: Messages.FETCH_SUCCESSFUL }
