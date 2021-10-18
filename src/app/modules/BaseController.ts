@@ -48,7 +48,6 @@ export abstract class BaseController<T> {
                 where[Op.or].push({ [col]: { [Op.iLike]: `%${search}%` } })
             }
         }
-        throw new Error("...error testing")
 
         const { page, data } = await this.repo.indexBR(where, attributes, this.include, order, pageNumber, pageSize)
         res.locals = { page, data, message: Messages.FETCH_SUCCESSFUL }
