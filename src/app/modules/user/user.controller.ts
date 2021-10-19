@@ -1,15 +1,12 @@
 
-import { BaseController } from "../BaseController";
+import { AuthGuard } from "../../helper";
 import { Application, Request, Response } from "express";
+import { Messages } from "../../constants";
 import { DBTransaction, JsonResponse, TryCatch, validateBody, validateParams } from "../../helper";
-import { Messages } from "../../constants"
-import { UserValidation } from "./user.validation"
-import { guard } from "../../helper/Auth";
-import { IUser } from "./user.types";
-//@ts-expect-error
-import { BaseHelper } from "../BaseHelper";
+import { BaseController } from "../BaseController";
 import { UserRepository } from "./user.repository";
-import { ErrorCodes } from "../../constants/ErrorCodes";
+import { IUser } from "./user.types";
+import { UserValidation } from "./user.validation";
 
 
 export class UserController extends BaseController<IUser> {
@@ -20,7 +17,7 @@ export class UserController extends BaseController<IUser> {
         this.init()
     }
 
-    register = (express: Application) => express.use('/api/v1/user', this.router)
+    register = (express: Application) => express.use('/api/v1/user', AuthGuard, this.router)
 
     init() {
         this.router.get("/", TryCatch.tryCatchGlobe(this.indexBC));
@@ -281,4 +278,4 @@ export class UserController extends BaseController<IUser> {
     //         res.locals = {status: true, message: Messages.UPDATE_SUCCESSFUL, data}
     //         await JsonResponse.jsonSuccess(req, res, `{this.url}.verficationMethod`);
     //     }
-}
+};

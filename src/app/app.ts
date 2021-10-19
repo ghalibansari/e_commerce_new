@@ -1,18 +1,17 @@
-import express, {Application, NextFunction, Request, Response} from "express"
-import {Constant} from "./constants";
+import express, { Application, NextFunction, Request, Response } from "express"
+import { Constant } from "./constants";
 import path from 'path';
 import bodyParser from "body-parser";
-import {registerRoutes} from "./routes";
-import {registerViewRoutes} from "./viewRoutes";
+import { registerRoutes } from "./routes";
+import { registerViewRoutes } from "./viewRoutes";
 import session from "express-session";
-import {guard} from './helper/Auth'
 import { queryParser } from "./helper/QueryParser";
 import expressLayouts from 'express-ejs-layouts';
 
 
 
 
-class App{
+class App {
     app: Application;
     constructor() {
         this.app = express()
@@ -20,19 +19,19 @@ class App{
         // this.app.use('/api', this.setupApiRoutes);
         this.setupApiRoutes();
         this.setupWebRoute();
-        setTimeout(()=> this.setupCron(), 30000);
+        setTimeout(() => this.setupCron(), 30000);
     }
 
     /**
      * Add all middleware
      */
     private middleware(): void {
-        this.app.use(express.json({limit: '100mb'}));
-        this.app.use(bodyParser.urlencoded({limit: "10mb", extended: true, parameterLimit: 50000}));
+        this.app.use(express.json({ limit: '100mb' }));
+        this.app.use(bodyParser.urlencoded({ limit: "10mb", extended: true, parameterLimit: 50000 }));
         this.app.use(queryParser());
         // const env: Environment = new Environment();
         // this.app.use(session({ secret: env.getConfiguration().jwt_secret }));
-        this.app.use(session({secret: Constant.secret_key, saveUninitialized: true, resave: true}));//Todo find saveUninitialized n resave on google
+        this.app.use(session({ secret: Constant.secret_key, saveUninitialized: true, resave: true }));//Todo find saveUninitialized n resave on google
         // this.app.use(express.json());    //json parser.
         // this.app.use((req, res, next) => {
         //     //@ts-expect-error

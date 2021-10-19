@@ -20,7 +20,7 @@ export class Errors {
     static readonly INVALID_STATUS_ID: string = "Invalid StatusId";
     static readonly INVALID_ALERT_ID: string = "Invalid AlertId";
     static readonly INVALID_COMPANY_ID: string = "Invalid CompanyId";
-    static readonly MONGOOSE_ERROR: string = "Mongoose Error";
+    // static readonly MONGOOSE_ERROR: string = "Mongoose Error";
     static readonly SERVER_RUNTIME_ERROR: string = "Server Runtime Error";
     static readonly TERMINATE_SERVER_PROCESS: string = "Terminating Server Process";
     static readonly FINGERPRINT_IS_REQUIRED: string = "FingerPrint is required";

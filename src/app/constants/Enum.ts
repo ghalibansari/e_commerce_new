@@ -1,4 +1,3 @@
-
 export class Enum {
 
     static stoneStatus = {
