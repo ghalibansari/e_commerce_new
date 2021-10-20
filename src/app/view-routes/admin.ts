@@ -13,11 +13,20 @@ export class AdminRoutes {
     register = (express: Application) => express.use('/admin', this.router)
 
     init() {
-        console.log("AAAAAAAAa");
         this.router.get("/brands", this.brandPage);
+        this.router.get("/categories", this.categoryPage);
+        this.router.get("/units", this.unitPage);
     }
 
     brandPage(req: Request, res: Response) {
         res.render('Masters/Brands/index');
+    }
+
+    categoryPage(req: Request, res: Response) {
+        res.render('Masters/Categories/index');
+    }
+
+    unitPage(req: Request, res: Response) {
+        res.render('Masters/Units/index');
     }
 }

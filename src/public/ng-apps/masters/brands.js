@@ -49,6 +49,7 @@ app.controller("brandsAppCtrlr", [
     $scope.pc.dtInstance = {};
     $scope.instances = [];
     $scope.pc.dtColumns = [
+      DTColumnBuilder.newColumn("#").withTitle("#").renderWith((data, type, full, meta)=>(meta.row + 1)),
       DTColumnBuilder.newColumn("name").withTitle("Name"),
       DTColumnBuilder.newColumn("description").withTitle("Description"),
       DTColumnBuilder.newColumn("status")
@@ -61,52 +62,46 @@ app.controller("brandsAppCtrlr", [
     ];
     $scope.pc.dtOptions = DTOptionsBuilder.newOptions()
       .withOption("ajax", function (data, callback, settings) {
+        const search = data.search.value != '' ? '&where=' + JSON.stringify({name: data.search.value}) : '';
         $scope.pageSize = data.length;
-        let pageNum = data.start / $scope.pageSize + 1;
+        const pageNum = data.start / $scope.pageSize + 1;
         // make an ajax request using data.start and data.length
         $http
           .get(
-            `${$scope.uri}?pageSize=${$scope.pageSize}&pageNumber=${pageNum}`
+            `${$scope.uri}?pageSize=${$scope.pageSize}&pageNumber=${pageNum}${search}`
           )
           .then(function (res) {
-            // $.fn.DataTable.ext.pager.numbers_length = res.data.page.totalPage % 2 == 0 ? res.data.page.totalPage + 1 : res.data.page.totalPage;
-            // map your server's response to the DataTables format and pass it to                // DataTables' callback
-            callback({
-              recordsTotal: res.data.page.totalCount,
-              data: res.data.data,
-            });
+            if(res.data.status){
+              callback({
+                recordsFiltered: res.data.page.count,
+                recordsTotal: res.data.page.totalCount,
+                data: res.data.data,
+              });
+            }else
+              callback({
+                recordsFiltered: 0,
+                recordsTotal: 0,
+                data: [],
+              });
           });
       })
       .withDataProp("data")
       .withDOM("lBfrtip")
       .withOption("processing", true) //for show progress bar
       .withOption("serverSide", true) // for server side processing
-      .withPaginationType("simple_numbers") // for get full pagination options // first / last / prev / next and page numbers
+      .withPaginationType("full_numbers") // for get full pagination options // first / last / prev / next and page numbers
       .withDisplayLength($scope.pageSize) // Page size
-      .withOption("lengthMenu", [10, 20, 30, 40, 50])
+      .withOption("lengthMenu", [[5, 10, 15, 20, 25,-1],[5,10,15,20,25,"All"]])
       .withOption("aaSorting", [0, "asc"]) // for default sorting column // here 0 means first column
       .withOption("createdRow", function (row) {
         $compile(angular.element(row).contents())($scope);
       })
       .withButtons([
         {
-          extend: "copy",
-          text: '<i class="fa fa-files-o"></i> Copy',
-          titleAttr: "Copy",
-        },
-        {
-          extend: "print",
-          text: '<i class="fa fa-print" aria-hidden="true"></i> Print',
-          titleAttr: "Print",
-        },
-        {
           extend: "excel",
           text: '<i class="fa fa-file-text-o"></i> Excel',
           titleAttr: "Excel",
-        },
-        {
-          extend: "csvHtml5",
-        },
+        }
       ]);
 
     function actionsHtml(data, type, full, meta) {
@@ -172,8 +167,6 @@ app.controller("brandsAppCtrlr", [
           $http
             .delete(`${$scope.uri}/${id}`)
             .then(function (res) {
-              $scope.brands.splice(index, 1);
-              $scope.isLoading = false;
               Swal.fire({
                 title: "Success",
                 text: "Brand Deleted Successfully",
@@ -181,6 +174,8 @@ app.controller("brandsAppCtrlr", [
                 confirmButtonColor: "#556ee6",
                 allowOutsideClick: false,
               });
+              $scope.reloadData();
+              $scope.isLoading = false;
             })
             .catch(function (err) {
               $scope.isLoading = false;
@@ -241,7 +236,6 @@ app.controller("brandDetails", [
             allowOutsideClick: false,
           }).then(function (data) {
             $scope.isPosting = false;
-            // $scope.brands.push(res.data.payload);
             $scope.reloadData();
             $scope.close();
           });

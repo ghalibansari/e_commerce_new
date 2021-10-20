@@ -2,6 +2,7 @@ export enum TableName {
     //Tables Name
     //app/model's
     BRAND = 'Brand',
+    UNIT = 'Unit',
     CATEGORY = 'Category',
     SUBCATEGORY = 'Subcategory',
     COMPANY_PRICE = 'CompanyPrice',

@@ -23,11 +23,11 @@
             <div class="page-breadcrumb">
                 <div class="row">
                     <div class="col-7 align-self-center">
-                        <h3 class="page-title text-truncate text-dark font-weight-medium mb-1">Brands</h3>
+                        <h3 class="page-title text-truncate text-dark font-weight-medium mb-1">Categories</h3>
                         <div class="d-flex align-items-center">
                             <nav aria-label="breadcrumb">
                                 <ol class="breadcrumb m-0 p-0">
-                                    <li class="breadcrumb-item"><a href="/brands">Brands</a>
+                                    <li class="breadcrumb-item"><a href="/categories">Categories</a>
                                     </li>
                                 </ol>
                             </nav>
@@ -37,11 +37,11 @@
             </div>
 
             <%- contentFor('body') %>
-                <div class="container-fluid" ng-app="brandsApp" ng-controller="brandsAppCtrlr" ng-init="init()">
+                <div class="container-fluid" ng-app="categoriesApp" ng-controller="categoriesAppCtrlr" ng-init="init()">
                     <div class="row">
                         <div class="col-12">
                             <button class="btn btn-success float-right" ng-click="onOpenModalCick('add')"><i
-                                    class="fa fa-plus"></i> Create Brand</button>
+                                    class="fa fa-plus"></i> Create Category</button>
                         </div>
 
                         <div class="col-12 my-4">
@@ -54,7 +54,7 @@
                             </div>
                         </div>
                     </div>
-                    <%- include('./brandFormModal')%>
+                    <%- include('./categoryFormModal')%>
                 </div>
 
 
@@ -99,4 +99,4 @@
                     <script src="/assets/extra-libs/ui-select/js/select.min.js"></script>
 
                     <script src="/assets/extra-libs/ui-select/select.js"></script>
-                    <script src="/ng-apps/masters/brands.js"></script>
+                    <script src="/ng-apps/masters/categories.js"></script>
