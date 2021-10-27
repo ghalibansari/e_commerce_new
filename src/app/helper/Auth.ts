@@ -19,7 +19,6 @@ import AclBusiness from "../modules/acl/acl.business";
 async function AuthGuard(req: Request, res: Response, next: NextFunction) {
     try {
         const jwt_token_header: any = req.headers.authorization;
-        console.log("kkkkkkkkkkkkkkkk", jwt_token_header)
         //@ts-expect-error
         req.user = jwt.verify(jwt_token_header, Constant.jwt_key);
         next();

@@ -1,6 +1,6 @@
 import { Model, Optional } from "sequelize";
 
- interface IBUser {
+interface IBUser {
     user_id: string
     first_name: string
     last_name: string
@@ -12,7 +12,7 @@ import { Model, Optional } from "sequelize";
     deleted_by?: IBUser['user_id'] | null
 }
 
-interface IUser extends Optional<IBUser, 'user_id'> {}
+interface IUser extends Optional<IBUser, 'user_id'> { }
 
 interface IMUser extends Model<IBUser, IUser>, IBUser {
     deleted_by: IBUser['user_id'] | null

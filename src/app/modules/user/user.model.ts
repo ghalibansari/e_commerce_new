@@ -1,5 +1,6 @@
 import { IMUser } from './user.types'
-import { TableName } from "../../constants";
+import { Messages, TableName } from "../../constants";
+import { Application, Request, Response, Router } from 'express'
 // import { fingerPrintSchema } from "../fingerPrint/fingerPrint.model";
 // //@ts-expect-error
 // import bcrypt, {genSaltSync, hashSync} from "bcrypt";
@@ -9,7 +10,6 @@ import { DataTypes } from 'sequelize';
 import { DB } from "../../../configs/DB";
 import { v4 as uuidv4 } from 'uuid';
 
-
 const UserMd = DB.define<IMUser>(
     TableName.USER,
     {
@@ -18,7 +18,7 @@ const UserMd = DB.define<IMUser>(
             autoIncrement: false,
             primaryKey: true,
             type: DataTypes.UUID,
-            defaultValue: ()=>uuidv4()
+            defaultValue: () => uuidv4()
         },
         first_name: {
             allowNull: false,
@@ -90,7 +90,11 @@ async function doStuffWithUserModel() {
 }
 
 // doStuffWithUserModel();
-
+// const createBulkBC = async (req: Request, res: Response): Promise<void> => {
+//     const data = await this.repo.createBulkBR(req.body)
+//     res.locals = { data, message: Messages.CREATE_SUCCESSFUL }
+//     return await JsonResponse.jsonSuccess(req, res, `{this.url}.createBulkBC`)
+// };
 
 
 export default UserMd;

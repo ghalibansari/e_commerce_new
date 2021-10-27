@@ -70,7 +70,7 @@ export enum TableName {
     TRANSACTION_IMPORT_REVIEW = "TransactionImportReview",
     TRANSACTION_IAV = "TransactionIav",
     TRANSACTION_SALE = "TransactionSale",
-    TRANSACTION_CONSIGNMETNT = "TransactionConsignmet",     //Todo fix this typo mistake
+    TRANSACTION_CONSIGNMETNT = "TransactionConsignmet",
     TRANSACTION_TRANSIT = "TransactionTransit",
     TRANSACTION_DIAMOND_MATCH = "TransactionDiamondMatch",
     SUMMARY_REPORT = "SummaryReport",
@@ -105,8 +105,8 @@ export enum TableName {
     ALERT_SUB_CATEGORY = "alertSubCategory",
     ALERT_LEVEL = "alertLevel",
     ALERT_TYPE = "alertType",
-    USER_SOCKET = "userSocket"
-
+    USER_SOCKET = "userSocket",
+    AUTH = "auth"
 }
 
 export enum Tables {    //Todo work on this...

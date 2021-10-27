@@ -36,6 +36,7 @@ const loggerMd = DB.define<IMLogger>(
         module: { type: DataTypes.TEXT, allowNull: true, },
         level: { type: DataTypes.TEXT, allowNull: true, },
         message: { type: DataTypes.TEXT, allowNull: true, },
+        stack: { type: DataTypes.TEXT, allowNull: true },
         created_by: {
             allowNull: true,
             type: DataTypes.UUID,
@@ -55,7 +56,6 @@ const loggerMd = DB.define<IMLogger>(
     updatedAt: 'updated_on',
     deletedAt: 'deleted_on'
 });
-
 
 
 export { loggerMd }

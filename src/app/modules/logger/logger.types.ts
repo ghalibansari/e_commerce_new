@@ -9,6 +9,7 @@ interface IBLogger {
     body: string;
     module: string;
     message: string;
+    stack: string;
     level: loggerLevelEnum;
     created_by: IMUser['user_id']
     updated_by: IMUser['user_id']

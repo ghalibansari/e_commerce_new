@@ -5,14 +5,17 @@ import jwt from "jsonwebtoken";
 import { JsonResponse, TryCatch, validateBody } from '../../helper';
 import { BaseController } from '../BaseController';
 import { UserRepository } from '../user/user.repository';
-import { IMUser } from '../user/user.types';
+// import { IMUser } from '../user/user.types';
 import { AuthValidation } from "./auth.validation";
+import { compare } from "bcrypt";
+import { AuthRepository } from './authRepository';
+import { authActionEnum, IAuth, IMAuth } from './auth.types';
+// import { BaseRepository } from '../BaseRepository';
+// import { tokenToString } from 'typescript';
 
-
-export class AuthController extends BaseController<IMUser> {
+export class AuthController extends BaseController<IAuth> {
     constructor() {
-        //@ts-expect-error
-        super('auth', '', [], []);
+        super('auth', new AuthRepository(), ['*'], []);
         this.init();
     }
 
@@ -53,23 +56,26 @@ export class AuthController extends BaseController<IMUser> {
     //         console.log('updated for Email: ', email, password)
     //     }
     //     res.locals = { data: 'empty', message: Messages.FETCH_SUCCESSFUL }
-    //     await JsonResponse.jsonSuccess(req, res, "ping");
-    // }
+    //     await JsonResponse.jsonSuccess(req, res, "ping");    // }
 
     async login(req: Request, res: Response): Promise<void> {   //Todo optimize this whole Auth controller
         const { body: { email, password } } = req
         // const ip = req.connection.remoteAddress || req.socket.remoteAddress
-        let userData = await new UserRepository().findOneBR({ email }, ['user_id', 'email', 'password', 'first_name', 'last_name'])
-        // let compare = bcrypt.compareSync(password, <string>userData?.password)
-        // @ts-expect-error
-        if (userData?.password == password) {
-            //@ts-expect-error
+        const userData = await new UserRepository().findOneBR({ email }, ['user_id', 'email', 'password', 'first_name', 'last_name'])
+        //@ts-expect-error
+        const comparee = await compare(password, userData?.password)
+        if (comparee) {
+            const { user_id }: any = userData
+            // @ts-expect-error
             delete userData.password
-            // let key = "secret_key_jwt_token";
-            res.locals.data = jwt.sign({ userData }, Constant.jwt_key);
+            console.log("*************************huihjhhig")
+            const token = jwt.sign({ userData }, Constant.jwt_key);
+            res.locals.data = token
+            console.log("*************************lllllllll");
+            new AuthRepository().createOneBR({ ip: '192.168.0.1', action: authActionEnum.login, token, user_id: user_id, created_by: user_id, updated_by: user_id })
+            console.log("=============================|||||||=============================");
             // res.locals.message = Messages.SUCCESSFULLY_LOGIN;
             return JsonResponse.jsonSuccess(req, res, "Success")
-            return JsonResponse.jsonSuccess(req, res, "login");
         }
         else {
             res.locals.data = null;
