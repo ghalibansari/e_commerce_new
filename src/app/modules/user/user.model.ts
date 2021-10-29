@@ -34,9 +34,24 @@ const UserMd = DB.define<IMUser>(
             type: DataTypes.TEXT,
         },
         email: {
-            allowNull: false,
+            allowNull: true,
             unique: true,
             type: DataTypes.TEXT,
+        },
+        is_status: {
+            allowNull: true,
+            unique: true,
+            type: DataTypes.BOOLEAN,
+        },
+        email_verified_at: {
+            allowNull: true,
+            unique: true,
+            type: DataTypes.STRING,
+        },
+        remember_token: {
+            allowNull: true,
+            unique: true,
+            type: DataTypes.STRING,
         },
         password: {
             allowNull: false,
@@ -73,15 +88,18 @@ const UserMd = DB.define<IMUser>(
 
 async function doStuffWithUserModel() {
     // await DB.sync({ force: true })
-    const newUser = await UserMd.create({
-        "first_name": "Yo",
-        "last_name": "John",
-        "mobile": 8754219635,
-        "email": "email",
-        "password": "ddd",
-        "created_by": "c1cc539a-caaa-4738-a4af-a1a39c9edc2d",
-        "updated_by": "c1cc539a-caaa-4738-a4af-a1a39c9edc2c"
-    });
+    // const newUser = await UserMd.create({
+    //     "first_name": "Yo",
+    //     "last_name": "John",
+    //     "mobile": 8754219635,
+    //     "email": "email",
+    //     "email_verified_at": "sdfghjk",
+    //     "is_status": true,
+    //     "remember_token": "123456",
+    //     "password": "ddd",
+    //     "created_by": "c1cc539a-caaa-4738-a4af-a1a39c9edc2d",
+    //     "updated_by": "c1cc539a-caaa-4738-a4af-a1a39c9edc2c"
+    // });
     // console.log(newUser);
 
     // const foundUser = await User.findOne({ where: { name: "Johnny" } });
@@ -96,5 +114,6 @@ async function doStuffWithUserModel() {
 //     return await JsonResponse.jsonSuccess(req, res, `{this.url}.createBulkBC`)
 // };
 
+// UserMd.sync()
 
-export default UserMd;
+export { UserMd };

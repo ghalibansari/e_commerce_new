@@ -4,7 +4,7 @@ import { Messages } from "../../constants";
 import { DBTransaction, JsonResponse, TryCatch, validateBody, validateParams } from "../../helper";
 import { BaseController } from "../BaseController";
 import { UserRepository } from "./user.repository";
-import { IUser } from "./user.types";
+import { IMUser, IUser } from "./user.types";
 import { UserValidation } from "./user.validation";
 
 
@@ -16,10 +16,11 @@ export class UserController extends BaseController<IUser> {
         this.init()
     }
 
-    register = (express: Application) => express.use('/api/v1/user', AuthGuard, this.router)
+    register = (express: Application) => express.use('/api/v1/user', this.router)
 
     init() {
         this.router.get("/", TryCatch.tryCatchGlobe(this.indexBC));
+        this.router.get("/test", TryCatch.tryCatchGlobe(this.test));
         this.router.get("/:id", validateParams(UserValidation.findById), TryCatch.tryCatchGlobe(this.findByIdBC))
         this.router.post("/", validateBody(UserValidation.addUser), TryCatch.tryCatchGlobe(this.createOneBC))
         this.router.post("/trans", validateBody(UserValidation.addUser), DBTransaction.startTransaction, TryCatch.tryCatchGlobe(this.createOne))
@@ -34,6 +35,12 @@ export class UserController extends BaseController<IUser> {
         const { transaction }: any = req
         const data = await this.repo.createOneBR(req.body, transaction)
         res.locals = { data, message: Messages.CREATE_SUCCESSFUL }
+        return await JsonResponse.jsonSuccess(req, res, `{this.url}.createOneBC`)
+    };
+
+    test = async (req: Request, res: Response): Promise<void> => {
+        const user = await new UserRepository().findOneBR();
+        res.locals = { data: user?._attributes.password, message: Messages.CREATE_SUCCESSFUL }
         return await JsonResponse.jsonSuccess(req, res, `{this.url}.createOneBC`)
     };
 

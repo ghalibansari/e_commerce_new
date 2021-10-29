@@ -7,6 +7,9 @@ interface IBUser {
     mobile: number
     email: string
     password: string
+    is_status: boolean
+    email_verified_at: string
+    remember_token: string
     created_by: IBUser['user_id']
     updated_by: IBUser['user_id']
     deleted_by?: IBUser['user_id'] | null

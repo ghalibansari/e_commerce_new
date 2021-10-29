@@ -1,6 +1,6 @@
 import { BaseRepository } from "../BaseRepository";
 import { IUser, IMUser } from "./user.types";
-import UserMd from "./user.model";
+import { UserMd } from "./user.model";
 import { Transaction } from "sequelize";
 import { genSalt, hash } from "bcrypt";
 

@@ -52,18 +52,18 @@ export class BaseRepository<T extends ModelCtor, U extends Model> implements IWr
         attributes = this.attributes,
         include = this.include,
         order = this.order,
-    ): Promise<any> => {
+    ): Promise<U[] | []> => {
         ////@ts-expect-error
         return await this._model.findAll({ where, attributes, include, order, raw: true })
     };
 
 
-    findOneBR = async (where: object = {}, attributes = this.attributes, include = this.include): Promise<Model<T, U> | null> => {
+    findOneBR = async (where: object = {}, attributes = this.attributes, include = this.include): Promise<U | null> => {
         return await this._model.findOne({ where, attributes, include, raw: true })
     }
 
 
-    findByIdBR = async (id: keyof T, attributes = this.attributes, include = this.include): Promise<Model<T, U> | null> => {
+    findByIdBR = async (id: keyof T, attributes = this.attributes, include = this.include): Promise<U | null> => {
         return await this.findOneBR({ [this.primary_key]: id }, attributes, include)
     };
 
@@ -72,7 +72,7 @@ export class BaseRepository<T extends ModelCtor, U extends Model> implements IWr
     findByPkBR = async (
         where: object = {},
         attributes: string[] = ['created_on'],
-    ): Promise<Model<T, U> | null> => {
+    ): Promise<U | null> => {
         //@ts-expect-error
         return await this._model.findByPk({ user_id: '', attributes, raw: true })
     }
