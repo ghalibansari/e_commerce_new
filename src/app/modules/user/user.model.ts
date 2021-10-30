@@ -1,14 +1,12 @@
 import { IMUser } from './user.types'
 import { Messages, TableName } from "../../constants";
 import { Application, Request, Response, Router } from 'express'
-// import { fingerPrintSchema } from "../fingerPrint/fingerPrint.model";
-// //@ts-expect-error
-// import bcrypt, {genSaltSync, hashSync} from "bcrypt";
-// import { string } from "joi";
+import { v4 } from 'uuid'
 
 import { DataTypes } from 'sequelize';
 import { DB } from "../../../configs/DB";
 import { v4 as uuidv4 } from 'uuid';
+import { genSalt, hash } from 'bcrypt';
 
 const UserMd = DB.define<IMUser>(
     TableName.USER,
@@ -34,28 +32,28 @@ const UserMd = DB.define<IMUser>(
             type: DataTypes.TEXT,
         },
         email: {
-            allowNull: true,
+            allowNull: false,
             unique: true,
             type: DataTypes.TEXT,
         },
-        is_status: {
-            allowNull: true,
-            unique: true,
+        is_active: {
+            allowNull: false,
             type: DataTypes.BOOLEAN,
+            defaultValue: true,
         },
         email_verified_at: {
-            allowNull: true,
-            unique: true,
-            type: DataTypes.STRING,
+            type: DataTypes.DATE,
         },
         remember_token: {
-            allowNull: true,
             unique: true,
             type: DataTypes.STRING,
         },
         password: {
             allowNull: false,
             type: DataTypes.TEXT,
+        },
+        delete_reason: {
+            type: DataTypes.TEXT
         },
         created_by: {
             allowNull: false,
@@ -72,10 +70,7 @@ const UserMd = DB.define<IMUser>(
     },
     {
         timestamps: true,
-        paranoid: true,
-        createdAt: 'created_on',
-        updatedAt: 'updated_on',
-        deletedAt: 'deleted_on'
+        paranoid: true
     }
 );
 
@@ -87,33 +82,30 @@ const UserMd = DB.define<IMUser>(
 
 
 async function doStuffWithUserModel() {
-    // await DB.sync({ force: true })
-    // const newUser = await UserMd.create({
-    //     "first_name": "Yo",
-    //     "last_name": "John",
-    //     "mobile": 8754219635,
-    //     "email": "email",
-    //     "email_verified_at": "sdfghjk",
-    //     "is_status": true,
-    //     "remember_token": "123456",
-    //     "password": "ddd",
-    //     "created_by": "c1cc539a-caaa-4738-a4af-a1a39c9edc2d",
-    //     "updated_by": "c1cc539a-caaa-4738-a4af-a1a39c9edc2c"
-    // });
-    // console.log(newUser);
+    await UserMd.sync({ force: true })
 
-    // const foundUser = await User.findOne({ where: { name: "Johnny" } });
-    // if (foundUser === null) return;
-    // console.log(foundUser.name);
+    const id = v4()
+    const salt = await genSalt(8);
+    const password = await hash('demo1234', salt);
+
+    const newUser = await UserMd.create({
+        "user_id": id,
+        "first_name": "demo",
+        "last_name": "John",
+        "mobile": "8754219635",
+        "email": "email@gmail.com",
+        "email_verified_at": new Date(),
+        "password": password,
+        "created_by": id,
+        "updated_by": id
+    })
+    .then(() => console.log("Created default user..."))
+    .catch(e => console.log(e))
+    // console.log(newUser);
 }
 
-// doStuffWithUserModel();
-// const createBulkBC = async (req: Request, res: Response): Promise<void> => {
-//     const data = await this.repo.createBulkBR(req.body)
-//     res.locals = { data, message: Messages.CREATE_SUCCESSFUL }
-//     return await JsonResponse.jsonSuccess(req, res, `{this.url}.createBulkBC`)
-// };
+doStuffWithUserModel();
 
-// UserMd.sync()
+
 
 export { UserMd };
