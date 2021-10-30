@@ -13,7 +13,7 @@ import { authActionEnum, IAuth, IMAuth } from './auth.types';
 // import { BaseRepository } from '../BaseRepository';
 // import { tokenToString } from 'typescript';
 
-export class AuthController extends BaseController<IAuth> {
+export class AuthController extends BaseController<IAuth, IMAuth> {
     constructor() {
         super('auth', new AuthRepository(), ['*'], []);
         this.init();

@@ -8,6 +8,8 @@ const config = { url: "postgres://lcfxmnrq:X6HSV_8HDi3YiIZfpfUIVHXI7L6gojFM@fann
 //   ? new Sequelize(config.url, config)
 //   : new Sequelize(config.database, config.username, config.password, config);
 
-const DB = new Sequelize(config.url, { pool: { max: 1 }, logging: console.log })
+
+const DB = new Sequelize(config.url, { pool: { max: 1 } })
+
 
 export { Sequelize, DB };

@@ -51,10 +51,7 @@ const loggerMd = DB.define<IMLogger>(
         }
     }, {
     timestamps: true,
-    paranoid: true,
-    createdAt: 'created_on',
-    updatedAt: 'updated_on',
-    deletedAt: 'deleted_on'
+    paranoid: true
 });
 
 

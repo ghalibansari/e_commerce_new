@@ -4,6 +4,6 @@ import { AuthMd } from "./auth.model";
 
 export class AuthRepository extends BaseRepository<IAuth, IMAuth> {
     constructor() {
-        super(AuthMd, "auth_id", ['*'], [['last_name', 'DESC']], [])
+        super(AuthMd, "auth_id", ['*'], [['created_on', 'DESC']], [])
     }
 };

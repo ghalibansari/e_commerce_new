@@ -102,12 +102,12 @@ async function doStuffWithUserModel() {
         created_by: id,
         updated_by: id
     })
-    .then(() => console.log("Created default user..."))
-    .catch(e => console.log(e))
+        .then(() => console.log("Created default user..."))
+        .catch(e => console.log(e))
     // console.log(newUser);
 }
 
-// doStuffWithUserModel();
 
+// doStuffWithUserModel();
 
 export { UserMd };

@@ -13,7 +13,7 @@ export class BaseRepository<T extends ModelCtor, U extends Model> implements IWr
         protected readonly _model: ModelCtor<U>,
         public readonly primary_key: keyof T,
         public readonly attributes: NonEmptyArray<string> = ['created_on'],
-        public readonly order: Array<string> | Array<[string, 'ASC' | 'DESC']>,
+        public readonly order: Array<keyof U> | Array<[keyof U, 'ASC' | 'DESC']>,
         public readonly include: object[] = [],
     ) { }
 
@@ -40,7 +40,7 @@ export class BaseRepository<T extends ModelCtor, U extends Model> implements IWr
         limit = pageNumber * pageSize
         if (limit < count) hasNextPage = true
 
-        ////@ts-expect-error
+        //@ts-expect-error
         const data = await this._model.findAll({ where, attributes, include, offset, limit, order, raw: true })
 
         return { data, page: { hasNextPage, totalCount, count, currentPage: pageNumber, totalPage } }
@@ -53,7 +53,7 @@ export class BaseRepository<T extends ModelCtor, U extends Model> implements IWr
         include = this.include,
         order = this.order,
     ): Promise<U[] | []> => {
-        ////@ts-expect-error
+        //@ts-expect-error
         return await this._model.findAll({ where, attributes, include, order, raw: true })
     };
 

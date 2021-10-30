@@ -6,9 +6,9 @@ import { JsonResponse, validateBody } from "../helper"
 import { BaseValidation } from "./BaseValidation";
 import moment from 'moment';
 import { BaseRepository } from './BaseRepository';
-import { Op } from "sequelize";
+import { Model, Op } from "sequelize";
 
-export abstract class BaseController<T> {
+export abstract class BaseController<T, U extends Model> {
 
     protected router: Router
     protected readonly pageNumber = Constant.DEFAULT_PAGE_NUMBER
@@ -18,7 +18,7 @@ export abstract class BaseController<T> {
 
     public constructor(
         protected readonly url: string,
-        protected readonly repo: BaseRepository<T, any>,
+        protected readonly repo: BaseRepository<T, U>,
         private readonly attributes = repo.attributes,
         private readonly order = repo.order,
         protected readonly include = repo.include,

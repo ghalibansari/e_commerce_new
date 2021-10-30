@@ -8,7 +8,7 @@ import { IMUser, IUser } from "./user.types";
 import { UserValidation } from "./user.validation";
 
 
-export class UserController extends BaseController<IUser> {
+export class UserController extends BaseController<IUser, IMUser> {
 
     constructor() {
         //url, user0repo, attributes/columns, include/joints, sort, search-columns 

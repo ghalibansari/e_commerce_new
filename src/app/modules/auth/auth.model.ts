@@ -46,11 +46,8 @@ const AuthMd = DB.define<IMAuth>(
     },
     {
         timestamps: true,
-        paranoid: true,
-        createdAt: 'created_on',
-        updatedAt: 'updated_on',
-        deletedAt: 'deleted_on'
+        paranoid: true
     }
 );
-// DB.sync()
+
 export { AuthMd };
