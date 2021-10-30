@@ -89,9 +89,9 @@ export class BaseRepository<T extends ModelCtor, U extends Model> implements IWr
     };
 
 
-    updateBulkBR = async (where: U["_attributes"], newData: any, transaction?: Transaction): Promise<{ count: number, updated: U[] }> => {
-        const data = await this._model.update(newData, { where, returning: true, transaction })
-        return { count: data[0], updated: data[1] }
+    updateBulkBR = async (where: U["_attributes"], newData: Partial<U>, transaction?: Transaction): Promise<{ count: number, updated: U[] }> => {
+        const data = await this._model.update(newData, { where, returning: true, transaction });
+        return { count: data[0], updated: data[1]||[] }
     };
 
 
