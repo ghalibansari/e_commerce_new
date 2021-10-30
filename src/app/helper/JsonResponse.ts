@@ -11,7 +11,7 @@ export class JsonResponse {
 
         // let {locals: {status, message, page, data}} = res
         const obj: ISuccessResponse = {
-            status: res.locals.status ?? true,  //Todo make default false...
+            status: res.locals.status ?? false,  //Todo make default false...
             message: res.locals.message,
             errorCode: res.locals.errorCode,
             page: res.locals.page,

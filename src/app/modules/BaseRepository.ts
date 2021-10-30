@@ -13,7 +13,7 @@ export class BaseRepository<T extends ModelCtor, U extends Model> implements IWr
         protected readonly _model: ModelCtor<U>,
         public readonly primary_key: keyof T,
         public readonly attributes: NonEmptyArray<string> = ['created_on'],
-        public readonly order: Array<keyof U> | Array<[keyof U, 'ASC' | 'DESC']>,
+        public readonly order: NonEmptyArray<keyof U> | NonEmptyArray<[keyof U, 'ASC' | 'DESC']>,
         public readonly include: object[] = [],
     ) { }
 

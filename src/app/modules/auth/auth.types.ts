@@ -8,10 +8,10 @@ interface IBAuth {
     user_id: string;
     action: authActionEnum
     ip: String;
-    token: String;
+    token?: String;
     created_by: IUser['user_id']
     updated_by: IUser['user_id']
-    deleted_by?: IUser['user_id'] | null
+    deleted_by?: IUser['user_id']
 }
 
 interface IAuth extends Optional<IBAuth, 'auth_id'> {
@@ -21,13 +21,13 @@ enum authActionEnum {
     login = 'login',
     logout = 'logout',
     forgot_pass = 'forgot_pass',
-    // frontend = 'frontend'
+    change_pass = 'change_pass',
+    register = "register"
 }
 interface IMAuth extends Model<IBAuth, IAuth>, IBAuth {
-    deleted_by: IMUser['user_id'] | null
     created_on: Date;
     updated_on: Date;
-    deleted_on: Date | null
+    deleted_on?: Date
 }
 
 export { IAuth, IBAuth, IMAuth, authActionEnum }
