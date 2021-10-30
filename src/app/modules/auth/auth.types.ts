@@ -30,4 +30,4 @@ interface IMAuth extends Model<IBAuth, IAuth>, IBAuth {
     deleted_on?: Date
 }
 
-export { IAuth, IBAuth, IMAuth, authActionEnum }
+export { IAuth, IMAuth, authActionEnum }

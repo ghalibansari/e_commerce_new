@@ -13,7 +13,7 @@ interface IBLogger {
     level: loggerLevelEnum;
     created_by: IMUser['user_id']
     updated_by: IMUser['user_id']
-    deleted_by?: IMUser['user_id'] | null
+    deleted_by?: IMUser['user_id']
 }
 
 interface ILogger extends Optional<IBLogger, 'logger_id'> { }
@@ -26,9 +26,8 @@ export enum loggerLevelEnum {
 }
 
 interface IMLogger extends Model<IBLogger, ILogger>, IBLogger {
-    deleted_by: IMUser['user_id'] | null
-    created_on: Date;
-    updated_on: Date;
-    deleted_on: Date | null
+    createdAt: Date;
+    updatedAt: Date;
+    deletedAt?: Date
 }
-export type { ILogger, IBLogger, IMLogger }
+export type { ILogger, IMLogger };

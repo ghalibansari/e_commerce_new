@@ -109,5 +109,4 @@ async function doStuffWithUserModel() {
 
 
 // doStuffWithUserModel();
-
 export { UserMd };

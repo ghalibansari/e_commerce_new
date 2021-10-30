@@ -1,9 +1,8 @@
-import { DataTypes, Model } from 'sequelize';
-
-import { IMLogger } from "./logger.types";
-import { TableName } from "../../constants";
-import { DB } from "../../../configs/DB";
+import { DataTypes } from 'sequelize';
 import { v4 as uuidv4 } from 'uuid';
+import { DB } from "../../../configs/DB";
+import { TableName } from "../../constants";
+import { IMLogger } from "./logger.types";
 
 
 const loggerMd = DB.define<IMLogger>(
@@ -54,5 +53,12 @@ const loggerMd = DB.define<IMLogger>(
     paranoid: true
 });
 
+// loggerMd.associations = function(_model: any){
 
-export { loggerMd }
+// }
+
+// loggerMd.hasMany(UserMd){
+
+// }
+
+export { loggerMd };

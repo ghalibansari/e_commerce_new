@@ -16,7 +16,7 @@ export class UserController extends BaseController<IUser, IMUser> {
         this.init()
     }
 
-    register = (express: Application) => express.use('/api/v1/user', this.router)
+    register = (express: Application) => express.use('/api/v1/user', AuthGuard, this.router)
 
     init() {
         this.router.get("/", TryCatch.tryCatchGlobe(this.indexBC));

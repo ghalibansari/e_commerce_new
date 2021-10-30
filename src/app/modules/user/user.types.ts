@@ -26,9 +26,9 @@ interface IBUser {
 interface IUser extends Optional<IBUser, 'user_id'> { }
 
 interface IMUser extends Model<IBUser, IUser>, IBUser {
-    created_on: Date;
-    updated_on: Date;
-    deleted_on: Date | null
+    createdAt: Date;
+    updatedAt: Date;
+    deletedAt?: Date
 }
 
 export type { IUser, IMUser }
