@@ -1,7 +1,6 @@
-import { IMUser } from './user.types'
+import { IMUser, UserGenderEnum } from './user.types'
 import { Messages, TableName } from "../../constants";
 import { Application, Request, Response, Router } from 'express'
-import { v4 } from 'uuid'
 
 import { DataTypes } from 'sequelize';
 import { DB } from "../../../configs/DB";
@@ -36,6 +35,10 @@ const UserMd = DB.define<IMUser>(
             unique: true,
             type: DataTypes.TEXT,
         },
+        gender: {
+            allowNull: false,
+            type: DataTypes.ENUM(...Object.values(UserGenderEnum))
+        },
         is_active: {
             allowNull: false,
             type: DataTypes.BOOLEAN,
@@ -64,7 +67,6 @@ const UserMd = DB.define<IMUser>(
             type: DataTypes.UUID,
         },
         deleted_by: {
-            allowNull: true,
             type: DataTypes.UUID,
         },
     },
@@ -82,22 +84,23 @@ const UserMd = DB.define<IMUser>(
 
 
 async function doStuffWithUserModel() {
-    await UserMd.sync({ force: true })
+    // await UserMd.sync({ force: true })
 
-    const id = v4()
+    const id = uuidv4()
     const salt = await genSalt(8);
     const password = await hash('demo1234', salt);
 
     const newUser = await UserMd.create({
-        "user_id": id,
-        "first_name": "demo",
-        "last_name": "John",
-        "mobile": "8754219635",
-        "email": "demo@demo.com",
-        "email_verified_at": new Date(),
-        "password": password,
-        "created_by": id,
-        "updated_by": id
+        user_id: id,
+        first_name: "demo",
+        last_name: "John",
+        mobile: "8754219635",
+        email: "demo@demo.com",
+        gender: UserGenderEnum.m,
+        email_verified_at: new Date(),
+        password: password,
+        created_by: id,
+        updated_by: id
     })
     .then(() => console.log("Created default user..."))
     .catch(e => console.log(e))

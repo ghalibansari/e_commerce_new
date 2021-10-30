@@ -1,11 +1,18 @@
 import { Model, Optional } from "sequelize";
 
+export enum UserGenderEnum {
+    m = 'male',
+    f = 'female',
+    o = 'others'
+}
+
 interface IBUser {
     user_id: string
     first_name: string
     last_name: string
     mobile: string
     email: string
+    gender: UserGenderEnum
     password: string
     is_active?: boolean
     email_verified_at?: Date
