@@ -93,7 +93,7 @@ async function doStuffWithUserModel() {
         "first_name": "demo",
         "last_name": "John",
         "mobile": "8754219635",
-        "email": "email@gmail.com",
+        "email": "demo@demo.com",
         "email_verified_at": new Date(),
         "password": password,
         "created_by": id,
@@ -104,8 +104,7 @@ async function doStuffWithUserModel() {
     // console.log(newUser);
 }
 
-doStuffWithUserModel();
-
+// doStuffWithUserModel();
 
 
 export { UserMd };
