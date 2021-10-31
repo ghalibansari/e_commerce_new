@@ -101,10 +101,7 @@ export class BaseRepository<T extends ModelCtor, U extends Model> implements IWr
 
 
     deleteBulkBR = async ({ where, deleted_by, delete_reason, transaction }: TDeleteBulkBR<U>): Promise<number> => {
-        const [, data] = await Promise.all([
-            await this._model.update({ deleted_by, delete_reason }, { where, transaction, silent: true }),
-            await this._model.destroy({ where, transaction })
-        ]);
+        const [data] = await this._model.update({ deleted_by, delete_reason, deleted_at: new Date() }, { where, transaction, silent: true })
         return data;
     };
 

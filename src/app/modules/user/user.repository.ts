@@ -21,7 +21,7 @@ export class UserRepository extends BaseRepository<IUser, IMUser> {
             newData[i].updated_by = created_by
         }
         //@ts-expect-error
-        return await this._model.bulkCreate({ newData, transaction });
+        return await UserMd.bulkCreate(newData, { transaction });
     };
 
     updateBulkBR = async ({ where, newData, updated_by, transaction }: TUpdateBulkBR<IMUser>): Promise<{ count: number, data: IMUser[] }> => {

@@ -62,7 +62,7 @@ export abstract class BaseController<T, U extends Model> {
 
     createOneBC = async (req: Request, res: Response): Promise<void> => {
         const { body, user: { user_id } }: any = req
-        const data = await this.repo.createOneBR({ ...body, created_by: user_id, updated_by: user_id })
+        const data = await this.repo.createOneBR({ newData: body, created_by: user_id })
         res.locals = { status: true, data, message: Messages.CREATE_SUCCESSFUL }
         return await JsonResponse.jsonSuccess(req, res, `{this.url}.createOneBC`)
     };
