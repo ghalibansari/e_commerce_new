@@ -2,7 +2,7 @@ import { Model, ModelCtor } from 'sequelize';
 import { Constant } from "../constants";
 import { IRead } from '../interfaces/IRead';
 import { IWrite } from "../interfaces/IWrite";
-import { NonEmptyArray, TCreateBulkBR, TCreateOneBR, TDeleteBulkBR, TDeleteByIdBR, TFindByIdBR, TUpdateBulkBR, TUpdateByIdBR } from "./baseTypes";
+import { NonEmptyArray, TCreateBulkBR, TCreateOneBR, TDeleteBulkBR, TDeleteByIdBR, TFindByIdBR, TRestoreBulkBR, TRestoreByIdBR, TUpdateBulkBR, TUpdateByIdBR } from "./baseTypes";
 
 //@ts-expect-error
 export class BaseRepository<T extends ModelCtor, U extends Model> implements IWrite<T>, IRead<T> {
@@ -101,12 +101,26 @@ export class BaseRepository<T extends ModelCtor, U extends Model> implements IWr
 
 
     deleteBulkBR = async ({ where, deleted_by, delete_reason, transaction }: TDeleteBulkBR<U>): Promise<number> => {
-        return await this._model.destroy({ where, transaction })
+        const [, data] = await Promise.all([
+            await this._model.update({ deleted_by, delete_reason }, { where, transaction, silent: true }),
+            await this._model.destroy({ where, transaction })
+        ]);
+        return data;
     };
 
 
     deleteByIdBR = async ({ id, deleted_by, delete_reason, transaction }: TDeleteByIdBR): Promise<number> => {
         return await this.deleteBulkBR({ where: { [this.primary_key]: id }, deleted_by, delete_reason, transaction })
+    };
+
+
+    restoreBulkBR = async ({ where, transaction }: TRestoreBulkBR<U>): Promise<void> => {
+        return await this._model.restore({ where, transaction })
+    };
+
+
+    restoreByIdBR = async ({ id, transaction }: TRestoreByIdBR): Promise<void> => {
+        return await this.restoreBulkBR({ where: { [this.primary_key]: id }, transaction })
     };
 
 

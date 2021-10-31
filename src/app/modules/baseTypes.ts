@@ -51,6 +51,16 @@ export type TDeleteBulkBR<U extends Model> = {
     transaction?: Transaction
 };
 
+export type TRestoreByIdBR = {
+    id: string
+    transaction?: Transaction
+};
+
+export type TRestoreBulkBR<U extends Model> = {
+    where: U['_attributes']
+    transaction?: Transaction
+};
+
 export interface ICounter {
     key: string;
     value: string

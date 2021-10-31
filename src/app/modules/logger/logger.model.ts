@@ -1,7 +1,7 @@
 import { DataTypes } from 'sequelize';
 import { DB } from "../../../configs/DB";
 import { TableName } from "../../constants";
-import { modelCommonPrimaryKeyProperty, modelDefaultColumns, modelDefaultOptions } from '../BaseModel';
+import { modelCommonColumns, modelCommonOptions, modelCommonPrimaryKeyProperty } from '../BaseModel';
 import { IMLogger } from "./logger.types";
 
 
@@ -18,9 +18,9 @@ const loggerMd = DB.define<IMLogger>(
         level: { type: DataTypes.TEXT, allowNull: true },
         message: { type: DataTypes.TEXT, allowNull: true },
         stack: { type: DataTypes.TEXT, allowNull: true },
-        ...modelDefaultColumns
+        ...modelCommonColumns
     },
-    modelDefaultOptions
+    modelCommonOptions
 );
 
 // loggerMd.associations = function(_model: any){

@@ -1,7 +1,7 @@
 import { DataTypes } from 'sequelize';
 import { DB } from "../../../configs/DB";
 import { TableName } from "../../constants";
-import { modelCommonPrimaryKeyProperty, modelDefaultColumns, modelDefaultOptions } from '../BaseModel';
+import { modelCommonColumns, modelCommonOptions, modelCommonPrimaryKeyProperty } from '../BaseModel';
 import { IMAuth } from "./auth.types";
 
 
@@ -13,9 +13,9 @@ const AuthMd = DB.define<IMAuth>(
         ip: { allowNull: false, type: DataTypes.STRING },
         action: { allowNull: false, type: DataTypes.STRING },
         token: { unique: true, allowNull: true, type: DataTypes.TEXT },
-        ...modelDefaultColumns
+        ...modelCommonColumns
     },
-    modelDefaultOptions
+    modelCommonOptions
 );
 
 export { AuthMd };

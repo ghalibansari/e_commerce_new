@@ -9,7 +9,7 @@ const modelCommonPrimaryKeyProperty = {
     defaultValue: () => uuidv4()
 };
 
-const modelDefaultColumns = {
+const modelCommonColumns = {
     delete_reason: {
         type: DataTypes.TEXT
     },
@@ -26,7 +26,7 @@ const modelDefaultColumns = {
     }
 };
 
-const modelDefaultOptions = {
+const modelCommonOptions = {
     timestamps: true,
     paranoid: true,
     createdAt: 'created_at',
@@ -34,4 +34,4 @@ const modelDefaultOptions = {
     deletedAt: 'deleted_at'
 };
 
-export { modelDefaultOptions, modelDefaultColumns, modelCommonPrimaryKeyProperty };
+export { modelCommonOptions, modelCommonColumns, modelCommonPrimaryKeyProperty };

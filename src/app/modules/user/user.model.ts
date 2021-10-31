@@ -3,13 +3,13 @@ import { DataTypes } from 'sequelize';
 import { v4 as uuidv4 } from 'uuid';
 import { DB } from "../../../configs/DB";
 import { TableName } from "../../constants";
-import { modelCommonPrimaryKeyProperty, modelDefaultColumns, modelDefaultOptions } from '../BaseModel';
+import { modelCommonColumns, modelCommonOptions, modelCommonPrimaryKeyProperty } from '../BaseModel';
 import { IMUser, UserGenderEnum } from './user.types';
 
 const UserMd = DB.define<IMUser>(
     TableName.USER,
     {
-        user_id: modelCommonPrimaryKeyProperty,
+        user_id: { ...modelCommonPrimaryKeyProperty },
         first_name: { allowNull: false, type: DataTypes.TEXT },
         last_name: { allowNull: false, type: DataTypes.TEXT },
         mobile: { allowNull: false, unique: true, type: DataTypes.TEXT },
@@ -19,9 +19,9 @@ const UserMd = DB.define<IMUser>(
         email_verified_at: { type: DataTypes.DATE },
         remember_token: { unique: true, type: DataTypes.STRING },
         password: { allowNull: false, type: DataTypes.TEXT },
-        ...modelDefaultColumns
+        ...modelCommonColumns
     },
-    modelDefaultOptions
+    modelCommonOptions
 );
 
 
