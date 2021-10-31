@@ -3,7 +3,6 @@ import { IUser, IMUser } from "./user.types";
 import { UserMd } from "./user.model";
 import { Transaction } from "sequelize";
 import { genSalt, hash } from "bcrypt";
-import { v4 } from "uuid";
 
 
 
@@ -28,7 +27,4 @@ export class UserRepository extends BaseRepository<IUser, IMUser> {
         const data = await this._model.update(newData, { where, returning: true, transaction })
         return { count: data[0], updated: data[1] || [] };
     };
-
-
-
 }

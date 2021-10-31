@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "predev": "npm run delete && tsc && npm run copy",
-    "dev": "concurrently \"npm run nodemon\" \"npm run tsc-dev\" \"npm run copy-dev\"",
+    "dev": "concurrently \"npm run nodemon\" \"npm run tsc-dev\"",
     "nodemon": "nodemon -w dist ./dist/server",
     "tsc-dev": "tsc -w",
     "prestart": "npm run delete && tsc && npm run copy",

@@ -1,4 +1,3 @@
-import { AuthGuard } from "../../helper";
 import { Application, Request, Response } from "express";
 import { Messages } from "../../constants";
 import { DBTransaction, JsonResponse, TryCatch, validateBody, validateParams } from "../../helper";
@@ -16,7 +15,7 @@ export class UserController extends BaseController<IUser, IMUser> {
         this.init()
     }
 
-    register = (express: Application) => express.use('/api/v1/user', AuthGuard, this.router)
+    register = (express: Application) => express.use('/api/v1/user', this.router)
 
     init() {
         this.router.get("/", TryCatch.tryCatchGlobe(this.indexBC));
@@ -35,13 +34,13 @@ export class UserController extends BaseController<IUser, IMUser> {
         const { transaction }: any = req
         const data = await this.repo.createOneBR(req.body, transaction)
         res.locals = { data, message: Messages.CREATE_SUCCESSFUL }
-        return await JsonResponse.jsonSuccess(req, res, `{this.url}.createOneBC`)
+        return await JsonResponse.jsonSuccess(req, res, `createOneBC`)
     };
 
     test = async (req: Request, res: Response): Promise<void> => {
         const user = await new UserRepository().findOneBR();
         res.locals = { data: user?._attributes.password, message: Messages.CREATE_SUCCESSFUL }
-        return await JsonResponse.jsonSuccess(req, res, `{this.url}.createOneBC`)
+        return await JsonResponse.jsonSuccess(req, res, `test`)
     };
 
     // async find(req: Request, res: Response){

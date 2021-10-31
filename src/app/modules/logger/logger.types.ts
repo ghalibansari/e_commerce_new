@@ -5,6 +5,7 @@ interface IBLogger {
     logger_id: string;
     url: string;
     method: string;
+    params: string;
     query: string;
     body: string;
     module: string;

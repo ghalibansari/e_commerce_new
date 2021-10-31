@@ -1,79 +1,27 @@
-import { IMUser, UserGenderEnum } from './user.types'
-import { Messages, TableName } from "../../constants";
-import { Application, Request, Response, Router } from 'express'
-
-import { DataTypes } from 'sequelize';
-import { DB } from "../../../configs/DB";
-import { v4 as uuidv4 } from 'uuid';
 import { genSalt, hash } from 'bcrypt';
+import { DataTypes } from 'sequelize';
+import { v4 as uuidv4 } from 'uuid';
+import { DB } from "../../../configs/DB";
+import { TableName } from "../../constants";
+import { modelDefaultColumns, modelDefaultOptions, modelDefaultPrimaryKeyProperty } from '../BaseModel';
+import { IMUser, UserGenderEnum } from './user.types';
 
 const UserMd = DB.define<IMUser>(
     TableName.USER,
     {
-        user_id: {
-            allowNull: false,
-            autoIncrement: false,
-            primaryKey: true,
-            type: DataTypes.UUID,
-            defaultValue: () => uuidv4()
-        },
-        first_name: {
-            allowNull: false,
-            type: DataTypes.TEXT,
-        },
-        last_name: {
-            allowNull: false,
-            type: DataTypes.TEXT,
-        },
-        mobile: {
-            allowNull: false,
-            unique: true,
-            type: DataTypes.TEXT,
-        },
-        email: {
-            allowNull: false,
-            unique: true,
-            type: DataTypes.TEXT,
-        },
-        gender: {
-            allowNull: false,
-            type: DataTypes.ENUM(...Object.values(UserGenderEnum))
-        },
-        is_active: {
-            allowNull: false,
-            type: DataTypes.BOOLEAN,
-            defaultValue: true,
-        },
-        email_verified_at: {
-            type: DataTypes.DATE,
-        },
-        remember_token: {
-            unique: true,
-            type: DataTypes.STRING,
-        },
-        password: {
-            allowNull: false,
-            type: DataTypes.TEXT,
-        },
-        delete_reason: {
-            type: DataTypes.TEXT
-        },
-        created_by: {
-            allowNull: false,
-            type: DataTypes.UUID,
-        },
-        updated_by: {
-            allowNull: false,
-            type: DataTypes.UUID,
-        },
-        deleted_by: {
-            type: DataTypes.UUID,
-        },
+        user_id: modelDefaultPrimaryKeyProperty,
+        first_name: { allowNull: false, type: DataTypes.TEXT },
+        last_name: { allowNull: false, type: DataTypes.TEXT },
+        mobile: { allowNull: false, unique: true, type: DataTypes.TEXT },
+        email: { allowNull: false, unique: true, type: DataTypes.TEXT },
+        gender: { allowNull: false, type: DataTypes.ENUM(...Object.values(UserGenderEnum)) },
+        is_active: { allowNull: false, type: DataTypes.BOOLEAN, defaultValue: true },
+        email_verified_at: { type: DataTypes.DATE },
+        remember_token: { unique: true, type: DataTypes.STRING },
+        password: { allowNull: false, type: DataTypes.TEXT },
+        ...modelDefaultColumns
     },
-    {
-        timestamps: true,
-        paranoid: true
-    }
+    modelDefaultOptions
 );
 
 

@@ -1,12 +1,12 @@
-import express, { Application, NextFunction, Request, Response } from "express"
-import { Constant } from "./constants";
-import path from 'path';
 import bodyParser from "body-parser";
+import express, { Application, NextFunction, Request, Response } from "express";
+import expressLayouts from 'express-ejs-layouts';
+import session from "express-session";
+import path from 'path';
+import { Constant } from "./constants";
+import { queryParser } from "./helper/QueryParser";
 import { registerRoutes } from "./routes";
 import { registerViewRoutes } from "./viewRoutes";
-import session from "express-session";
-import { queryParser } from "./helper/QueryParser";
-import expressLayouts from 'express-ejs-layouts';
 
 
 
@@ -18,7 +18,7 @@ class App {
         this.middleware();
         // this.app.use('/api', this.setupApiRoutes);
         this.setupApiRoutes();
-        this.setupWebRoute();
+        // this.setupWebRoute();
         setTimeout(() => this.setupCron(), 30000);
     }
 

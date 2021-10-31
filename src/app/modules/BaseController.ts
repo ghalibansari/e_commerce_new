@@ -1,12 +1,9 @@
-import { validate } from 'uuid';
-import { NextFunction } from 'express';
-import { Application, Request, Response, Router } from 'express'
-import { Messages, Constant } from "../constants"
-import { JsonResponse, validateBody } from "../helper"
-import { BaseValidation } from "./BaseValidation";
-import moment from 'moment';
-import { BaseRepository } from './BaseRepository';
+import { Application, Request, Response, Router } from 'express';
 import { Model, Op } from "sequelize";
+import { Constant, Messages } from "../constants";
+import { JsonResponse } from "../helper";
+import { BaseRepository } from './BaseRepository';
+import { BaseValidation } from "./BaseValidation";
 
 export abstract class BaseController<T, U extends Model> {
 
