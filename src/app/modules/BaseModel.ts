@@ -1,7 +1,7 @@
 import { DataTypes } from "sequelize";
 import { v4 as uuidv4 } from 'uuid';
 
-const modelDefaultPrimaryKeyProperty = {
+const modelCommonPrimaryKeyProperty = {
     allowNull: false,
     autoIncrement: false,
     primaryKey: true,
@@ -34,4 +34,4 @@ const modelDefaultOptions = {
     deletedAt: 'deleted_at'
 };
 
-export { modelDefaultOptions, modelDefaultColumns, modelDefaultPrimaryKeyProperty };
+export { modelDefaultOptions, modelDefaultColumns, modelCommonPrimaryKeyProperty };

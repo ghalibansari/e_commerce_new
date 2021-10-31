@@ -46,8 +46,8 @@ export abstract class BaseController<T, U extends Model> {
             }
         }
 
-        const { page, data } = await this.repo.indexBR(where, attributes, this.include, order, pageNumber, pageSize)
-        res.locals = { page, data, message: Messages.FETCH_SUCCESSFUL }
+        const { page, data } = await this.repo.indexBR({ where, attributes, include: this.include, order, pageNumber, pageSize })
+        res.locals = { status: true, page, data, message: Messages.FETCH_SUCCESSFUL }
         return await JsonResponse.jsonSuccess(req, res, `{this.url}.indexBC`)
     };
 
@@ -55,35 +55,43 @@ export abstract class BaseController<T, U extends Model> {
         await BaseValidation.findById.validateAsync(req.params);
         await BaseValidation.attributes.validateAsync(req.query);
         const { params: { id }, query: { attributes = this.attributes } }: any = req
-        const data = await this.repo.findByIdBR(id, attributes, this.include)
-        res.locals = { data, message: Messages.FETCH_SUCCESSFUL }
+        const data = await this.repo.findByIdBR({ id, attributes, include: this.include })
+        res.locals = { status: true, data, message: Messages.FETCH_SUCCESSFUL }
         return await JsonResponse.jsonSuccess(req, res, `{this.url}.findByIdBC`)
     };
 
     createOneBC = async (req: Request, res: Response): Promise<void> => {
-        const data = await this.repo.createOneBR(req.body)
-        res.locals = { data, message: Messages.CREATE_SUCCESSFUL }
+        const { body, user: { user_id } }: any = req
+        const data = await this.repo.createOneBR({ ...body, created_by: user_id, updated_by: user_id })
+        res.locals = { status: true, data, message: Messages.CREATE_SUCCESSFUL }
         return await JsonResponse.jsonSuccess(req, res, `{this.url}.createOneBC`)
     };
 
     createBulkBC = async (req: Request, res: Response): Promise<void> => {
-        const data = await this.repo.createBulkBR(req.body)
-        res.locals = { data, message: Messages.CREATE_SUCCESSFUL }
+        let { body, user: { user_id } }: any = req
+        for (let i = 0; i < body.length; i++) {
+            body[i].created_by = user_id
+            body[i].updated_by = user_id
+        };
+        const data = await this.repo.createBulkBR(body)
+        res.locals = { status: true, data, message: Messages.CREATE_SUCCESSFUL }
         return await JsonResponse.jsonSuccess(req, res, `{this.url}.createBulkBC`)
     };
 
     updateByIdkBC = async (req: Request, res: Response): Promise<void> => {
         await BaseValidation.findById.validateAsync(req.params);
-        const data = await this.repo.updateByIdBR(req.params.id as any, req.body)
-        res.locals = { data, message: Messages.UPDATE_SUCCESSFUL }
+        const { body, params: { id }, user: { user_id } }: any = req
+        const { count, data } = await this.repo.updateByIdBR({ id, newData: body, updated_by: user_id })
+        res.locals = { status: !!count, data, message: !!count ? Messages.UPDATE_SUCCESSFUL : Messages.UPDATE_FAILED };
         return await JsonResponse.jsonSuccess(req, res, `{this.url}.updateByIdkBC`)
     };
 
     deleteByIdBC = async (req: Request, res: Response): Promise<void> => {
         await BaseValidation.findById.validateAsync(req.params);
-        const data = await this.repo.deleteByIdBR(req.params.id)
-        if (data) res.locals = { status: true, data, message: Messages.DELETE_SUCCESSFUL }
-        else res.locals = { status: false, data, message: Messages.DELETE_FAILED }
+        await BaseValidation.delete_reason.validateAsync(req.query);
+        const { params: { id }, user: { user_id }, query: { delete_reason } }: any = req
+        const data = await this.repo.deleteByIdBR({ id, deleted_by: user_id, delete_reason })
+        res.locals = { status: !!data, message: !!data ? Messages.DELETE_SUCCESSFUL : Messages.DELETE_FAILED }
         return await JsonResponse.jsonSuccess(req, res, `{this.url}.deleteByIdBC`);
     };
 

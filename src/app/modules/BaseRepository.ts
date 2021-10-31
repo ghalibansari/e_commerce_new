@@ -1,8 +1,8 @@
-import { Transaction, Model, ModelCtor } from 'sequelize'
-import { IRead } from '../interfaces/IRead'
-import { IWrite } from "../interfaces/IWrite"
-import { NonEmptyArray } from "./baseTypes";
+import { Model, ModelCtor } from 'sequelize';
 import { Constant } from "../constants";
+import { IRead } from '../interfaces/IRead';
+import { IWrite } from "../interfaces/IWrite";
+import { NonEmptyArray, TCreateBulkBR, TCreateOneBR, TDeleteBulkBR, TDeleteByIdBR, TFindByIdBR, TUpdateBulkBR, TUpdateByIdBR } from "./baseTypes";
 
 //@ts-expect-error
 export class BaseRepository<T extends ModelCtor, U extends Model> implements IWrite<T>, IRead<T> {
@@ -18,14 +18,14 @@ export class BaseRepository<T extends ModelCtor, U extends Model> implements IWr
     ) { }
 
 
-    indexBR = async (
-        where: object = {},
+    indexBR = async ({
+        where = {},
         attributes = this.attributes,
         include = this.include,
         order = this.order,
         pageNumber = Constant.DEFAULT_PAGE_NUMBER,
         pageSize = Constant.DEFAULT_PAGE_SIZE
-    ): Promise<any> => {
+    }): Promise<any> => {
         let offset, limit, totalPage = 0, hasNextPage = false
 
         //get total count and count based on condition
@@ -40,75 +40,73 @@ export class BaseRepository<T extends ModelCtor, U extends Model> implements IWr
         limit = pageNumber * pageSize
         if (limit < count) hasNextPage = true
 
-        //@ts-expect-error
-        const data = await this._model.findAll({ where, attributes, include, offset, limit, order, raw: true })
-
+        const data = await this.findBulkBR({ where, attributes, order, offset, limit, include });
         return { data, page: { hasNextPage, totalCount, count, currentPage: pageNumber, totalPage } }
     };
 
 
-    findBulkBR = async (
-        where: object = {},
+    findBulkBR = async ({
+        where = {},
         attributes = this.attributes,
-        include = this.include,
         order = this.order,
-    ): Promise<U[] | []> => {
+        offset = 0,
+        limit = 10,
+        include = this.include,
+    }): Promise<U[] | []> => {
         //@ts-expect-error
-        return await this._model.findAll({ where, attributes, include, order, raw: true })
+        return await this._model.findAll({ where, attributes, offset, limit, include, order, raw: true })
     };
 
 
-    findOneBR = async (where: object = {}, attributes = this.attributes, include = this.include): Promise<U | null> => {
+    findOneBR = async ({ where = {}, attributes = this.attributes, include = this.include }): Promise<U | null> => {
         return await this._model.findOne({ where, attributes, include, raw: true })
     }
 
 
-    findByIdBR = async (id: keyof T, attributes = this.attributes, include = this.include): Promise<U | null> => {
-        return await this.findOneBR({ [this.primary_key]: id }, attributes, include)
+    findByIdBR = async ({ id, attributes = this.attributes, include = this.include }: TFindByIdBR): Promise<U | null> => {
+        return await this.findOneBR({ where: { [this.primary_key]: id }, attributes, include })
     };
 
 
-    //Todo need to work on it
-    findByPkBR = async (
-        where: object = {},
-        attributes: string[] = ['created_on'],
-    ): Promise<U | null> => {
-        //@ts-expect-error
-        return await this._model.findByPk({ user_id: '', attributes, raw: true })
-    }
-
-
-    createBulkBR = async (newData: T[], transaction?: Transaction): Promise<U[]> => {
+    createBulkBR = async ({ newData, created_by, transaction }: TCreateBulkBR<T>): Promise<U[]> => {
+        for (let i = 0; i < newData.length; i++) {
+            //@ts-expect-error
+            newData[i].created_by = created_by
+            //@ts-expect-error
+            newData[i].updated_by = created_by
+        }
         return await this._model.bulkCreate(newData, { transaction })
     };
 
 
-    createOneBR = async (newData: T, transaction?: Transaction): Promise<U> => {
-        const [data] = await this.createBulkBR([newData], transaction)
+    createOneBR = async ({ newData, created_by, transaction }: TCreateOneBR<T>): Promise<U> => {
+        const [data] = await this.createBulkBR({ newData: [newData], created_by, transaction })
         return data
     };
 
 
-    updateBulkBR = async (where: U["_attributes"], newData: Partial<U>, transaction?: Transaction): Promise<{ count: number, updated: U[] }> => {
+    updateBulkBR = async ({ where, newData, updated_by, transaction }: TUpdateBulkBR<U>): Promise<{ count: number, data: U[] }> => {
+        //@ts-expect-error
+        newData.updated_by = updated_by
+        //@ts-expect-error
         const data = await this._model.update(newData, { where, returning: true, transaction });
-        return { count: data[0], updated: data[1]||[] }
+        return { count: data[0], data: data[1] || [] }
     };
 
 
-    updateByIdBR = async (id: any, newData: Partial<U>, transaction?: Transaction): Promise<any> => {
-        const { count, updated } = await this.updateBulkBR({ [this.primary_key]: id }, newData, transaction)
-        return { count, updated: updated[0] }
+    updateByIdBR = async ({ id, newData, updated_by, transaction }: TUpdateByIdBR<U>): Promise<{ count: number, data?: U }> => {
+        const { count, data } = await this.updateBulkBR({ where: { [this.primary_key]: id }, newData, updated_by, transaction })
+        return { count, data: data[0] }
     };
 
 
-    deleteBulkBR = async (where: U["_attributes"], transaction?: Transaction): Promise<number> => {
+    deleteBulkBR = async ({ where, deleted_by, delete_reason, transaction }: TDeleteBulkBR<U>): Promise<number> => {
         return await this._model.destroy({ where, transaction })
     };
 
 
-    // Todo implement update user on delete docs
-    deleteByIdBR = async (id: string, transaction?: Transaction): Promise<number> => {
-        return await this.deleteBulkBR({ [this.primary_key]: id }, transaction)
+    deleteByIdBR = async ({ id, deleted_by, delete_reason, transaction }: TDeleteByIdBR): Promise<number> => {
+        return await this.deleteBulkBR({ where: { [this.primary_key]: id }, deleted_by, delete_reason, transaction })
     };
 
 
@@ -120,4 +118,4 @@ export class BaseRepository<T extends ModelCtor, U extends Model> implements IWr
     CountAllBR = async (): Promise<number> => {
         return await this.CountBR({})
     };
-}
+};

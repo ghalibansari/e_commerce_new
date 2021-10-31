@@ -39,7 +39,7 @@ export class AuthController extends BaseController<IAuth, IMAuth> {
     async login(req: Request, res: Response): Promise<void> {   //Todo optimize this whole Auth controller
         const { email, password } = req.body
         // const ip = req.connection.remoteAddress || req.socket.remoteAddress
-        const userData = await new UserRepository().findOneBR({ email }, ['user_id', 'email', 'password', 'first_name', 'last_name'])
+        const userData = await new UserRepository().findOneBR({ where: { email }, attributes: ['user_id', 'email', 'password', 'first_name', 'last_name'] })
 
         const comparePassword = await compare(password, userData?.password!)
         if (comparePassword) {
@@ -48,7 +48,7 @@ export class AuthController extends BaseController<IAuth, IMAuth> {
             delete userData.password
             const token = jwt.sign({ ...userData }, Constant.jwt_key);
             res.locals.data = token
-            new AuthRepository().createOneBR({ ip: '192.168.0.1', action: authActionEnum.login, token, user_id: user_id, created_by: user_id, updated_by: user_id })
+            new AuthRepository().createOneBR({ newData: { ip: '192.168.0.1', action: authActionEnum.login, token, user_id: user_id }, created_by: user_id })
             res.locals.message = Messages.SUCCESSFULLY_LOGIN;
             return JsonResponse.jsonSuccess(req, res, "login")
         }
@@ -67,14 +67,14 @@ export class AuthController extends BaseController<IAuth, IMAuth> {
 
         const userRepo = new UserRepository()
 
-        const user = await userRepo.findOneBR({ email }, ['user_id', 'email', 'password'])
+        const user = await userRepo.findOneBR({ where: { email }, attributes: ['user_id', 'email', 'password'] })
         if (!user) throw new Error('Invalid Email');
 
         const compareOldPassword = await compare(oldPassword, user.password)
         if (!compareOldPassword) throw new Error("Invalid oldPassword!!");
 
-        await userRepo.updateByIdBR(user.user_id, { password: newPassword })
-        new AuthRepository().createOneBR({ ip: '192.168.0.1', action: authActionEnum.change_pass, user_id: user_id, created_by: user_id, updated_by: user_id })
+        await userRepo.updateByIdBR({ id: user.user_id, newData: { password: newPassword }, updated_by: user_id })
+        new AuthRepository().createOneBR({ newData: { ip: '192.168.0.1', action: authActionEnum.change_pass, user_id: user_id }, created_by: user_id })
 
         res.locals.message = "PASSWORD_CHANGED_SUCCESSFULLY"
         return JsonResponse.jsonSuccess(req, res, "change password")
@@ -85,7 +85,7 @@ export class AuthController extends BaseController<IAuth, IMAuth> {
         const id = v4()
         const user = await new UserRepository().createOneBR({ ...req.body, user_id: id, created_by: id, updated_by: id });
 
-        new AuthRepository().createOneBR({ ip: '192.168.0.1', action: authActionEnum.register, user_id: id, created_by: id, updated_by: id });
+        new AuthRepository().createOneBR({ newData: { ip: '192.168.0.1', action: authActionEnum.register, user_id: id }, created_by: id });
         res.locals = { status: true, message: "CREATE_SUCCESSFUL" }
         return JsonResponse.jsonSuccess(req, res, "register");
     }

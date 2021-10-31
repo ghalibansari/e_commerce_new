@@ -1,15 +1,14 @@
 import { DataTypes } from 'sequelize';
-import { v4 as uuidv4 } from 'uuid';
 import { DB } from "../../../configs/DB";
 import { TableName } from "../../constants";
-import { modelDefaultColumns, modelDefaultOptions, modelDefaultPrimaryKeyProperty } from '../BaseModel';
+import { modelCommonPrimaryKeyProperty, modelDefaultColumns, modelDefaultOptions } from '../BaseModel';
 import { IMLogger } from "./logger.types";
 
 
 const loggerMd = DB.define<IMLogger>(
     TableName.LOGGER,
     {
-        logger_id: modelDefaultPrimaryKeyProperty,
+        logger_id: modelCommonPrimaryKeyProperty,
         url: { allowNull: false, type: DataTypes.TEXT },
         method: { allowNull: false, type: DataTypes.TEXT },
         params: { allowNull: false, type: DataTypes.TEXT },

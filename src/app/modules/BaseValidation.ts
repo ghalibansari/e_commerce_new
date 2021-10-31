@@ -1,11 +1,9 @@
 import Joi from "joi";
-import { Messages, Regex } from "../constants";
-import { JsonResponse } from "../helper";
-import { validate } from 'uuid'
+import { validate } from 'uuid';
 
 
 export const idValidate = (value: string, helper: any) => {
-    if(!validate(value)) return helper.message("Invalid id.");
+    if (!validate(value)) return helper.message("Invalid id.");
     return true;
 };
 
@@ -28,5 +26,9 @@ export abstract class BaseValidation {
 
     static readonly findById = Joi.object({
         id: Joi.string().custom(idValidate)
+    });
+
+    static readonly delete_reason = Joi.object({
+        delete_reason: Joi.string().required().max(250)
     });
 };
