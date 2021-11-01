@@ -2,7 +2,6 @@
 import * as mailer from 'nodemailer';
 //@ts-expect-error
 import * as Mail from 'nodemailer/lib/mailer';
-import { IMailOptions, IMailResponse } from './INotificationService';
 // import juice = require("juice");
 // import * as juice from 'juice';
 //@ts-expect-error
@@ -11,6 +10,7 @@ import { Environment, IMailConfig } from "../../configs/environments/environment
 import settingModel from "../modules/setting/setting.model";
 //@ts-expect-error
 import { ISetting } from "../modules/setting/setting.types";
+import { IMailOptions, IMailResponse } from './INotificationService';
 
 /**
  * NotificationService

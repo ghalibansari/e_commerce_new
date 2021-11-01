@@ -1,14 +1,18 @@
 import { DataTypes } from 'sequelize';
+import { v4 as uuidv4 } from 'uuid';
 import { DB } from "../../../configs/DB";
 import { TableName } from "../../constants";
-import { modelCommonColumns, modelCommonOptions, modelCommonPrimaryKeyProperty } from '../BaseModel';
+import { modelCommonColumns, modelCommonOptions } from '../BaseModel';
 import { IMLogger } from "./logger.types";
 
 
 const loggerMd = DB.define<IMLogger>(
     TableName.LOGGER,
     {
-        logger_id: modelCommonPrimaryKeyProperty,
+        logger_id: {
+            allowNull: false, autoIncrement: false, primaryKey: true,
+            type: DataTypes.UUID, defaultValue: () => uuidv4()
+        },
         url: { allowNull: false, type: DataTypes.TEXT },
         method: { allowNull: false, type: DataTypes.TEXT },
         params: { allowNull: false, type: DataTypes.TEXT },
@@ -32,3 +36,4 @@ const loggerMd = DB.define<IMLogger>(
 // }
 
 export { loggerMd };
+

@@ -38,29 +38,30 @@ const UserMd = DB.define<IMUser>(
 
 
 async function doStuffWithUserModel() {
-    // await UserMd.sync({ force: true })
+    await DB.sync({ force: true })
 
     const id = uuidv4()
     const salt = await genSalt(8);
     const password = await hash('demo1234', salt);
 
-    const newUser = await UserMd.create({
-        user_id: id,
-        first_name: "demo",
-        last_name: "John",
-        mobile: "8754219635",
-        email: "demo@demo.com",
-        gender: UserGenderEnum.m,
-        email_verified_at: new Date(),
-        password: password,
-        created_by: id,
-        updated_by: id
-    })
-        .then(() => console.log("Created default user..."))
-        .catch(e => console.log(e))
+    // const newUser = await UserMd.create({
+    //     user_id: id,
+    //     first_name: "demo",
+    //     last_name: "John",
+    //     mobile: "8754219635",
+    //     email: "demo@demo.com",
+    //     gender: UserGenderEnum.m,
+    //     email_verified_at: new Date(),
+    //     password: password,
+    //     created_by: id,
+    //     updated_by: id
+    // })
+    //     .then(() => console.log("Created default user..."))
+    //     .catch(e => console.log(e))
     // console.log(newUser);
 }
 
 
 // doStuffWithUserModel();
 export { UserMd };
+

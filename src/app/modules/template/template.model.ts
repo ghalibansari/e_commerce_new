@@ -1,24 +1,58 @@
-// import { model, Schema } from "mongoose";
-// import { ITemplate } from "./template.types";
-// import { TableName } from "../../constants";
-// import { UUID } from "sequelize/types";
-// const { Types: { ObjectId, String, Boolean, Number } } = Schema
+import { DataTypes } from 'sequelize';
+import { v4 as uuidv4 } from 'uuid';
+import { DB } from "../../../configs/DB";
+import { TableName } from "../../constants";
+import { modelCommonColumns } from '../BaseModel';
+import { IMTemplate } from "./template.types";
 
-// //Todo implement interface
-// const templateSchema: Schema<ITemplate> = new Schema({
-//     title: { type: String, required: true },
-//     slug: { type: String, required: true, unique: true },
-//     subject: { type: String, required: true },
-//     body: { type: String, required: true },
-//     params: { type: String, required: true },
-//     type: { type: Number, default: 1, enum: [1, 2] },  //1=email,2=sms
-//     isActive: { type: Boolean, default: true },
-//     isDeleted: { type: Boolean, default: false },
-//     createdBy: { type: UUID, ref: TableName.USER, required: true },
-//     updatedBy: { type: UUID, ref: TableName.USER, required: true },
+//Todo implement interface
+const TemplateMd = DB.define<IMTemplate>(
+    TableName.TEMPLATE,
+    {
+        template_id: {
+            allowNull: false,
+            autoIncrement: false,
+            primaryKey: true,
+            type: DataTypes.UUID,
+            defaultValue: () => uuidv4()
+        },
+        title: { type: DataTypes.STRING, },
+        slug: { type: DataTypes.STRING, unique: true },
+        subject: { type: DataTypes.STRING, },
+        body: { type: DataTypes.STRING, },
+        params: { type: DataTypes.STRING },
+        type: { type: DataTypes.STRING },//1 email 2 sms
+        isActive: { type: DataTypes.BOOLEAN },
+        isDeleted: { type: DataTypes.BOOLEAN },
+        // created_by: DataTypes.STRING,
+        // updated_by: DataTypes.STRING,
+        ...modelCommonColumns
+    }, {
+    timestamps: true,
+    paranoid: true
+});
 
-// }, { timestamps: true, versionKey: false });
+async function doStuffWithUserModel() {
 
-// const templateModel = model<ITemplate>(TableName.TEMPLATE, templateSchema);
+    const newUser = await TemplateMd.create({
+        // template_id: "id",
+        title: "demo",
+        slug: "John",
+        subject: "8754219635",
+        body: "demo@demo.com",
+        params: "qwertyuio",
+        type: 1,
+        isActive: true,
+        isDeleted: false,
+        created_by: "qwertyuioplkjhgfdsazxcvbnmklpoikjmnbvgfresdx",
+        updated_by: "qwertyuioplkjhgfdsazxcvbnmklpoikjmnbvgfresdx"
+    })
+        .then(() => console.log("Created default template..."))
+        .catch(e => console.log(e))
+}
 
-// export default templateModel;
+
+// doStuffWithUserModel();
+
+export { TemplateMd };
+
