@@ -1,4 +1,3 @@
-// import { IRole } from "./role/role.types";
 import { Model, Transaction } from "sequelize";
 import { IUser } from "./user/user.types";
 

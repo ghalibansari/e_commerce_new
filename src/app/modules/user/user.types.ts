@@ -26,4 +26,3 @@ interface IUser extends Optional<IBUser, 'user_id'> { }
 interface IMUser extends Model<IBUser, IUser>, IBUser, IMCommon { }
 
 export { IUser, IMUser };
-

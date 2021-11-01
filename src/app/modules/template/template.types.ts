@@ -3,23 +3,22 @@ import { IBCommon, IMCommon } from "../baseTypes";
 
 
 export enum templateTypeEnum {
-    one = 1,
-    two = 2
+    email = 'email',
+    sms = 'sms'
 }
+
 interface IBTemplate extends IBCommon {
     template_id: string;
-    title: string
-    slug: string
+    template_name: string
     subject: string
+    title: string
     body: string
-    params: string
-    type: number  //1=email,2=sms
-    isActive: boolean
-    isDeleted: boolean
+    params: string[]
+    type: templateTypeEnum
 }
+
 interface ITemplate extends Optional<IBTemplate, 'template_id'> { }
 
 interface IMTemplate extends Model<IBTemplate, ITemplate>, IBTemplate, IMCommon { }
 
-export type { ITemplate, IMTemplate };
-
+export { ITemplate, IMTemplate };

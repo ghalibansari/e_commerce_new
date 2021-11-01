@@ -2,54 +2,56 @@ import { DataTypes } from 'sequelize';
 import { v4 as uuidv4 } from 'uuid';
 import { DB } from "../../../configs/DB";
 import { TableName } from "../../constants";
-import { modelCommonColumns } from '../BaseModel';
-import { IMTemplate } from "./template.types";
+import { modelCommonColumns, modelCommonOptions } from '../BaseModel';
+import { IMTemplate, templateTypeEnum } from "./template.types";
 
-//Todo implement interface
+
 const TemplateMd = DB.define<IMTemplate>(
     TableName.TEMPLATE,
     {
         template_id: {
-            allowNull: false,
-            autoIncrement: false,
-            primaryKey: true,
-            type: DataTypes.UUID,
-            defaultValue: () => uuidv4()
+            allowNull: false, autoIncrement: false, primaryKey: true,
+            type: DataTypes.UUID, defaultValue: () => uuidv4()
         },
-        title: { type: DataTypes.STRING, },
-        slug: { type: DataTypes.STRING, unique: true },
-        subject: { type: DataTypes.STRING, },
-        body: { type: DataTypes.STRING, },
-        params: { type: DataTypes.STRING },
-        type: { type: DataTypes.STRING },//1 email 2 sms
-        isActive: { type: DataTypes.BOOLEAN },
-        isDeleted: { type: DataTypes.BOOLEAN },
-        // created_by: DataTypes.STRING,
-        // updated_by: DataTypes.STRING,
+        template_name: { type: DataTypes.STRING, unique: true },
+        subject: { type: DataTypes.STRING },
+        title: { type: DataTypes.STRING },
+        body: { type: DataTypes.TEXT },
+        params: { type: DataTypes.ARRAY(DataTypes.STRING) },
+        type: { type: DataTypes.STRING },
         ...modelCommonColumns
-    }, {
-    timestamps: true,
-    paranoid: true
-});
+    },
+    modelCommonOptions
+);
 
 async function doStuffWithUserModel() {
+    // await TemplateMd.sync({ force: true });
+    const id = uuidv4();
 
     const newUser = await TemplateMd.create({
-        // template_id: "id",
-        title: "demo",
-        slug: "John",
-        subject: "8754219635",
-        body: "demo@demo.com",
-        params: "qwertyuio",
-        type: 1,
-        isActive: true,
-        isDeleted: false,
-        created_by: "qwertyuioplkjhgfdsazxcvbnmklpoikjmnbvgfresdx",
-        updated_by: "qwertyuioplkjhgfdsazxcvbnmklpoikjmnbvgfresdx"
+        template_id: id,
+        template_name: "demo",
+        title: `<h1>Title {{NAME}}</h1>`,
+        subject: `Welcome {{NAME}}.`,
+        body: `<mjml>
+        <mj-body>
+          <mj-section>
+            <mj-column>
+              <mj-image width="100px" src="/assets/img/logo-small.png"></mj-image>
+              <mj-divider border-color="#F45E43"></mj-divider>
+              <mj-text font-size="20px" color="#F45E43" font-family="helvetica">Hello {{NAME}}</mj-text>
+            </mj-column>
+          </mj-section>
+        </mj-body>
+      </mjml>`,
+        params: ['NAME'],
+        type: templateTypeEnum.email,
+        created_by: id,
+        updated_by: id
     })
         .then(() => console.log("Created default template..."))
-        .catch(e => console.log(e))
-}
+        .catch(e => console.log(e));
+};
 
 
 // doStuffWithUserModel();
