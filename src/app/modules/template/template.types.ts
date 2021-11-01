@@ -1,8 +1,12 @@
 import { Model, Optional } from "sequelize";
-import { IMUser } from "../user/user.types";
-// import { TemplateMd } from "./template.model";
+import { IBCommon, IMCommon } from "../baseTypes";
 
-interface IBTemplate {
+
+export enum templateTypeEnum {
+    one = 1,
+    two = 2
+}
+interface IBTemplate extends IBCommon {
     template_id: string;
     title: string
     slug: string
@@ -12,21 +16,10 @@ interface IBTemplate {
     type: number  //1=email,2=sms
     isActive: boolean
     isDeleted: boolean
-    created_by: IMUser['user_id'];
-    updated_by: IMUser['user_id'];
 }
 interface ITemplate extends Optional<IBTemplate, 'template_id'> { }
 
-enum templateTypeEnum {
-    one = 1,
-    two = 2
-}
+interface IMTemplate extends Model<IBTemplate, ITemplate>, IBTemplate, IMCommon { }
 
-interface IMTemplate extends Model<IBTemplate, ITemplate>, IBTemplate {
-    deleted_by: IBTemplate['template_id'] | null
-    createdAt: Date;
-    updatedAt: Date;
-    deletedAt?: Date
-}
+export type { ITemplate, IMTemplate };
 
-export type { ITemplate, IMTemplate, templateTypeEnum }

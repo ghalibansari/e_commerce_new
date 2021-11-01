@@ -1,4 +1,5 @@
 import { Model, Optional } from "sequelize";
+import { IBCommon, IMCommon } from "../baseTypes";
 
 export enum UserGenderEnum {
     m = 'male',
@@ -6,7 +7,8 @@ export enum UserGenderEnum {
     o = 'others'
 }
 
-interface IBUser {
+
+interface IBUser extends IBCommon {
     user_id: string
     first_name: string
     last_name: string
@@ -17,18 +19,11 @@ interface IBUser {
     is_active?: boolean
     email_verified_at?: Date
     remember_token?: string
-    delete_reason?: string
-    created_by: IBUser['user_id']
-    updated_by: IBUser['user_id']
-    deleted_by?: IBUser['user_id']
 }
 
 interface IUser extends Optional<IBUser, 'user_id'> { }
 
-interface IMUser extends Model<IBUser, IUser>, IBUser {
-    createdAt: Date;
-    updatedAt: Date;
-    deletedAt?: Date
-}
+interface IMUser extends Model<IBUser, IUser>, IBUser, IMCommon { }
 
-export type { IUser, IMUser }
+export { IUser, IMUser };
+

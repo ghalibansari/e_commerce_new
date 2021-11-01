@@ -1,7 +1,8 @@
 import { Model, Optional } from "sequelize";
+import { IBCommon, IMCommon } from "../baseTypes";
 import { IMUser } from "../user/user.types";
 
-interface IBLogger {
+interface IBLogger extends IBCommon {
     logger_id: string;
     url: string;
     method: string;
@@ -12,9 +13,6 @@ interface IBLogger {
     message: string;
     stack: string;
     level: loggerLevelEnum;
-    created_by: IMUser['user_id']
-    updated_by: IMUser['user_id']
-    deleted_by?: IMUser['user_id']
 }
 
 interface ILogger extends Optional<IBLogger, 'logger_id'> { }
@@ -26,9 +24,6 @@ export enum loggerLevelEnum {
     frontend = 'frontend'
 }
 
-interface IMLogger extends Model<IBLogger, ILogger>, IBLogger {
-    createdAt: Date;
-    updatedAt: Date;
-    deletedAt?: Date
-}
-export type { ILogger, IMLogger };
+interface IMLogger extends Model<IBLogger, ILogger>, IBLogger, IMCommon {}
+
+export { ILogger, IMLogger };

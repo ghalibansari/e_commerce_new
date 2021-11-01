@@ -67,12 +67,16 @@ export interface ICounter {
 }
 
 
-//@ts-expect-error
-export interface ILoggedInUser extends Required<Pick<IUser, '_id' | 'email' | 'companyId' | 'firstName' | 'lastName' | 'roleId'>> {
-    //@ts-expect-error
-    roleName: Pick<IRole, 'shortDescription'>;//IRole['shortDescription']
-    iat: number;
-    exp: number;
+export interface IBCommon {
+    delete_reason?: string
+    created_by: IUser['user_id']
+    updated_by: IUser['user_id']
+    deleted_by?: IUser['user_id']
 }
 
-// export type IFindBR{}
+
+export interface IMCommon {
+    created_at: IUser['user_id']
+    updated_at: IUser['user_id']
+    deleted_at?: IUser['user_id']
+};
