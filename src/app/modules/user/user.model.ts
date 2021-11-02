@@ -4,6 +4,7 @@ import { v4 as uuidv4 } from 'uuid';
 import { DB } from "../../../configs/DB";
 import { TableName } from "../../constants";
 import { modelCommonColumns, modelCommonOptions } from '../BaseModel';
+import { categoriesMd } from '../categories/categories.model';
 import { IMUser, UserGenderEnum } from './user.types';
 
 const UserMd = DB.define<IMUser>(
@@ -31,36 +32,32 @@ const UserMd = DB.define<IMUser>(
 );
 
 
-// Book.belongsTo(Author, {
-//     foreignKey: 'authorId',
-//     as: 'author'
-// });
 
 
 async function doStuffWithUserModel() {
-    await DB.sync({ force: true })
+    //await UserMd.sync({ force: true })
 
     const id = uuidv4()
     const salt = await genSalt(8);
     const password = await hash('demo1234', salt);
 
-    // const newUser = await UserMd.create({
-    //     user_id: id,
-    //     first_name: "demo",
-    //     last_name: "John",
-    //     mobile: "8754219635",
-    //     email: "demo@demo.com",
-    //     gender: UserGenderEnum.m,
-    //     email_verified_at: new Date(),
-    //     password: password,
-    //     created_by: id,
-    //     updated_by: id
-    // })
-    //     .then(() => console.log("Created default user..."))
-    //     .catch(e => console.log(e))
-    // console.log(newUser);
+    const newUser = await UserMd.create({
+        user_id: id,
+        first_name: "demo",
+        last_name: "John",
+        mobile: "8754219635",
+        email: "demo@demo.com",
+        gender: UserGenderEnum.m,
+        email_verified_at: new Date(),
+        password: password,
+        created_by: id,
+        updated_by: id
+    })
+        .then(() => console.log("Created default user..."))
+        .catch(e => console.log(e))
+    console.log(newUser);
 }
-
+//UserMd.sync()
 
 // doStuffWithUserModel();
 export { UserMd };

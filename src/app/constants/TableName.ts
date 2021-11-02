@@ -17,6 +17,7 @@ export enum TableName {
     SETTING = 'Setting',
     LAB = 'Lab',
     COMPANY = 'Company',
+    CATEGORIES='Categories',
     ROLE = 'Role',
     ADDRESS = 'Address',
     SKU = 'Sku',

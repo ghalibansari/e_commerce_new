@@ -40,6 +40,7 @@ export class AuthController extends BaseController<IAuth, IMAuth> {
         const { email, password } = req.body
         // const ip = req.connection.remoteAddress || req.socket.remoteAddress
         const userData = await new UserRepository().findOneBR({ where: { email }, attributes: ['user_id', 'email', 'password', 'first_name', 'last_name'] })
+        if (!userData) { throw new Error("Invalid Email Id") }
 
         const comparePassword = await compare(password, userData?.password!)
         if (comparePassword) {
@@ -89,14 +90,4 @@ export class AuthController extends BaseController<IAuth, IMAuth> {
         res.locals = { status: true, message: "CREATE_SUCCESSFUL" }
         return JsonResponse.jsonSuccess(req, res, "register");
     }
-
-    // ForgetPassword = async (req: Request, res: Response): Promise<void> => {
-    //     const { email } = req.body
-    //     const user = await UserRepository.findOneBR({ email }, (err, user) => {
-    //         if (!user) throw new Error("email does not exists")
-    //     })
-
-
-
-    // }
 };
