@@ -69,7 +69,7 @@ export abstract class BaseController<T, U extends Model> {
 
     createBulkBC = async (req: Request, res: Response): Promise<void> => {
         let { body, user: { user_id } }: any = req
-        const data = await this.repo.createBulkBR({newData: body, created_by: user_id})
+        const data = await this.repo.createBulkBR({ newData: body, created_by: user_id })
         res.locals = { status: true, data, message: Messages.CREATE_SUCCESSFUL }
         return await JsonResponse.jsonSuccess(req, res, `{this.url}.createBulkBC`)
     };

@@ -22,5 +22,7 @@ const AuthMd = DB.define<IMAuth>(
     modelCommonOptions
 );
 
+// AuthMd.belongsTo(UserMd)
+
 export { AuthMd };
 

@@ -35,3 +35,4 @@ const modelCommonOptions = {
 };
 
 export { modelCommonOptions, modelCommonColumns, modelCommonPrimaryKeyProperty };
+

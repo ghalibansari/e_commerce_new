@@ -1,8 +1,5 @@
 import { Model, Optional } from "sequelize/types";
 import { IBCommon, IMCommon } from "../baseTypes";
-import { IMUser, IUser } from "../user/user.types";
-// import { DataTypes } from 'sequelize';
-// import { v4 as uuidv4 } from 'uuid';
 
 export enum authActionEnum {
     login = 'login',
@@ -23,6 +20,7 @@ interface IAuth extends Optional<IBAuth, 'auth_id'> {
 }
 
 
-interface IMAuth extends Model<IBAuth, IAuth>, IBAuth, IMCommon {}
+interface IMAuth extends Model<IBAuth, IAuth>, IBAuth, IMCommon { }
 
-export { IAuth, IMAuth }
+export { IAuth, IMAuth };
+

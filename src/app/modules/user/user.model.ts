@@ -4,7 +4,6 @@ import { v4 as uuidv4 } from 'uuid';
 import { DB } from "../../../configs/DB";
 import { TableName } from "../../constants";
 import { modelCommonColumns, modelCommonOptions } from '../BaseModel';
-import { categoriesMd } from '../categories/categories.model';
 import { IMUser, UserGenderEnum } from './user.types';
 
 const UserMd = DB.define<IMUser>(
@@ -22,7 +21,6 @@ const UserMd = DB.define<IMUser>(
         mobile: { allowNull: false, unique: true, type: DataTypes.TEXT },
         email: { allowNull: false, unique: true, type: DataTypes.TEXT },
         gender: { allowNull: false, type: DataTypes.ENUM(...Object.values(UserGenderEnum)) },
-        is_active: { allowNull: false, type: DataTypes.BOOLEAN, defaultValue: true },
         email_verified_at: { type: DataTypes.DATE },
         remember_token: { unique: true, type: DataTypes.STRING },
         password: { allowNull: false, type: DataTypes.TEXT },
@@ -32,6 +30,11 @@ const UserMd = DB.define<IMUser>(
 );
 
 
+// UserMd.hasOne(AuthMd)
+// Book.belongsTo(Author, {
+//     foreignKey: 'authorId',
+//     as: 'author'
+// });
 
 
 async function doStuffWithUserModel() {
@@ -57,8 +60,8 @@ async function doStuffWithUserModel() {
         .catch(e => console.log(e))
     console.log(newUser);
 }
-//UserMd.sync()
 
 // doStuffWithUserModel();
+
 export { UserMd };
 
