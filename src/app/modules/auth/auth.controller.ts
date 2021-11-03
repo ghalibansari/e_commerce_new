@@ -83,8 +83,9 @@ export class AuthController extends BaseController<IAuth, IMAuth> {
 
 
     userRegister = async (req: Request, res: Response): Promise<void> => {
+        const { body }: any = req
         const id = v4()
-        const user = await new UserRepository().createOneBR({ ...req.body, user_id: id, created_by: id, updated_by: id });
+        const user = await new UserRepository().createOneBR({ newData: {...req.body, user_id: id}, created_by: id });
 
         new AuthRepository().createOneBR({ newData: { ip: '192.168.0.1', action: authActionEnum.register, user_id: id }, created_by: id });
         res.locals = { status: true, message: "CREATE_SUCCESSFUL" }
