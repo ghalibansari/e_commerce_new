@@ -1,10 +1,9 @@
-import { Application, Request, Response } from "express";
-import { Messages } from "../../constants";
-import { AuthGuard, DBTransaction, JsonResponse, TryCatch, validateBody, validateParams } from "../../helper";
+import { Application } from "express";
+import { AuthGuard, TryCatch, validateBody, validateParams } from "../../helper";
 import { BaseController } from "../BaseController";
 import { StateRepository } from "./states.repository";
-import { IStates, IMStates  } from "./states.type";
-import { StatesValidation} from "./states.validation";
+import { IMStates, IStates } from "./states.types";
+import { StatesValidation } from "./states.validation";
 
 
 export class StateController extends BaseController<IStates, IMStates> {

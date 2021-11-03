@@ -3,7 +3,7 @@ import { v4 as uuidv4 } from 'uuid';
 import { DB } from "../../../configs/DB";
 import { TableName } from "../../constants";
 import { modelCommonColumns, modelCommonOptions } from '../BaseModel';
-import { IMStates } from './states.type';
+import { IMStates } from './states.types';
 
 
 const StatesMd = DB.define<IMStates>(
