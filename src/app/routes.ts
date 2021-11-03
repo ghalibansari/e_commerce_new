@@ -3,9 +3,10 @@ import { AuthController } from "./modules/auth/auth.controller";
 import { BannerController } from "./modules/banners/banner.controller";
 import { BrandController } from "./modules/brands/brands.controller";
 import { CategoryController } from "./modules/categories/categories.controller";
+import { PincodeController } from "./modules/pincodes/pincodes.controller";
+import { StateController } from "./modules/states/states.controller";
 import { TemplateController } from "./modules/template/template.controller";
-import { UserController } from "./modules/user/user.controller"
-import  { StateController } from "./modules/states/states.controller"
+import { UserController } from "./modules/user/user.controller";
 
 export function registerRoutes(app: Application): void {
     new UserController().register(app)
@@ -15,4 +16,5 @@ export function registerRoutes(app: Application): void {
     new BrandController().register(app)
     new BannerController().register(app)
     new StateController().register(app)
+    new PincodeController().register(app)
 }

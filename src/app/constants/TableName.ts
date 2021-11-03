@@ -18,11 +18,12 @@ export enum TableName {
     LAB = 'Lab',
     BRAND = 'Brand',
     COMPANY = 'Company',
-    CATEGORIES='Categories',
-    STATE_MASTER='states',
+    CATEGORIES = 'Categories',
+    STATE_MASTER = 'States',
     ROLE = 'Role',
     ADDRESS = 'Address',
     SKU = 'Sku',
+    PINCODE_MASTER = 'Pincode',
     LAB_HISTORY = 'LabHistory',
     STATUS = 'Status',
     TEMPLATE = 'Template',
@@ -110,7 +111,7 @@ export enum TableName {
     ALERT_LEVEL = "alertLevel",
     ALERT_TYPE = "alertType",
     USER_SOCKET = "userSocket",
-    AUTH = "auth"
+    AUTH = "Auth"
 }
 
 export enum Tables {    //Todo work on this...

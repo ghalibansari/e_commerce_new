@@ -3,33 +3,33 @@ import { v4 as uuidv4 } from 'uuid';
 import { DB } from "../../../configs/DB";
 import { TableName } from "../../constants";
 import { modelCommonColumns, modelCommonOptions } from '../BaseModel';
-import { IMStates } from './states.types';
+import { IMPincode } from './pincodes.types';
 
 
-const StatesMd = DB.define<IMStates>(
-    TableName.STATE_MASTER,
+const PincodeMd = DB.define<IMPincode>(
+    TableName.PINCODE_MASTER,
     {
-        state_id: {
+        pincode_id: {
             allowNull: false,
             autoIncrement: false,
             primaryKey: true,
             type: DataTypes.UUID,
             defaultValue: () => uuidv4()
         },
-        name: { allowNull: false, type: DataTypes.STRING },
+        area_name: { allowNull: false, type: DataTypes.STRING },
         ...modelCommonColumns
     },
     modelCommonOptions
 );
 
 async function doStuffWithUserModel() {
-    await StatesMd.sync()
+    await PincodeMd.sync()
     // await UserMd.sync({ force: true })
     const id = uuidv4()
 
-    const newUser = await StatesMd.create({
-        state_id: id,
-        name: "Maharshtra",
+    const newUser = await PincodeMd.create({
+        pincode_id: id,
+        area_name: "Kherwadi",
         created_by: id,
         updated_by: id
     })
@@ -40,5 +40,5 @@ async function doStuffWithUserModel() {
 
 //doStuffWithUserModel()
 
-export { StatesMd };
+export { PincodeMd };
 

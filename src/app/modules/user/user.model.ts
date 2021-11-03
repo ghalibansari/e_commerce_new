@@ -30,10 +30,9 @@ const UserMd = DB.define<IMUser>(
 );
 
 
-// UserMd.hasOne(AuthMd)
-// Book.belongsTo(Author, {
-//     foreignKey: 'authorId',
-//     as: 'author'
+// UserMd.hasMany(AuthMd, {
+//     foreignKey: 'user_id',
+//     as: 'auths'
 // });
 
 
