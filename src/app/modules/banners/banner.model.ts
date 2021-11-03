@@ -6,7 +6,7 @@ import { modelCommonColumns, modelCommonOptions } from '../BaseModel';
 import { IMBanner } from "./banner.types";
 
 
-const bannerMd = DB.define<IMBanner>(
+const BannerMd = DB.define<IMBanner>(
     TableName.BANNER,
     {
         banner_id: {
@@ -25,7 +25,7 @@ const bannerMd = DB.define<IMBanner>(
 async function doStuffWithUserModel() {
     //await bannerMd.sync()
 
-    const newUser = await bannerMd.create({
+    const newUser = await BannerMd.create({
         banner_id: uuidv4(),
         banner_text: "myBanner",
         order_sequence: 1334,
@@ -40,5 +40,5 @@ async function doStuffWithUserModel() {
 
 //doStuffWithUserModel();
 
-export { bannerMd };
+export { BannerMd };
 

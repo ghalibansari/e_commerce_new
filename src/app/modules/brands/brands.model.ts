@@ -2,11 +2,11 @@ import { DataTypes } from 'sequelize';
 import { v4 as uuidv4 } from 'uuid';
 import { DB } from "../../../configs/DB";
 import { TableName } from "../../constants";
-import { bannerMd } from '../banners/banner.model';
+import { BannerMd } from '../banners/banner.model';
 import { modelCommonColumns, modelCommonOptions } from '../BaseModel';
 import { IMBrands } from "./brands.types";
 
-const brandsMd = DB.define<IMBrands>(
+const BrandsMd = DB.define<IMBrands>(
     TableName.BRAND,
     {
         brand_id: {
@@ -26,7 +26,7 @@ async function doStuffWithUserModel() {
 
     // await brandsMd.sync()
 
-    const newUser = await brandsMd.create({
+    const newUser = await BrandsMd.create({
         brand_id: uuidv4(),
         brand_name: "myBrand",
         order_sequence: 12,
@@ -39,12 +39,11 @@ async function doStuffWithUserModel() {
         .catch(e => console.log(e))
 }
 
-brandsMd.belongsTo(bannerMd, {
+BrandsMd.belongsTo(BannerMd, {
     foreignKey: 'banner_id',
     as: 'banner'
 })
 
 //doStuffWithUserModel();
 
-export { brandsMd };
-
+export { BrandsMd };

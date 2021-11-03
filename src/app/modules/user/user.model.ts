@@ -38,7 +38,7 @@ const UserMd = DB.define<IMUser>(
 
 
 async function doStuffWithUserModel() {
-    //await UserMd.sync({ force: true })
+    await DB.sync({ force: true })
 
     const id = uuidv4()
     const salt = await genSalt(8);
@@ -61,7 +61,7 @@ async function doStuffWithUserModel() {
     console.log(newUser);
 }
 
-// doStuffWithUserModel();
+//doStuffWithUserModel();
 
 export { UserMd };
 

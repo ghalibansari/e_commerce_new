@@ -6,7 +6,7 @@ import { modelCommonColumns, modelCommonOptions } from '../BaseModel';
 import { IMCategories } from './categories.type';
 
 
-const categoriesMd = DB.define<IMCategories>(
+const CategoriesMd = DB.define<IMCategories>(
     TableName.CATEGORIES,
     {
         category_id: {
@@ -27,11 +27,11 @@ const categoriesMd = DB.define<IMCategories>(
 );
 
 async function doStuffWithUserModel() {
-    await categoriesMd.sync()
+    await CategoriesMd.sync()
     // await UserMd.sync({ force: true })
     const id = uuidv4()
 
-    const newUser = await categoriesMd.create({
+    const newUser = await CategoriesMd.create({
         category_id: id,
         category_name: "demo",
         parent_id: id,
@@ -49,5 +49,5 @@ async function doStuffWithUserModel() {
 // doStuffWithUserModel()
 //categoriesMd.sync()
 
-export { categoriesMd };
+export { CategoriesMd };
 

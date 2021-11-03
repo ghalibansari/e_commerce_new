@@ -6,7 +6,7 @@ import { modelCommonColumns, modelCommonOptions } from '../BaseModel';
 import { IMLogger } from "./logger.types";
 
 
-const loggerMd = DB.define<IMLogger>(
+const LoggerMd = DB.define<IMLogger>(
     TableName.LOGGER,
     {
         logger_id: {
@@ -35,5 +35,5 @@ const loggerMd = DB.define<IMLogger>(
 
 // }
 
-export { loggerMd };
+export { LoggerMd };
 
