@@ -91,4 +91,5 @@ export abstract class BaseController<T, U extends Model> {
         return await JsonResponse.jsonSuccess(req, res, `{this.url}.deleteByIdBC`);
     };
 
+
 };

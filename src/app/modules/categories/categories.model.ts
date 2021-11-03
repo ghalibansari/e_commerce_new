@@ -18,7 +18,6 @@ const categoriesMd = DB.define<IMCategories>(
         },
         category_name: { allowNull: false, type: DataTypes.STRING },
         parent_id: { type: DataTypes.UUID, defaultValue: null },
-        is_active: { allowNull: false, type: DataTypes.BOOLEAN, defaultValue: true },
         order_sequence: { allowNull: false, type: DataTypes.INTEGER },
         show_on_homeScreen: { allowNull: false, type: DataTypes.BOOLEAN, defaultValue: false },
         category_image: { allowNull: false, type: DataTypes.STRING, },

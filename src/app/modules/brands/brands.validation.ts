@@ -12,9 +12,8 @@ export class BrandsValidation extends BaseValidation {
     });
 
     static readonly editBrands = Joi.object<IBrands>({
-        brand_name: Joi.string().required(),
-        //@ts-expect-error
-        is_active: Joi.boolean().required(),
+        brand_name: Joi.string(),
+        is_active: Joi.boolean(),
         order_sequence: Joi.number(),
         show_on_homescreen: Joi.boolean(),
         banner_image: Joi.string(),

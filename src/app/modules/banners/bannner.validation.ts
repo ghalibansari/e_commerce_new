@@ -14,7 +14,6 @@ export abstract class BannerValidation extends BaseValidation {
 
     static readonly editBanner = Joi.object<IBanner>({
         banner_text: Joi.string(),
-        //@ts-expect-error
         is_active: Joi.boolean(),
         order_sequence: Joi.number(),
         show_on_homescreen: Joi.boolean(),

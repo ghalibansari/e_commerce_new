@@ -67,6 +67,7 @@ export interface ICounter {
 
 
 export interface IBCommon {
+    is_active?: boolean
     delete_reason?: string
     created_by: IUser['user_id']
     updated_by: IUser['user_id']
