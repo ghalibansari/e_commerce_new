@@ -11,3 +11,4 @@ interface IStates extends Optional<IBStates, 'state_id'> { }
 interface IMStates extends Model<IBStates, IStates>, IBStates, IMCommon { }
 
 export type { IStates, IMStates };
+

@@ -1,13 +1,12 @@
 import { Application } from "express";
 import { AuthGuard, TryCatch, validateBody, validateParams } from "../../helper";
 import { BaseController } from "../BaseController";
-import { StateRepository } from "./states.repository";
-import { IMStates, IStates } from "./states.types";
-import { StatesValidation } from "./states.validation";
+import { StateRepository } from "./state.repository";
+import { IMStates, IStates } from "./state.types";
+import { StatesValidation } from "./state.validation";
 
 
 export class StateController extends BaseController<IStates, IMStates> {
-
     constructor() {
         //url, user0repo, attributes/columns, include/joints, sort, search-columns 
         super("state", new StateRepository(), ['state_id', 'name', 'is_active'], [['name', 'DESC']], [],)

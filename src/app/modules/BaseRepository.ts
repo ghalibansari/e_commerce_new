@@ -54,11 +54,15 @@ export class BaseRepository<T extends ModelCtor, U extends Model> implements IWr
         include = this.include,
     }): Promise<U[] | []> => {
         //@ts-expect-error
+        where['is_active'] === undefined && (where['is_active'] = true);
+        //@ts-expect-error
         return await this._model.findAll({ where, attributes, offset, limit, include, order, raw: true })
     };
 
 
     findOneBR = async ({ where = {}, attributes = this.attributes, include = this.include }): Promise<U | null> => {
+        //@ts-expect-error
+        where['is_active'] === undefined && (where['is_active'] = true);
         return await this._model.findOne({ where, attributes, include, raw: true })
     }
 

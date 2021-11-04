@@ -1,6 +1,6 @@
 import Joi from "joi";
 import { BaseValidation } from "../BaseValidation";
-import { IStates } from "./states.types";
+import { IStates } from "./state.types";
 
 
 export abstract class StatesValidation extends BaseValidation {

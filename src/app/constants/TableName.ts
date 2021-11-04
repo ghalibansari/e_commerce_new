@@ -58,6 +58,8 @@ export enum TableName {
     MOVEMENT_ACTIVITY = 'MovementActivity',
     RAP_PRICE = 'RapPrice',
     LOAN = 'Loan',
+    IMAGE = 'Image',
+    PRODUCT = 'Product',
     LOAN_HISTORY = 'LoanHistory',
     SKU_INFINITY_PRICE = 'SkuInfinityPrice',
     RAW_ACTIVITY = 'RawActivity',
