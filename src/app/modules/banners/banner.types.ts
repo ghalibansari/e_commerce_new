@@ -14,5 +14,5 @@ interface IBanner extends Optional<IBBanner, 'banner_id'> { }
 
 interface IMBanner extends Model<IBBanner, IBanner>, IBBanner, IMCommon { }
 
-export type { IBanner, IMBanner };
+export { IBanner, IMBanner };
 

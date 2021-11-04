@@ -10,4 +10,5 @@ interface IPincode extends Optional<IBPincode, 'pincode_id'> { }
 
 interface IMPincode extends Model<IBPincode, IPincode>, IBPincode, IMCommon { }
 
-export type { IPincode, IMPincode };
+export { IPincode, IMPincode };
+

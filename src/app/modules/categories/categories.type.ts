@@ -13,6 +13,6 @@ interface IBCategories extends IBCommon {
 
 interface ICategories extends Optional<IBCategories, 'category_id'> { }
 
-interface IMCategories  extends Model<IBCategories, ICategories>, IBCategories, IMCommon {}
+interface IMCategories extends Model<IBCategories, ICategories>, IBCategories, IMCommon { }
 
-export type { ICategories, IMCategories };
+export { ICategories, IMCategories };

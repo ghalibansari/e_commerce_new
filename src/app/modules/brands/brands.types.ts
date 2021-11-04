@@ -14,5 +14,5 @@ interface IBrands extends Optional<IBBrands, 'brand_id'> { }
 
 interface IMBrands extends Model<IBBrands, IBrands>, IBBrands, IMCommon { }
 
-export type { IBrands, IMBrands };
+export { IBrands, IMBrands };
 1
