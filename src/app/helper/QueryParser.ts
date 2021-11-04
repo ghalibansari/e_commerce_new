@@ -1,6 +1,7 @@
-import { NextFunction, Request, Response } from 'express'
+import { NextFunction, Request, Response } from 'express';
+import moment from 'moment';
+import { JsonResponse } from './JsonResponse';
 
-import moment from 'moment'
 
 
 const parseBoolFromString = async (value: any): Promise<any> => {
@@ -13,7 +14,7 @@ const parseBoolFromString = async (value: any): Promise<any> => {
     else if (!isNaN(value)) {
         return Number(value);
     } else {
-        console.log(moment(value).isValid(),"moment(value).isValid()")
+        console.log(moment(value).isValid(), "moment(value).isValid()")
         if (moment(value).isValid()) {
             return new Date(value);
         }
@@ -60,9 +61,15 @@ const parseObject = async (obj: { [x: string]: any }): Promise<any> => {
 
 const queryParser = () => {
     return async (req: Request, res: Response, next: NextFunction) => {
-        req.query = await parseObject(req.query);
-        next();
+        try {
+            req.query = await parseObject(req.query);
+            next();
+        } catch (err: any) {
+            res.locals.message = `QuerParam: ${err?.message ?? err}`
+            await JsonResponse.jsonError(req, res)
+        }
     }
 }
 
-export { queryParser, parseObject }
+export { queryParser, parseObject };
+
