@@ -3,7 +3,7 @@ import { AuthGuard, TryCatch, validateBody, validateParams } from "../../helper"
 import { BaseController } from "../BaseController";
 import { ProductRepository } from "./product.repository";
 import { IMProduct, IProduct } from "./product.type";
-import { ProductValidation } from "./productvalidation";
+import { ProductValidation } from "./product.validation";
 
 
 export class ProductController extends BaseController<IProduct, IMProduct> {

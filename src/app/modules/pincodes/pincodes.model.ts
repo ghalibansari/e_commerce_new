@@ -40,5 +40,7 @@ async function doStuffWithUserModel() {
 
 //doStuffWithUserModel()
 
+// PincodeMd.hasOne(StatesMd)
+
 export { PincodeMd };
 
