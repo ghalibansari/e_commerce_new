@@ -19,7 +19,9 @@ const CategoriesMd = DB.define<IMCategories>(
         category_name: { allowNull: false, type: DataTypes.STRING },
         parent_id: { type: DataTypes.UUID, defaultValue: null },
         order_sequence: { allowNull: false, type: DataTypes.INTEGER },
-        show_on_homeScreen: { allowNull: false, type: DataTypes.BOOLEAN, defaultValue: false },
+        show_on_homeScreen: { type: DataTypes.BOOLEAN, defaultValue: false },
+        show_on_header: { type: DataTypes.BOOLEAN, defaultValue: false },
+        tag_id: { type: DataTypes.UUID, defaultValue: null },
         category_image: { allowNull: false, type: DataTypes.STRING, },
         ...modelCommonColumns
     },
@@ -27,7 +29,7 @@ const CategoriesMd = DB.define<IMCategories>(
 );
 
 async function doStuffWithUserModel() {
-    await CategoriesMd.sync()
+    await CategoriesMd.sync({ force: true })
     // await UserMd.sync({ force: true })
     const id = uuidv4()
 
@@ -47,7 +49,6 @@ async function doStuffWithUserModel() {
 }
 
 // doStuffWithUserModel()
-//categoriesMd.sync()
 
 export { CategoriesMd };
 

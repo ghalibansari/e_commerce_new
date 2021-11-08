@@ -1,15 +1,17 @@
-import Joi, { required } from "joi";
+import Joi from "joi";
 import { BaseValidation } from "../BaseValidation";
 import { ICategories } from "./categories.type";
 
 export abstract class categoriesValidation extends BaseValidation {
     static readonly addCategorie = Joi.object<ICategories>({
         category_name: Joi.string().required(),
-        parent_id: Joi.string().required(),
+        parent_id: Joi.string(),
         order_sequence: Joi.number().required(),
         show_on_homeScreen: Joi.boolean().required(),
-        category_image: Joi.string().required()
-        });
+        category_image: Joi.string().required(),
+        tag_id: Joi.string(),
+        show_on_header: Joi.boolean().required()
+    });
 
     static readonly addCategorieBulk = Joi.array().items(this.addCategorie)
 
@@ -19,6 +21,8 @@ export abstract class categoriesValidation extends BaseValidation {
         is_active: Joi.boolean(),
         order_sequence: Joi.number(),
         show_on_homeScreen: Joi.boolean(),
-        category_image: Joi.string()
+        category_image: Joi.string(),
+        tag_id: Joi.string(),
+        show_on_header: Joi.boolean()
     });
 };
