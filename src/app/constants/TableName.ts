@@ -20,6 +20,7 @@ export enum TableName {
     LAB = 'Lab',
     BRAND = 'Brand',
     COMPANY = 'Company',
+    TAG_MASTER = "Tags",
     CATEGORIES = 'Categories',
     STATE_MASTER = 'States',
     CITY = "City",

@@ -14,6 +14,7 @@ import { StateController } from "./modules/state/state.controller";
 import { TemplateController } from "./modules/template/template.controller";
 import { UserController } from "./modules/user/user.controller";
 import { CityController } from "./modules/city/city.controller";
+import { TagController } from "./modules/Tags/tag.controller";
 
 export function registerRoutes(app: Application): void {
     new UserController().register(app)
@@ -31,4 +32,5 @@ export function registerRoutes(app: Application): void {
     new OrderCouponController().register(app)
     new OrderProductController().register(app)
     new CityController().register(app)
-}
+    new TagController().register(app)
+};
