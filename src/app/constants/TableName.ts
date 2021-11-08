@@ -22,6 +22,7 @@ export enum TableName {
     COMPANY = 'Company',
     CATEGORIES = 'Categories',
     STATE_MASTER = 'States',
+    CITY = "City",
     ROLE = 'Role',
     ADDRESS = 'Address',
     COUPON = 'Coupon',
