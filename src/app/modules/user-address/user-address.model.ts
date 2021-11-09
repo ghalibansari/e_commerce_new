@@ -38,7 +38,7 @@ const UserAddressMd = DB.define<IMUserAddress>(
 //         user_id: id,
 //         is_default: true,
 //         address_1: "Maharashtra",
-//         address_2: "Maharashtra,aman",
+//         address_2: "Maharashtra",
 //         city: "mumbai",
 //         state:"mumbai",
 //         pin_code:"gh",

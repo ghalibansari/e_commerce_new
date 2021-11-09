@@ -36,7 +36,7 @@ const OrderAddressMd = DB.define<IMOrderAddress>(
 //         order_product_id: id,
 //         order_id: id,
 //         address_1: "Maharashtra",
-//         address_2: "Maharashtra,aman",
+//         address_2: "Maharashtra",
 //         city: "mumbai",
 //         state:"mumbai",
 //         pin_code:"1001",

@@ -8,7 +8,7 @@ import { ImageController } from "./modules/image/image.controller";
 import { OrderCouponController } from "./modules/order-coupon/order-coupon.controller";
 import { OrderProductController } from "./modules/orders-products/order-products.controller";
 import { OrderController } from "./modules/orders/order.controller";
-import { PincodeController } from "./modules/pincodes/pincodes.controller";
+import { PinCodeController } from "./modules/pincode/pincode.controller";
 import { ProductController } from "./modules/products/product.controller";
 import { StateController } from "./modules/state/state.controller";
 import { TemplateController } from "./modules/template/template.controller";
@@ -24,7 +24,7 @@ export function registerRoutes(app: Application): void {
     new BrandController().register(app)
     new BannerController().register(app)
     new StateController().register(app)
-    new PincodeController().register(app)
+    new PinCodeController().register(app)
     new ImageController().register(app)
     new ProductController().register(app)
     new CouponController().register(app)
