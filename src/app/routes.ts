@@ -1,8 +1,9 @@
 import { Application } from "express";
 import { AuthController } from "./modules/auth/auth.controller";
 import { BannerController } from "./modules/banners/banner.controller";
-import { BrandController } from "./modules/brands/brands.controller";
+import { BrandController } from "./modules/brand/brand.controller";
 import { CategoryController } from "./modules/categories/categories.controller";
+import { CityController } from "./modules/city/city.controller";
 import { CouponController } from "./modules/coupon/coupon.controller";
 import { ImageController } from "./modules/image/image.controller";
 import { OrderCouponController } from "./modules/order-coupon/order-coupon.controller";
@@ -11,10 +12,10 @@ import { OrderController } from "./modules/orders/order.controller";
 import { PinCodeController } from "./modules/pincode/pincode.controller";
 import { ProductController } from "./modules/products/product.controller";
 import { StateController } from "./modules/state/state.controller";
+import { TagController } from "./modules/Tags/tag.controller";
 import { TemplateController } from "./modules/template/template.controller";
 import { UserController } from "./modules/user/user.controller";
-import { CityController } from "./modules/city/city.controller";
-import { TagController } from "./modules/Tags/tag.controller";
+
 
 export function registerRoutes(app: Application): void {
     new UserController().register(app)
@@ -33,4 +34,5 @@ export function registerRoutes(app: Application): void {
     new OrderProductController().register(app)
     new CityController().register(app)
     new TagController().register(app)
+    new BrandController().register(app)
 };

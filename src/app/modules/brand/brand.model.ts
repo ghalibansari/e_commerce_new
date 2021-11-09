@@ -2,11 +2,10 @@ import { DataTypes } from 'sequelize';
 import { v4 as uuidv4 } from 'uuid';
 import { DB } from "../../../configs/DB";
 import { TableName } from "../../constants";
-import { BannerMd } from '../banners/banner.model';
 import { modelCommonColumns, modelCommonOptions } from '../BaseModel';
-import { IMBrands } from "./brands.types";
+import { IMBrand } from './brand.types';
 
-const BrandsMd = DB.define<IMBrands>(
+const BrandMd = DB.define<IMBrand>(
     TableName.BRAND,
     {
         brand_id: {
@@ -15,8 +14,10 @@ const BrandsMd = DB.define<IMBrands>(
         },
         brand_name: { allowNull: false, type: DataTypes.STRING },
         order_sequence: { allowNull: false, type: DataTypes.INTEGER },
-        show_on_homescreen: { allowNull: false, type: DataTypes.BOOLEAN },
+        show_on_homescreen: { type: DataTypes.BOOLEAN },
         banner_image: { type: DataTypes.STRING, allowNull: true },
+        show_on_header: { type: DataTypes.BOOLEAN },
+        tag_id: { type: DataTypes.UUID },
         ...modelCommonColumns
     },
     modelCommonOptions
@@ -24,9 +25,9 @@ const BrandsMd = DB.define<IMBrands>(
 
 async function doStuffWithUserModel() {
 
-    // await brandsMd.sync()
+    await BrandMd.sync({ force: true })
 
-    const newUser = await BrandsMd.create({
+    const newUser = await BrandMd.create({
         brand_id: uuidv4(),
         brand_name: "myBrand",
         order_sequence: 12,
@@ -39,11 +40,12 @@ async function doStuffWithUserModel() {
         .catch(e => console.log(e))
 }
 
-BrandsMd.belongsTo(BannerMd, {
-    foreignKey: 'banner_id',
-    as: 'banner'
-})
+// BrandsMd.belongsTo(BannerMd, {
+//     foreignKey: 'banner_id',
+//     as: 'banner'
+// })
 
-//doStuffWithUserModel();
+// doStuffWithUserModel();
 
-export { BrandsMd };
+export { BrandMd };
+
