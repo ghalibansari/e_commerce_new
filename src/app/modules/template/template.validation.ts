@@ -5,6 +5,9 @@ import { ITemplate, templateTypeEnum } from "./template.types";
 
 export abstract class TemplateValidation extends BaseValidation {
     static readonly addTemplate = Joi.object<ITemplate>({
+        to:Joi.string(),
+        cc:Joi.string(),
+        bcc:Joi.string(),
         title: Joi.string().min(3).max(100).required(),
         template_name: Joi.string().min(3).max(100).required(),
         subject: Joi.string().email().required(),
@@ -16,6 +19,9 @@ export abstract class TemplateValidation extends BaseValidation {
     static readonly addTemplateBulk = Joi.array().items(this.addTemplate);
 
     static readonly editTemplate = Joi.object<ITemplate>({
+        to:Joi.string(),
+        cc:Joi.string(),
+        bcc:Joi.string(),
         title: Joi.string().min(3).max(100),
         template_name: Joi.string().min(3).max(100),
         subject: Joi.string().email(),

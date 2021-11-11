@@ -3,37 +3,40 @@ import { v4 as uuidv4 } from 'uuid';
 import { DB } from "../../../configs/DB";
 import { TableName } from "../../constants";
 import { modelCommonColumns, modelCommonOptions } from '../BaseModel';
-import { IMTemplate, templateTypeEnum } from "./template.types";
+import { IMTemplate, ITemplate, templateTypeEnum } from "./template.types";
 
 
 const TemplateMd = DB.define<IMTemplate>(
-    TableName.TEMPLATE,
-    {
-        template_id: {
-            allowNull: false, autoIncrement: false, primaryKey: true,
-            type: DataTypes.UUID, defaultValue: () => uuidv4()
-        },
-        template_name: { type: DataTypes.STRING, unique: true },
-        subject: { type: DataTypes.STRING },
-        title: { type: DataTypes.STRING },
-        body: { type: DataTypes.TEXT },
-        params: { type: DataTypes.ARRAY(DataTypes.STRING) },
-        type: { type: DataTypes.STRING },
-        ...modelCommonColumns
+  TableName.TEMPLATE,
+  {
+    template_id: {
+      allowNull: false, autoIncrement: false, primaryKey: true,
+      type: DataTypes.UUID, defaultValue: () => uuidv4()
     },
-    modelCommonOptions
+    to: { type: DataTypes.STRING },
+    cc: { type: DataTypes.STRING },
+    bcc: { type: DataTypes.STRING },
+    template_name: { type: DataTypes.STRING, unique: true },
+    subject: { type: DataTypes.STRING },
+    title: { type: DataTypes.STRING },
+    body: { type: DataTypes.TEXT },
+    params: { type: DataTypes.ARRAY(DataTypes.STRING) },
+    type: { type: DataTypes.STRING },
+    ...modelCommonColumns
+  },
+  modelCommonOptions
 );
 
 async function doStuffWithUserModel() {
-    // await TemplateMd.sync({ force: true });
-    const id = uuidv4();
+  // await TemplateMd.sync({ force: true });
+  const id = uuidv4();
 
-    const newUser = await TemplateMd.create({
-        template_id: id,
-        template_name: "demo",
-        title: `<h1>Title {{NAME}}</h1>`,
-        subject: `Welcome {{NAME}}.`,
-        body: `<mjml>
+  const newUser = await TemplateMd.create({
+    template_id: id,
+    template_name: "demo",
+    title: `<h1>Title {{NAME}}</h1>`,
+    subject: `Welcome {{NAME}}.`,
+    body: `<mjml>
         <mj-body>
           <mj-section>
             <mj-column>
@@ -44,13 +47,13 @@ async function doStuffWithUserModel() {
           </mj-section>
         </mj-body>
       </mjml>`,
-        params: ['NAME'],
-        type: templateTypeEnum.email,
-        created_by: id,
-        updated_by: id
-    })
-        .then(() => console.log("Created default template..."))
-        .catch(e => console.log(e));
+    params: [''],
+    type: templateTypeEnum.email,
+    created_by: id,
+    updated_by: id
+  })
+    .then(() => console.log("Created default template..."))
+    .catch(e => console.log(e));
 };
 
 
