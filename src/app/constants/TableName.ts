@@ -47,9 +47,9 @@ export enum TableName {
     BUSINESS = 'Business',
     CLIENT_PRICE = 'ClientPrice',
     COMMENT = 'Comment',
-    CART ='Cart',
+    CART = 'Cart',
     CONTACT_US = 'ContactUs',
-    ORDER_ADDRESS ='OrderAddress',
+    ORDER_ADDRESS = 'OrderAddress',
     BANNER = 'Banner',
     COMPANY_SUB_TYPE = 'CompanySubType',
     COMPANY_TYPE = 'CompanyType',
@@ -76,15 +76,16 @@ export enum TableName {
     TRANSACTION = 'Transaction',
     TRANSIT = 'Transit',
     VERIFICATION = 'Verification',
-    
+
     ACCESS = "access",
     ALERT_CONFIGURATION = "alertConfiguration",
-    AUTH = "Auth"
+    AUTH = "Auth",
+    EMAIL_MASTER = "Email",
 }
 
 export enum Tables {    //Todo work on this...
     //mongo Table Name
-   
+
     SKU_VALUE_HISTORY = 'skuValueHistory',
     IAV = 'Iav',
     GIA = 'Gia',
@@ -131,5 +132,5 @@ export enum Tables {    //Todo work on this...
     TRANSACTION = 'Transaction',
     TRANSIT = 'Transit',
     VERIFICATION = 'Verification',
-    
+
 }

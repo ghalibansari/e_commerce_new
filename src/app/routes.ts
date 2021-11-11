@@ -5,6 +5,7 @@ import { BrandController } from "./modules/brand/brand.controller";
 import { CategoryController } from "./modules/categories/categories.controller";
 import { CityController } from "./modules/city/city.controller";
 import { CouponController } from "./modules/coupon/coupon.controller";
+import { EmailController } from "./modules/emailHistory/email.controller";
 import { ImageController } from "./modules/image/image.controller";
 import { OrderCouponController } from "./modules/order-coupon/order-coupon.controller";
 import { OrderProductController } from "./modules/orders-products/order-products.controller";
@@ -35,4 +36,5 @@ export function registerRoutes(app: Application): void {
     new CityController().register(app)
     new TagController().register(app)
     new BrandController().register(app)
+    new EmailController().register(app)
 };
