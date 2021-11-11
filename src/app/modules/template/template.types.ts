@@ -9,10 +9,10 @@ export enum templateTypeEnum {
 
 interface IBTemplate extends IBCommon {
     template_id: string;
+    name: string
     to?: string[],
     cc?: string[],
     bcc?: string[],
-    template_name: string
     subject: string
     title: string
     body: string
