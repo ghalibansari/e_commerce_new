@@ -1,40 +1,42 @@
-
-import { EmailRepository } from '../modules/emailHistory/email.repository';
-import nodemailer from 'nodemailer';
+import { createTransport, Transporter } from 'nodemailer';
 import { v4 } from 'uuid';
-// import juice = require("juice");
-// import * as juice from 'juice';
+import { EmailRepository } from '../modules/emailHistory/email.repository';
+import { LoggerMd } from '../modules/logger/logger.model';
+import { loggerLevelEnum } from '../modules/logger/logger.types';
 
-// import { Environment, IMailConfig } from "../../configs/environments/environment";
 
 
 type ISendMail = { to: string, cc?: string, bcc?: string, subject: string, html: string };
 export class NotificationService {
-    transporter: nodemailer.Transporter;
-    from = '19tcs033.aman.a52@gmail.com';
-    
+    transporter: Transporter;
+    from = '';
+
     constructor() {
-        this.transporter = nodemailer.createTransport({
+        this.transporter = createTransport({
             service: 'gmail',
             auth: {
                 user: this.from,
-                pass: '7506983549'
+                pass: ''
             }
         })
     };
 
-    sendMail = async ({ to, cc, bcc, subject, html }: ISendMail) => {
-        let temp = {}
-        await this.transporter.sendMail({ from: this.from, to, cc, bcc, subject, html })
-        .then(res => {
-            temp = {res}
-            console.log("........", res)
-            //@ts-expect-error
-            new EmailRepository().createOneBR({newData: {to, cc, bcc, subject, body: html}, created_by: v4()})
-        })
-        .catch(err => {
-            temp = {err}
-            console.log("pppppppppp", err)
-        })
+    email = async ({ to, cc, bcc, subject, html }: ISendMail) => {
+        let success = false;
+        try {
+            let result = '';
+            await this.transporter.sendMail({ from: this.from, to, cc, bcc, subject, html })
+                .then(res => {
+                    success = true;
+                    result = JSON.stringify(res);
+                })
+                .catch(err => {
+                    result = JSON.stringify(err);
+                })
+            await new EmailRepository().createOneBR({ newData: { from: this.from, to, cc, bcc, subject, html, success, result }, created_by: v4() })
+        } catch (err: any) {
+            LoggerMd.create({ stack: JSON.stringify(err.stack), level: loggerLevelEnum.api, message: JSON.stringify(err.message), updated_by: v4(), created_by: v4() }).catch((e: any) => console.log(e, " Failed logging"))
+        }
+        return success;
     }
 }

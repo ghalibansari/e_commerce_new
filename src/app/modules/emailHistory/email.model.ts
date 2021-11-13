@@ -1,21 +1,16 @@
+import { cloneDeep } from 'lodash';
 import { DataTypes } from 'sequelize';
 import { v4 as uuidv4 } from 'uuid';
 import { DB } from "../../../configs/DB";
 import { TableName } from "../../constants";
-import { modelCommonColumns, modelCommonOptions } from '../BaseModel';
+import { modelCommonColumns, modelCommonOptions, modelCommonPrimaryKeyProperty } from '../BaseModel';
 import { IMEmail } from './email.types';
 
 
 const EmailMd = DB.define<IMEmail>(
     TableName.EMAIL_MASTER,
     {
-        email_id: {
-            allowNull: false,
-            autoIncrement: false,
-            primaryKey: true,
-            type: DataTypes.UUID,
-            defaultValue: () => uuidv4()
-        },
+        email_id: cloneDeep(modelCommonPrimaryKeyProperty),
         to: {
             allowNull: false,
             type: DataTypes.STRING
@@ -26,11 +21,11 @@ const EmailMd = DB.define<IMEmail>(
         },
         subject: {
             allowNull: false,
-            type: DataTypes.STRING
+            type: DataTypes.TEXT
         },
         html: {
             allowNull: false,
-            type: DataTypes.STRING
+            type: DataTypes.TEXT
         },
         cc: {
             type: DataTypes.STRING
@@ -39,12 +34,17 @@ const EmailMd = DB.define<IMEmail>(
             type: DataTypes.STRING
         },
         attachment: {
-            type: DataTypes.STRING
+            type: DataTypes.TEXT
         },
-
-        ...modelCommonColumns
+        success: {
+            type: DataTypes.BOOLEAN
+        },
+        result: {
+            type: DataTypes.TEXT
+        },
+        ...cloneDeep(modelCommonColumns)
     },
-    modelCommonOptions
+    cloneDeep(modelCommonOptions)
 );
 
 async function doStuffWithUserModel() {
@@ -59,7 +59,9 @@ async function doStuffWithUserModel() {
         html: "html",
         subject: "Hello",
         created_by: id,
-        updated_by: id
+        updated_by: id,
+        success: true,
+        result: "success"
     })
         .then(() => console.log("Created default user..."))
         .catch(e => console.log(e))
@@ -67,6 +69,7 @@ async function doStuffWithUserModel() {
 };
 
 // doStuffWithUserModel()
+// EmailMd.sync({ force: true })
 
 export { EmailMd };
 

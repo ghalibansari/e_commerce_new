@@ -1,15 +1,14 @@
 import { Model, Optional } from "sequelize";
 import { IBCommon, IMCommon } from "../baseTypes";
-import { IMUser } from "../user/user.types";
 
 interface IBLogger extends IBCommon {
     logger_id: string;
-    url: string;
-    method: string;
-    params: string;
-    query: string;
-    body: string;
-    module: string;
+    url?: string;
+    method?: string;
+    params?: string;
+    query?: string;
+    body?: string;
+    module?: string;
     message: string;
     stack: string;
     level: loggerLevelEnum;
@@ -24,6 +23,7 @@ export enum loggerLevelEnum {
     frontend = 'frontend'
 }
 
-interface IMLogger extends Model<IBLogger, ILogger>, IBLogger, IMCommon {}
+interface IMLogger extends Model<IBLogger, ILogger>, IBLogger, IMCommon { }
 
 export { ILogger, IMLogger };
+

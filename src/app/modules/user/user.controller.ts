@@ -1,12 +1,11 @@
-import { NotificationService } from "../../helper/NotificationService";
 import { Application, Request, Response } from "express";
 import { Messages } from "../../constants";
 import { AuthGuard, DBTransaction, JsonResponse, TryCatch, validateBody, validateParams } from "../../helper";
 import { BaseController } from "../BaseController";
+import { BaseHelper } from "../BaseHelper";
 import { UserRepository } from "./user.repository";
 import { IMUser, IUser } from "./user.types";
 import { UserValidation } from "./user.validation";
-import { BaseHelper } from "../BaseHelper";
 
 
 export class UserController extends BaseController<IUser, IMUser> {
@@ -39,7 +38,7 @@ export class UserController extends BaseController<IUser, IMUser> {
     };
 
     test = async (req: Request, res: Response): Promise<void> => {
-        const data = await new BaseHelper().email({template_name: 'demo', to: 'amangoswami2042000@gmail.com', cc: 'ghdlin@gmail.com', paramsVariable: {NAME: 'AMAN', AGE: 19}})
+        const data = await new BaseHelper().sendEmail({ template_name: 'demo', to: 'amangoswami2042000@gmail.com', cc: 'ghdlin@gmail.com', paramsVariable: { NAME: 'AMAN', AGE: 19 } })
         // const data = await new NotificationService().sendMail({to: 'amangoswami2042000@gmail.com, ak8828979484@gmail.com', subject: 'terter bro new mail', html: `<h1>hellooo pppp</h1>`});
         res.locals = { data, status: true, message: Messages.CREATE_SUCCESSFUL }
         return await JsonResponse.jsonSuccess(req, res, `test`)

@@ -10,7 +10,9 @@ interface IBEmail extends IBCommon {
     cc?: string;
     error?: string;
     bcc?: string;
-    attachment?: string
+    attachment?: string,
+    success: boolean
+    result: string
 };
 
 interface IEmail extends Optional<IBEmail, "email_id"> { }
