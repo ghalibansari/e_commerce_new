@@ -1,25 +1,23 @@
+import { cloneDeep } from 'lodash';
 import { DataTypes } from 'sequelize';
 import { v4 as uuidv4 } from 'uuid';
 import { DB } from "../../../configs/DB";
 import { TableName } from "../../constants";
-import { modelCommonColumns, modelCommonOptions } from '../BaseModel';
+import { modelCommonColumns, modelCommonOptions, modelCommonPrimaryKeyProperty } from '../BaseModel';
 import { IMBanner } from "./banner.types";
 
 
 const BannerMd = DB.define<IMBanner>(
     TableName.BANNER,
     {
-        banner_id: {
-            allowNull: false, autoIncrement: false, primaryKey: true,
-            type: DataTypes.UUID, defaultValue: () => uuidv4()
-        },
+        banner_id: cloneDeep(modelCommonPrimaryKeyProperty),
         banner_text: { allowNull: false, type: DataTypes.STRING },
         order_sequence: { allowNull: false, type: DataTypes.INTEGER },
         show_on_homescreen: { allowNull: false, type: DataTypes.BOOLEAN },
         banner_image: { type: DataTypes.STRING, allowNull: true },
-        ...modelCommonColumns
+        ...cloneDeep(modelCommonColumns)
     },
-    modelCommonOptions
+    cloneDeep(modelCommonOptions)
 );
 
 async function doStuffWithUserModel() {

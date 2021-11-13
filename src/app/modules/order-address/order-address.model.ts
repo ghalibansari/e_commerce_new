@@ -1,30 +1,25 @@
+import { cloneDeep } from 'lodash';
 import { DataTypes } from 'sequelize';
 import { v4 as uuidv4 } from 'uuid';
 import { DB } from "../../../configs/DB";
 import { TableName } from "../../constants";
-import { modelCommonColumns, modelCommonOptions } from '../BaseModel';
+import { modelCommonColumns, modelCommonOptions, modelCommonPrimaryKeyProperty } from '../BaseModel';
 import { IMOrderAddress } from './order-address.types';
 
 
 const OrderAddressMd = DB.define<IMOrderAddress>(
     TableName.ORDER_ADDRESS,
     {
-        order_product_id: {
-            allowNull: false,
-            autoIncrement: false,
-            primaryKey: true,
-            type: DataTypes.UUID,
-            defaultValue: () => uuidv4()
-        },
+        order_product_id: cloneDeep(modelCommonPrimaryKeyProperty),
         order_id: { allowNull: false, type: DataTypes.UUID },
         address_1: { allowNull: false, type: DataTypes.STRING },
         address_2: { allowNull: false, type: DataTypes.STRING, },
         city: { allowNull: false, type: DataTypes.STRING, },
         state:  { allowNull: false, type: DataTypes.STRING, },
         pin_code:  { allowNull: false, type: DataTypes.STRING, },
-        ...modelCommonColumns
+        ...cloneDeep(modelCommonColumns)
     },
-    modelCommonOptions
+    cloneDeep(modelCommonOptions)
 );
 
 // async function doStuffWithUserModel() {

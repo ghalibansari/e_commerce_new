@@ -1,26 +1,21 @@
+import { cloneDeep } from "lodash";
 import { DataTypes } from "sequelize";
 import { createModuleResolutionCache } from "typescript";
 import { v4 as uuidv4 } from "uuid";
 import { DB } from "../../../configs/DB";
 import { TableName } from "../../constants";
-import { modelCommonOptions, modelCommonColumns } from "../BaseModel";
+import { modelCommonColumns, modelCommonOptions, modelCommonPrimaryKeyProperty } from "../BaseModel";
 import { IMCity } from "./city.types";
 
 
 const CityMd = DB.define<IMCity>(
     TableName.CITY,
     {
-        city_id: {
-            allowNull: false,
-            autoIncrement: false,
-            primaryKey: true,
-            type: DataTypes.UUID,
-            defaultValue: () => uuidv4()
-        },
+        city_id: cloneDeep(modelCommonPrimaryKeyProperty),
         name: { allowNull: false, type: DataTypes.STRING },
-        ...modelCommonColumns
+        ...cloneDeep(modelCommonColumns)
     },
-    modelCommonOptions
+    cloneDeep(modelCommonOptions)
 );
 
 async function doStuffWithUserModel() {

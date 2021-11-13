@@ -1,21 +1,16 @@
+import { cloneDeep } from 'lodash';
 import { DataTypes } from 'sequelize';
 import { v4 as uuidv4 } from 'uuid';
 import { DB } from "../../../configs/DB";
 import { TableName } from "../../constants";
-import { modelCommonColumns, modelCommonOptions } from '../BaseModel';
+import { modelCommonColumns, modelCommonOptions, modelCommonPrimaryKeyProperty } from '../BaseModel';
 import { IMCategories } from './categories.type';
 
 
 const CategoriesMd = DB.define<IMCategories>(
     TableName.CATEGORIES,
     {
-        category_id: {
-            allowNull: false,
-            autoIncrement: false,
-            primaryKey: true,
-            type: DataTypes.UUID,
-            defaultValue: () => uuidv4()
-        },
+        category_id: cloneDeep(modelCommonPrimaryKeyProperty),
         category_name: { allowNull: false, type: DataTypes.STRING },
         parent_id: { type: DataTypes.UUID, defaultValue: null },
         order_sequence: { allowNull: false, type: DataTypes.INTEGER },
@@ -23,9 +18,9 @@ const CategoriesMd = DB.define<IMCategories>(
         show_on_header: { type: DataTypes.BOOLEAN, defaultValue: false },
         tag_id: { type: DataTypes.UUID, defaultValue: null },
         category_image: { allowNull: false, type: DataTypes.STRING, },
-        ...modelCommonColumns
+        ...cloneDeep(modelCommonColumns)
     },
-    modelCommonOptions
+    cloneDeep(modelCommonOptions)
 );
 
 async function doStuffWithUserModel() {

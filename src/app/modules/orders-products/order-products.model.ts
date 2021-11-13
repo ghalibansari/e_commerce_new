@@ -1,21 +1,16 @@
+import { cloneDeep } from 'lodash';
 import { DataTypes } from 'sequelize';
 import { v4 as uuidv4 } from 'uuid';
 import { DB } from "../../../configs/DB";
 import { TableName } from "../../constants";
-import { modelCommonColumns, modelCommonOptions } from '../BaseModel';
+import { modelCommonColumns, modelCommonOptions, modelCommonPrimaryKeyProperty } from '../BaseModel';
 import { IMOrderProduct } from './order-products.type';
 
 
 const OrderProductMd = DB.define<IMOrderProduct>(
     TableName.ORDER_PRODUCT,
     {
-        order_product_id: {
-            allowNull: false,
-            autoIncrement: false,
-            primaryKey: true,
-            type: DataTypes.UUID,
-            defaultValue: () => uuidv4()
-        },
+        order_product_id: cloneDeep(modelCommonPrimaryKeyProperty),
         product_id: {
             type: DataTypes.UUID,
         },
@@ -28,9 +23,9 @@ const OrderProductMd = DB.define<IMOrderProduct>(
         amount: {
             type: DataTypes.FLOAT,
         },
-        ...modelCommonColumns
+        ...cloneDeep(modelCommonColumns)
     },
-    modelCommonOptions
+    cloneDeep(modelCommonOptions)
 );
 
 // ImageMd.belongsTo(UserMd, { foreignKey: 'user_is', as: 'user' })

@@ -1,21 +1,16 @@
+import { cloneDeep } from 'lodash';
 import { DataTypes } from 'sequelize';
 import { v4 as uuidv4 } from 'uuid';
 import { DB } from "../../../configs/DB";
 import { TableName } from "../../constants";
-import { modelCommonColumns, modelCommonOptions } from '../BaseModel';
+import { modelCommonColumns, modelCommonOptions, modelCommonPrimaryKeyProperty } from '../BaseModel';
 import { IMCoupon } from './coupon.type';
 
 
 const CouponMd = DB.define<IMCoupon>(
     TableName.COUPON,
     {
-        coupon_id: {
-            allowNull: false,
-            autoIncrement: false,
-            primaryKey: true,
-            type: DataTypes.UUID,
-            defaultValue: () => uuidv4()
-        },
+        coupon_id: cloneDeep(modelCommonPrimaryKeyProperty),
         type: {
             type: DataTypes.BOOLEAN,
         },
@@ -25,9 +20,9 @@ const CouponMd = DB.define<IMCoupon>(
         min_cart_amount: { allowNull: false, type: DataTypes.INTEGER },
         offer_start_date: { type: DataTypes.DATE },
         offer_end_date: { type: DataTypes.DATE },
-        ...modelCommonColumns
+        ...cloneDeep(modelCommonColumns)
     },
-    modelCommonOptions
+    cloneDeep(modelCommonOptions)
 );
 
 // ImageMd.belongsTo(UserMd, { foreignKey: 'user_is', as: 'user' })

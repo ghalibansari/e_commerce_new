@@ -1,28 +1,23 @@
+import { cloneDeep } from 'lodash';
 import { DataTypes } from 'sequelize';
 import { v4 as uuidv4 } from 'uuid';
 import { DB } from "../../../configs/DB";
 import { TableName } from "../../constants";
-import { modelCommonColumns, modelCommonOptions } from '../BaseModel';
+import { modelCommonColumns, modelCommonOptions, modelCommonPrimaryKeyProperty } from '../BaseModel';
 import { IMImage } from './image.type';
 
 
 const ImageMd = DB.define<IMImage>(
     TableName.IMAGE,
     {
-        image_id: {
-            allowNull: false,
-            autoIncrement: false,
-            primaryKey: true,
-            type: DataTypes.UUID,
-            defaultValue: () => uuidv4()
-        },
+        image_id: cloneDeep(modelCommonPrimaryKeyProperty),
         product_id: {
             type: DataTypes.UUID,
         },
         image_URL: { allowNull: false, type: DataTypes.STRING },
-        ...modelCommonColumns
+        ...cloneDeep(modelCommonColumns)
     },
-    modelCommonOptions
+    cloneDeep(modelCommonOptions)
 );
 
 // ImageMd.belongsTo(UserMd, { foreignKey: 'user_is', as: 'user' })

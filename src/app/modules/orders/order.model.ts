@@ -1,21 +1,16 @@
+import { cloneDeep } from 'lodash';
 import { DataTypes } from 'sequelize';
 import { v4 as uuidv4 } from 'uuid';
 import { DB } from "../../../configs/DB";
 import { TableName } from "../../constants";
-import { modelCommonColumns, modelCommonOptions } from '../BaseModel';
+import { modelCommonColumns, modelCommonOptions, modelCommonPrimaryKeyProperty } from '../BaseModel';
 import { IMOrder } from './order.type';
 
 
 const OrderMd = DB.define<IMOrder>(
     TableName.ORDER,
     {
-        order_id: {
-            allowNull: false,
-            autoIncrement: false,
-            primaryKey: true,
-            type: DataTypes.UUID,
-            defaultValue: () => uuidv4()
-        },
+        order_id: cloneDeep(modelCommonPrimaryKeyProperty),
         user_id: {
             type: DataTypes.UUID,
         },
@@ -27,9 +22,9 @@ const OrderMd = DB.define<IMOrder>(
         },
         shipping_charges: { allowNull: false, type: DataTypes.INTEGER },
         status: { type: DataTypes.STRING },
-        ...modelCommonColumns
+        ...cloneDeep(modelCommonColumns)
     },
-    modelCommonOptions
+    cloneDeep(modelCommonOptions)
 );
 
 // ImageMd.belongsTo(UserMd, { foreignKey: 'user_is', as: 'user' })

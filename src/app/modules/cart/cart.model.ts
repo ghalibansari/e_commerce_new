@@ -1,27 +1,22 @@
+import { cloneDeep } from 'lodash';
 import { DataTypes } from 'sequelize';
 import { v4 as uuidv4 } from 'uuid';
 import { DB } from "../../../configs/DB";
 import { TableName } from "../../constants";
-import { modelCommonColumns, modelCommonOptions } from '../BaseModel';
+import { modelCommonColumns, modelCommonOptions, modelCommonPrimaryKeyProperty } from '../BaseModel';
 import { IMCart } from './cart.types';
 
 
 const CartMd = DB.define<IMCart>(
     TableName.CART,
     {
-        cart_id: {
-            allowNull: false,
-            autoIncrement: false,
-            primaryKey: true,
-            type: DataTypes.UUID,
-            defaultValue: () => uuidv4()
-        },
+        cart_id: cloneDeep(modelCommonPrimaryKeyProperty),
         product_id: { allowNull: false, type: DataTypes.STRING },
         user_id: { type: DataTypes.UUID, defaultValue: null },
         quantity: { allowNull: false, type: DataTypes.INTEGER },
-        ...modelCommonColumns
+        ...cloneDeep(modelCommonColumns)
     },
-    modelCommonOptions
+    cloneDeep(modelCommonOptions)
 );
 
 // async function doStuffWithUserModel() {

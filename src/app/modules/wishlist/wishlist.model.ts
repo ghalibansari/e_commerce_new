@@ -1,27 +1,22 @@
+import { cloneDeep } from 'lodash';
 import { DataTypes } from 'sequelize';
 import { v4 as uuidv4 } from 'uuid';
 import { DB } from "../../../configs/DB";
 import { TableName } from "../../constants";
-import { modelCommonColumns, modelCommonOptions } from '../BaseModel';
+import { modelCommonColumns, modelCommonOptions, modelCommonPrimaryKeyProperty } from '../BaseModel';
 import { IMWishlist } from './wishlist.type';
 
 
 const WishlistMd = DB.define<IMWishlist>(
     TableName.WISHLIST,
     {
-        wishlist_id: {
-            allowNull: false,
-            autoIncrement: false,
-            primaryKey: true,
-            type: DataTypes.UUID,
-            defaultValue: () => uuidv4()
-        },
+        wishlist_id: cloneDeep(modelCommonPrimaryKeyProperty),
         product_id: { allowNull: false, type: DataTypes.STRING },
         user_id: { type: DataTypes.UUID, defaultValue: null },
         quantity: { allowNull: false, type: DataTypes.INTEGER },
-        ...modelCommonColumns
+        ...cloneDeep(modelCommonColumns)
     },
-    modelCommonOptions
+    cloneDeep(modelCommonOptions)
 );
 
 // async function doStuffWithUserModel() {

@@ -1,28 +1,23 @@
+import { cloneDeep } from 'lodash';
 import { DataTypes } from 'sequelize';
 import { v4 as uuidv4 } from 'uuid';
 import { DB } from "../../../configs/DB";
 import { TableName } from "../../constants";
-import { modelCommonColumns, modelCommonOptions } from '../BaseModel';
+import { modelCommonColumns, modelCommonOptions, modelCommonPrimaryKeyProperty } from '../BaseModel';
 import { IMContactUs } from './contact-us.type';
 
 
 const ContactUsMd = DB.define<IMContactUs>(
     TableName.CONTACT_US,
     {
-        contact_us_id: {
-            allowNull: false,
-            autoIncrement: false,
-            primaryKey: true,
-            type: DataTypes.UUID,
-            defaultValue: () => uuidv4()
-        },
+        contact_us_id: cloneDeep(modelCommonPrimaryKeyProperty),
         name: { allowNull: false, type: DataTypes.STRING },
         email: { type: DataTypes.STRING, defaultValue: null },
         contact_no: { allowNull: false, type: DataTypes.STRING },
         message: { allowNull: false, type: DataTypes.TEXT, defaultValue: false },
-        ...modelCommonColumns
+        ...cloneDeep(modelCommonColumns)
     },
-    modelCommonOptions
+    cloneDeep(modelCommonOptions)
 );
 
 // async function doStuffWithUserModel() {

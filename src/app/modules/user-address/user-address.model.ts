@@ -1,21 +1,16 @@
+import { cloneDeep } from 'lodash';
 import { DataTypes } from 'sequelize';
 import { v4 as uuidv4 } from 'uuid';
 import { DB } from "../../../configs/DB";
 import { TableName } from "../../constants";
-import { modelCommonColumns, modelCommonOptions } from '../BaseModel';
+import { modelCommonColumns, modelCommonOptions, modelCommonPrimaryKeyProperty } from '../BaseModel';
 import { IMUserAddress } from './user-address.type';
 
 
 const UserAddressMd = DB.define<IMUserAddress>(
     TableName.USER_ADDRESS,
     {
-        address_id: {
-            allowNull: false,
-            autoIncrement: false,
-            primaryKey: true,
-            type: DataTypes.UUID,
-            defaultValue: () => uuidv4()
-        },
+        address_id: cloneDeep(modelCommonPrimaryKeyProperty),
         user_id: { allowNull: false, type: DataTypes.UUID },
         is_default: { allowNull: false, type: DataTypes.BOOLEAN, defaultValue: false },
         address_1: { allowNull: false, type: DataTypes.STRING },
@@ -23,9 +18,9 @@ const UserAddressMd = DB.define<IMUserAddress>(
         city: { allowNull: false, type: DataTypes.STRING, },
         state:  { allowNull: false, type: DataTypes.STRING, },
         pin_code:  { allowNull: false, type: DataTypes.STRING, },
-        ...modelCommonColumns
+        ...cloneDeep(modelCommonColumns)
     },
-    modelCommonOptions
+    cloneDeep(modelCommonOptions)
 );
 
 // async function doStuffWithUserModel() {

@@ -1,26 +1,24 @@
+import { cloneDeep } from 'lodash';
 import { DataTypes } from 'sequelize';
 import { v4 as uuidv4 } from 'uuid';
 import { DB } from "../../../configs/DB";
 import { TableName } from "../../constants";
-import { modelCommonColumns, modelCommonOptions } from '../BaseModel';
+import { modelCommonColumns, modelCommonOptions, modelCommonPrimaryKeyProperty } from '../BaseModel';
 import { IMBrand } from './brand.types';
 
 const BrandMd = DB.define<IMBrand>(
     TableName.BRAND,
     {
-        brand_id: {
-            allowNull: false, autoIncrement: false, primaryKey: true,
-            type: DataTypes.UUID, defaultValue: () => uuidv4()
-        },
+        brand_id: cloneDeep(modelCommonPrimaryKeyProperty),
         brand_name: { allowNull: false, type: DataTypes.STRING },
         order_sequence: { allowNull: false, type: DataTypes.INTEGER },
         show_on_homescreen: { type: DataTypes.BOOLEAN },
         banner_image: { type: DataTypes.STRING, allowNull: true },
         show_on_header: { type: DataTypes.BOOLEAN },
         tag_id: { type: DataTypes.UUID },
-        ...modelCommonColumns
+        ...cloneDeep(modelCommonColumns)
     },
-    modelCommonOptions
+    cloneDeep(modelCommonOptions)
 );
 
 async function doStuffWithUserModel() {

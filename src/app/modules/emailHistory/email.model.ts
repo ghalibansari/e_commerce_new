@@ -72,4 +72,3 @@ async function doStuffWithUserModel() {
 // EmailMd.sync({ force: true })
 
 export { EmailMd };
-

@@ -1,18 +1,16 @@
+import { cloneDeep } from 'lodash';
 import { DataTypes } from 'sequelize';
 import { v4 as uuidv4 } from 'uuid';
 import { DB } from "../../../configs/DB";
 import { TableName } from "../../constants";
-import { modelCommonColumns, modelCommonOptions } from '../BaseModel';
+import { modelCommonColumns, modelCommonOptions, modelCommonPrimaryKeyProperty } from '../BaseModel';
 import { IMTemplate, ITemplate, templateTypeEnum } from "./template.types";
 
 
 const TemplateMd = DB.define<IMTemplate>(
   TableName.TEMPLATE,
   {
-    template_id: {
-      allowNull: false, autoIncrement: false, primaryKey: true,
-      type: DataTypes.UUID, defaultValue: () => uuidv4()
-    },
+    template_id: cloneDeep(modelCommonPrimaryKeyProperty),
     name: { allowNull: false, type: DataTypes.STRING, unique: true },
     to: { type: DataTypes.ARRAY(DataTypes.STRING) },
     cc: { type: DataTypes.ARRAY(DataTypes.STRING) },
@@ -22,9 +20,9 @@ const TemplateMd = DB.define<IMTemplate>(
     body: { type: DataTypes.TEXT },
     params: { type: DataTypes.ARRAY(DataTypes.STRING) },
     type: { type: DataTypes.STRING },
-    ...modelCommonColumns
+    ...cloneDeep(modelCommonColumns)
   },
-  modelCommonOptions
+  cloneDeep(modelCommonOptions)
 );
 
 async function doStuffWithUserModel() {

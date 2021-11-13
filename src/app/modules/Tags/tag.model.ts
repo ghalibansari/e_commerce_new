@@ -1,29 +1,24 @@
+import { cloneDeep } from 'lodash';
 import { DataTypes } from 'sequelize';
 import { v4 as uuidv4 } from 'uuid';
 import { DB } from "../../../configs/DB";
 import { TableName } from "../../constants";
-import { modelCommonColumns, modelCommonOptions } from '../BaseModel';
+import { modelCommonColumns, modelCommonOptions, modelCommonPrimaryKeyProperty } from '../BaseModel';
 import { IMTag } from "./tag.types";
 
 const TagMd = DB.define<IMTag>(
     TableName.TAG_MASTER,
     {
-        tag_id: {
-            allowNull: false,
-            autoIncrement: false,
-            primaryKey: true,
-            type: DataTypes.UUID,
-            defaultValue: () => uuidv4()
-        },
+        tag_id: cloneDeep(modelCommonPrimaryKeyProperty),
         name: { allowNull: false, type: DataTypes.STRING },
 
         text_color_code: { allowNull: true, type: DataTypes.STRING },
 
         background_color_code: { allowNull: true, type: DataTypes.STRING },
-        ...modelCommonColumns
+        ...cloneDeep(modelCommonColumns)
     },
 
-    modelCommonOptions
+    cloneDeep(modelCommonOptions)
 );
 async function doStuffWithUserModel() {
 
