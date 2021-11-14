@@ -13,7 +13,7 @@ export class BaseRepository<T extends ModelCtor, U extends Model> implements IWr
         protected readonly _model: ModelCtor<U>,
         public readonly primary_key: keyof T,
         public readonly attributes: NonEmptyArray<string> = ['created_on'],
-        public readonly order: NonEmptyArray<keyof U> | NonEmptyArray<[keyof U, 'ASC' | 'DESC']>,
+        public readonly order: Array<keyof U> | Array<[keyof U, 'ASC' | 'DESC']> = [],
         public readonly include: object[] = [],
     ) { }
 
@@ -52,18 +52,19 @@ export class BaseRepository<T extends ModelCtor, U extends Model> implements IWr
         offset = 0,
         limit = 10,
         include = this.include,
+        raw = true
     }): Promise<U[] | []> => {
         //@ts-expect-error
         where['is_active'] === undefined && (where['is_active'] = true);
         //@ts-expect-error
-        return await this._model.findAll({ where, attributes, offset, limit, include, order, raw: true })
+        return await this._model.findAll({ where, attributes, offset, limit, include, order, raw })
     };
 
 
-    findOneBR = async ({ where = {}, attributes = this.attributes, include = this.include }): Promise<U | null> => {
+    findOneBR = async ({ where = {}, attributes = this.attributes, include = this.include, raw = true }): Promise<U | null> => {
         //@ts-expect-error
         where['is_active'] === undefined && (where['is_active'] = true);
-        return await this._model.findOne({ where, attributes, include, raw: true })
+        return await this._model.findOne({ where, attributes, include, raw })
     }
 
 

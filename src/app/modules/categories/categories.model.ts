@@ -24,19 +24,8 @@ const CategoriesMd = DB.define<IMCategories>(
 );
 
 
-// CategoriesMd.hasMany(CategoriesMd, { foreignKey: 'parent_id', sourceKey: 'category_id', as: 'child' });
-// CategoriesMd.hasOne(CategoriesMd, { foreignKey: 'parent_id', sourceKey: 'category_id', as: 'child' });
-// CategoriesMd.hasMany(CategoriesMd, { foreignKey: 'parent_id', sourceKey: 'category_id', as: 'child' });
-// CategoriesMd.belongsTo(CategoriesMd, { foreignKey: 'parent_id', targetKey: 'category_id', as: 'parent' });
-
-
-// CategoriesMd.hasMany(CategoriesMd, { foreignKey: "parent_id", as: "parent" });
-// CategoriesMd.belongsTo(CategoriesMd, { foreignKey: "parent_id", as: "parent" });
-// CategoriesMd.belongsToMany(CategoriesMd, { foreignKey: "category_id", targetKey: 'parent_id', as: "child", through: 'cate' });
-
-
-// CategoriesMd.hasMany(CategoriesMd, { foreignKey: "parent_id", as: 'child' });
-// CategoriesMd.belongsTo(CategoriesMd);
+CategoriesMd.hasMany(CategoriesMd, { foreignKey: "parent_id", as: "sub_cat" });
+CategoriesMd.belongsTo(CategoriesMd, { foreignKey: "parent_id", as: "parent", targetKey: "category_id" });
 
 
 async function doStuffWithUserModel() {
