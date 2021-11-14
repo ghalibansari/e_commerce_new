@@ -9,14 +9,15 @@ import { loggerLevelEnum } from '../modules/logger/logger.types';
 type ISendMail = { to: string, cc?: string, bcc?: string, subject: string, html: string };
 export class NotificationService {
     transporter: Transporter;
-    from = '';
+    from = 'temp@binaryinfocorp.com';
 
     constructor() {
         this.transporter = createTransport({
-            service: 'gmail',
+            host: "smtp.hostinger.com",
+            port: 465,
             auth: {
                 user: this.from,
-                pass: ''
+                pass: 'hTd88tpKnxdev$t'
             }
         })
     };
