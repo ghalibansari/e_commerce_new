@@ -8,7 +8,7 @@ export abstract class BannerValidation extends BaseValidation {
     static readonly addBanner = Joi.object<IBanner>({
         banner_text: Joi.string().required(),
         order_sequence: Joi.number().required(),
-        show_on_homescreen: Joi.boolean(),
+        show_on_home_screen: Joi.boolean(),
         banner_image: Joi.string(),
     });
 
@@ -16,7 +16,7 @@ export abstract class BannerValidation extends BaseValidation {
         banner_text: Joi.string(),
         is_active: Joi.boolean(),
         order_sequence: Joi.number(),
-        show_on_homescreen: Joi.boolean(),
+        show_on_home_screen: Joi.boolean(),
         banner_image: Joi.string(),
     });
 }

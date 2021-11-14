@@ -4,10 +4,10 @@ import { IBCommon, IMCommon } from "../baseTypes";
 interface IBCategories extends IBCommon {
     category_id: string
     category_name: string
-    parent_id: string
+    parent_id?: string
     is_active?: boolean
     order_sequence: number
-    show_on_homeScreen?: boolean
+    show_on_home_screen?: boolean
     category_image: string
     tag_id?: string
     show_on_header?: boolean

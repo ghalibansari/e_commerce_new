@@ -24,7 +24,7 @@ const UserMd = DB.define<IMUser>(
     cloneDeep(modelCommonOptions)
 );
 
-
+// UserMd.hasMany(AuthMd, { foreignKey: 'user_id', as: 'xxx' });
 // UserMd.hasMany(AuthMd, {
 //     foreignKey: 'user_id',
 //     as: 'auths'

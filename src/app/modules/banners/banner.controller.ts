@@ -1,13 +1,13 @@
 import { Application } from 'express';
 import { AuthGuard, TryCatch, validateBody, validateParams } from '../../helper';
 import { BaseController } from '../BaseController';
-import { BrandRepository } from './banner.repository';
+import { BannerRepository } from './banner.repository';
 import { IBanner, IMBanner } from './banner.types';
-import { BannerValidation } from './bannner.validation';
+import { BannerValidation } from './banner.validation';
 
 export class BannerController extends BaseController<IBanner, IMBanner> {
     constructor() {
-        super("banner", new BrandRepository(), ['*'], [['banner_text', 'DESC']], [], [])
+        super("banner", new BannerRepository(), ['*'], [['banner_text', 'DESC']], [], [])
         this.init();
     }
 

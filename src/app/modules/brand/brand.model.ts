@@ -1,6 +1,6 @@
 import { cloneDeep } from 'lodash';
 import { DataTypes } from 'sequelize';
-import { v4 as uuidv4 } from 'uuid';
+import { v4 } from 'uuid';
 import { DB } from "../../../configs/DB";
 import { TableName } from "../../constants";
 import { modelCommonColumns, modelCommonOptions, modelCommonPrimaryKeyProperty } from '../BaseModel';
@@ -12,9 +12,9 @@ const BrandMd = DB.define<IMBrand>(
         brand_id: cloneDeep(modelCommonPrimaryKeyProperty),
         brand_name: { allowNull: false, type: DataTypes.STRING },
         order_sequence: { allowNull: false, type: DataTypes.INTEGER },
-        show_on_homescreen: { type: DataTypes.BOOLEAN },
+        show_on_home_screen: { type: DataTypes.BOOLEAN, defaultValue: false },
         banner_image: { type: DataTypes.STRING, allowNull: true },
-        show_on_header: { type: DataTypes.BOOLEAN },
+        show_on_header: { type: DataTypes.BOOLEAN, defaultValue: false },
         tag_id: { type: DataTypes.UUID },
         ...cloneDeep(modelCommonColumns)
     },
@@ -23,25 +23,23 @@ const BrandMd = DB.define<IMBrand>(
 
 async function doStuffWithUserModel() {
 
-    await BrandMd.sync({ force: true })
+    // await BrandMd.sync({ force: true })
 
     const newUser = await BrandMd.create({
-        brand_id: uuidv4(),
+        brand_id: v4(),
         brand_name: "myBrand",
-        order_sequence: 12,
-        show_on_homescreen: true,
-        banner_image: "qwertyuiopdfghjkllkjhgfdsazxcvbnm",
-        created_by: uuidv4(),
-        updated_by: uuidv4(),
+        order_sequence: 11,
+        show_on_home_screen: true,
+        banner_image: "yahoo.com/la.img",
+        show_on_header: true,
+        created_by: v4(),
+        updated_by: v4(),
     })
         .then(() => console.log("Created default Brand..."))
         .catch(e => console.log(e))
 }
 
-// BrandsMd.belongsTo(BannerMd, {
-//     foreignKey: 'banner_id',
-//     as: 'banner'
-// })
+
 
 // doStuffWithUserModel();
 

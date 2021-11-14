@@ -7,7 +7,7 @@ export class BrandValidation extends BaseValidation {
     static readonly addBrand = Joi.object<IBrand>({
         brand_name: Joi.string().required(),
         order_sequence: Joi.number(),
-        show_on_homescreen: Joi.boolean(),
+        show_on_home_screen: Joi.boolean(),
         banner_image: Joi.string(),
         show_on_header: Joi.boolean(),
         tag_id: Joi.string(),
@@ -23,7 +23,7 @@ export class BrandValidation extends BaseValidation {
         brand_name: Joi.string(),
         is_active: Joi.boolean(),
         order_sequence: Joi.number(),
-        show_on_homescreen: Joi.boolean(),
+        show_on_home_screen: Joi.boolean(),
         banner_image: Joi.string(),
         show_on_header: Joi.boolean(),
         tag_id: Joi.string(),

@@ -13,7 +13,7 @@ const BannerMd = DB.define<IMBanner>(
         banner_id: cloneDeep(modelCommonPrimaryKeyProperty),
         banner_text: { allowNull: false, type: DataTypes.STRING },
         order_sequence: { allowNull: false, type: DataTypes.INTEGER },
-        show_on_homescreen: { allowNull: false, type: DataTypes.BOOLEAN },
+        show_on_home_screen: { type: DataTypes.BOOLEAN, defaultValue: true },
         banner_image: { type: DataTypes.STRING, allowNull: true },
         ...cloneDeep(modelCommonColumns)
     },
@@ -21,13 +21,13 @@ const BannerMd = DB.define<IMBanner>(
 );
 
 async function doStuffWithUserModel() {
-    //await bannerMd.sync()
+    // await BannerMd.sync({ force: true });
 
     const newUser = await BannerMd.create({
         banner_id: uuidv4(),
         banner_text: "myBanner",
         order_sequence: 1334,
-        show_on_homescreen: true,
+        show_on_home_screen: true,
         banner_image: "qwertyuiopvbnm,mnbvcvbnm,lkjhgfdsazxcvbnm",
         created_by: uuidv4(),
         updated_by: uuidv4()
@@ -36,7 +36,7 @@ async function doStuffWithUserModel() {
         .catch(e => console.log(e))
 }
 
-//doStuffWithUserModel();
+// doStuffWithUserModel();
 
 export { BannerMd };
 

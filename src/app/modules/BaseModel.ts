@@ -1,9 +1,8 @@
 import { DataTypes } from "sequelize";
-import { v4 as uuidv4 } from 'uuid';
 
 const modelCommonPrimaryKeyProperty = {
     allowNull: false, autoIncrement: false, primaryKey: true,
-    type: DataTypes.UUID, defaultValue: () => uuidv4()
+    type: DataTypes.UUID, defaultValue: DataTypes.UUIDV4
 };
 
 const modelCommonColumns = {

@@ -5,6 +5,7 @@ import { BrandController } from "./modules/brand/brand.controller";
 import { CategoryController } from "./modules/categories/categories.controller";
 import { CityController } from "./modules/city/city.controller";
 import { CouponController } from "./modules/coupon/coupon.controller";
+import { CustomController } from "./modules/custom/custom";
 import { EmailController } from "./modules/emailHistory/email.controller";
 import { ImageController } from "./modules/image/image.controller";
 import { OrderCouponController } from "./modules/order-coupon/order-coupon.controller";
@@ -19,6 +20,7 @@ import { UserController } from "./modules/user/user.controller";
 
 
 export function registerRoutes(app: Application): void {
+    new CustomController().register(app);
     new UserController().register(app)
     new AuthController().register(app)
     new TemplateController().register(app)

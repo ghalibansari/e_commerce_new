@@ -19,7 +19,7 @@ const AuthMd = DB.define<IMAuth>(
     cloneDeep(modelCommonOptions)
 );
 
-// AuthMd.belongsTo(UserMd, { foreignKey: 'user_is', as: 'user' })
+// AuthMd.belongsTo(UserMd, { foreignKey: 'user_id', as: 'user' })
 // AuthMd.belongsTo(UserMd, { foreignKey: 'created_by', as: 'created_by_user' })
 // AuthMd.belongsTo(UserMd, { foreignKey: 'updated_by', as: 'updated_by_user' })
 // AuthMd.belongsTo(UserMd)

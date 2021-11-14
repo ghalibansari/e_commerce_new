@@ -6,7 +6,7 @@ interface IBBrand extends IBCommon {
     brand_id: string;
     brand_name: string;
     order_sequence: number;
-    show_on_homescreen?: boolean;
+    show_on_home_screen?: boolean;
     banner_image: string;
     tag_id?: string;
     show_on_header?: boolean;
