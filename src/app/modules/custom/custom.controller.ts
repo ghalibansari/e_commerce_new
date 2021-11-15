@@ -1,6 +1,6 @@
 import { Application, Request, Response, Router } from "express";
 import { Messages } from "../../constants";
-import { JsonResponse, TryCatch } from "../../helper";
+import { AuthGuard, JsonResponse, TryCatch } from "../../helper";
 import { CategoriesMd } from "../categories/categories.model";
 import { CategoriesRepository } from '../categories/categories.repository';
 import { CustomRepository } from "./custom.repository";
@@ -17,7 +17,7 @@ export class CustomController {
         this.init()
     }
 
-    register = (express: Application) => express.use(`/api/v1`, this.router);
+    register = (express: Application) => express.use(`/api/v1`, AuthGuard, this.router);
 
     init() {
         this.router.get("/home", TryCatch.tryCatchGlobe(this.home));

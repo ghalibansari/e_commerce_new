@@ -1,8 +1,6 @@
-import {model, Schema} from "mongoose";
-import {skuValue} from "../../model/SkuValueHistory";
-import {commentSchema} from "../comment/comment.model";
-import {ILogger, loggerLevelEnum} from "./logger.types";
-import {modulesEnum, TableName} from "../../constants";
+import { model, Schema } from "mongoose";
+import { TableName } from "../../constants";
+import { ILogger, loggerLevelEnum } from "./logger.types";
 
 const {Types: {ObjectId, String, Boolean, Number}} = Schema
 
