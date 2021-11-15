@@ -14,7 +14,7 @@ import { OrderController } from "./modules/orders/order.controller";
 import { PinCodeController } from "./modules/pincode/pincode.controller";
 import { ProductController } from "./modules/products/product.controller";
 import { StateController } from "./modules/state/state.controller";
-import { TagController } from "./modules/Tags/tag.controller";
+import { TagController } from "./modules/tags/tag.controller";
 import { TemplateController } from "./modules/template/template.controller";
 import { UserController } from "./modules/user/user.controller";
 
