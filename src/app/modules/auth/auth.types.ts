@@ -5,6 +5,7 @@ export enum authActionEnum {
     login = 'login',
     logout = 'logout',
     forgot_pass = 'forgot_pass',
+    reset_pass = "reset_password",
     change_pass = 'change_pass',
     register = "register"
 }

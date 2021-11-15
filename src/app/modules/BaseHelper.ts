@@ -26,7 +26,7 @@ type IEmail = { template_name: string, to: string, cc?: string, bcc?: string, su
 export class BaseHelper {    //Todo remove any from params
     sendEmail = async ({ template_name, to, cc, bcc, subject, html, paramsVariable = {} }: IEmail) => {
 
-        const template = await new TemplateRepository().findOneBR({ where: { type: templateTypeEnum.email, name: template_name, is_active: true } });
+        const template = await new TemplateRepository().findOneBR({ where: { type: templateTypeEnum.email, name: template_name } });
 
         if (!template) throw new Error('Template not found');
 

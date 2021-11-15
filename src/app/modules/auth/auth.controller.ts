@@ -3,9 +3,10 @@ import { Application, Request, Response } from 'express';
 import jwt from "jsonwebtoken";
 import { v4 } from 'uuid';
 import { Constant, Messages } from '../../constants';
-import { JsonResponse, TryCatch, validateBody } from '../../helper';
+import { JsonResponse, randomAlphaNumeric, TryCatch, validateBody } from '../../helper';
 import { AuthGuard } from '../../helper/Auth';
 import { BaseController } from '../BaseController';
+import { BaseHelper } from '../BaseHelper';
 import { UserRepository } from '../user/user.repository';
 import { authActionEnum, IAuth, IMAuth } from './auth.types';
 import { AuthValidation } from "./auth.validation";
@@ -24,7 +25,7 @@ export class AuthController extends BaseController<IAuth, IMAuth> {
     public init() {
         this.router.post('/login', validateBody(AuthValidation.login), TryCatch.tryCatchGlobe(this.login));
         this.router.post('/register', validateBody(AuthValidation.register), TryCatch.tryCatchGlobe(this.userRegister));
-        // this.router.post('/hash', validation.login,TryCatch.tryCatchGlobe(this.hash));
+        this.router.post('/forgot-password', validateBody(AuthValidation.forgotPassword), TryCatch.tryCatchGlobe(this.forgotPassword));
         // this.router.post('/newlogin', validation.login,TryCatch.tryCatchGlobe(this.login));
         // this.router.post('/newloginverify', validation.loginVerify, TryCatch.tryCatchGlobe(this.loginVerify));
         this.router.post('/change-password', AuthGuard, validateBody(AuthValidation.changePassword), TryCatch.tryCatchGlobe(this.changePassword));
@@ -32,8 +33,9 @@ export class AuthController extends BaseController<IAuth, IMAuth> {
         // this.router.post('/forgetpassword', validation.forgetPassword, TryCatch.tryCatchGlobe(this.forgetPassword));
         // this.router.post('/forgetpasswordverify', validation.forgetPasswordVerify, TryCatch.tryCatchGlobe(this.forgetPasswordVerify));
         // this.router.post('/logout',guard, TryCatch.tryCatchGlobe(this.logout))
+        this.router.post('/reset-password', validateBody(AuthValidation.resetPassword), TryCatch.tryCatchGlobe(this.resetPassword))
 
-    }
+    };
 
 
     async login(req: Request, res: Response): Promise<void> {   //Todo optimize this whole Auth controller
@@ -58,7 +60,7 @@ export class AuthController extends BaseController<IAuth, IMAuth> {
             res.locals.message = "Invalid Email or Password.";
             return JsonResponse.jsonError(req, res, "login");
         }
-    }
+    };
 
     changePassword = async (req: Request, res: Response): Promise<void> => {
         const { email, oldPassword, newPassword } = req.body
@@ -77,9 +79,9 @@ export class AuthController extends BaseController<IAuth, IMAuth> {
         await userRepo.updateByIdBR({ id: user.user_id, newData: { password: newPassword }, updated_by: user_id })
         new AuthRepository().createOneBR({ newData: { ip: '192.168.0.1', action: authActionEnum.change_pass, user_id: user_id }, created_by: user_id })
 
-        res.locals.message = { status: true, message: Messages.PASSWORD_CHANGED_SUCCESSFULLY }
+        res.locals = { status: true, message: Messages.PASSWORD_CHANGED_SUCCESSFULLY }
         return JsonResponse.jsonSuccess(req, res, "change password")
-    }
+    };
 
     userRegister = async (req: Request, res: Response): Promise<void> => {
         const id = v4()
@@ -88,7 +90,43 @@ export class AuthController extends BaseController<IAuth, IMAuth> {
         new AuthRepository().createOneBR({ newData: { ip: '192.168.0.1', action: authActionEnum.register, user_id: id }, created_by: id });
         res.locals = { status: true, message: "CREATE_SUCCESSFUL" }
         return JsonResponse.jsonSuccess(req, res, "register");
+    };
+
+
+    forgotPassword = async (req: Request, res: Response): Promise<void> => {
+        const { email } = req.body
+        const user = await new UserRepository().findOneBR({ where: { email } });
+
+        if (!user) throw new Error("Invalid Email!!");
+        const otp = randomAlphaNumeric(8)
+        await new AuthRepository().createOneBR({ newData: { ip: "192.168.0.1", action: authActionEnum.forgot_pass, user_id: user.user_id, token: otp }, created_by: user.user_id });
+        await new BaseHelper().sendEmail({ template_name: "forgot_password", to: email, paramsVariable: { OTP: otp, NAME: user.first_name } })
+        res.locals = { status: true, message: Messages.OTP_SENT_SUCCESSFULLY };
+        return await JsonResponse.jsonSuccess(req, res, "forgot Password");
+
+    };
+
+
+    resetPassword = async (req: Request, res: Response): Promise<void> => {
+        const { email, otp, password } = req.body
+        const userRepo = new UserRepository(), authRepo = new AuthRepository()
+
+        const user = await userRepo.findOneBR({ where: { email } });
+        if (!user) throw new Error("Invalid Email!!");
+
+        const auth = await authRepo.findOneBR({ where: { user_id: user.user_id, token: otp } })
+        if (!auth) throw new Error("Invalid email or otp");
+
+        await authRepo.updateByIdBR({ id: auth.auth_id, newData: { is_active: false }, updated_by: user.user_id })
+        await userRepo.updateByIdBR({ id: user.user_id, newData: { password }, updated_by: user.user_id })
+
+        res.locals = { status: true, message: Messages.PASSWORD_RESET_SUCCESS_PLEASE_LOGIN_WITH_YOUR_NEW_PASSWORD };
+        return await JsonResponse.jsonSuccess(req, res, "resetPassword");
     }
 
     
 };
+
+
+
+

@@ -8,7 +8,7 @@ export class Messages {
     static readonly CREATE_FAILED: string = "Create Failed";
     static readonly UPDATE_FAILED: string = "Update Failed";
     static readonly DELETE_FAILED: string = "Delete Failed";
-    
+
     static readonly VALIDATION_ERROR: string = "Validation Error";
     static readonly SUCCESSFULLY_RECORD_ADDED: string = "successfully recorded added";
     static readonly SUCCESSFULLY_UPLOADED_FILE: string = "successfully file uploaded";
@@ -22,7 +22,7 @@ export class Messages {
     static readonly SUCCESS: string = "Success";
     static readonly FAILED: string = "Failed";
 
-    static readonly PASSWORD_RESET_SUCCESS_PLEASE_LOGIN_WITH_YOUR_NEW_PASSWORD: string = "Password Rest Successfully, Please login with your new password.";
+    static readonly PASSWORD_RESET_SUCCESS_PLEASE_LOGIN_WITH_YOUR_NEW_PASSWORD: string = "Password Reset Successfully, Please login with your new password.";
     static readonly PASSWORD_CHANGED_SUCCESSFULLY: string = "Password changed successfully";
     static readonly OTP_IS_ALREADY_SENT: string = "OTP is already sent, you can request new OTP after 10 minutes.";
     static readonly INVALID_OTP: string = "Invalid OTP or, Please request for new OTP";
@@ -67,13 +67,13 @@ export class Messages {
     static readonly CLARITY_RANGE_EXISTS: string = "clarity range already exists in system"
     static readonly COLOR_EXISTS: string = "color already exists in system"
     static readonly COLOR_RANGE_EXISTS: string = "color range already exists in system"
-     
+
     static readonly STONE_NOT_YET_REGISTERED: string = "stone is not yet registered"
-    static  readonly NOSTONES_IN_COLLATERAL: string="There are no stones in collateral"
+    static readonly NOSTONES_IN_COLLATERAL: string = "There are no stones in collateral"
 
     static readonly USERID_OR_ROLEID_MISSING: string = "userId/roleId is missing"
-    static readonly INVALID_FILE : string = "Invaild file"  //Todo fix all typo in whole project.
-    static readonly DMGUID_IS_ALREADY_PRESENT : string = "dmGuid is already present"
+    static readonly INVALID_FILE: string = "Invaild file"  //Todo fix all typo in whole project.
+    static readonly DMGUID_IS_ALREADY_PRESENT: string = "dmGuid is already present"
 
     static readonly CLOSED_BUSINESS_FAILED: string = "Close of business failure. Cannot open or close business"
     static readonly OPEN_BUSINESS_FAILED: string = "Open of business failure. Cannot open or close business"

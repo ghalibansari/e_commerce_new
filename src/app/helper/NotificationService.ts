@@ -40,4 +40,4 @@ export class NotificationService {
         }
         return success;
     }
-}
+};

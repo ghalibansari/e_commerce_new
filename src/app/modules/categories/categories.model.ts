@@ -46,7 +46,7 @@ async function doStuffWithUserModel() {
         .then(() => console.log("Created default user..."))
         .catch(e => console.log(e))
     // console.log(newUser);
-}
+};
 
 // doStuffWithUserModel()
 // CategoriesMd.sync({ alter: true }).catch((e) => console.log(e));
