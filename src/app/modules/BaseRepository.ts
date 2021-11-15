@@ -1,8 +1,12 @@
 import { Model, ModelCtor } from 'sequelize';
+import { DB } from "../../configs/DB";
 import { Constant } from "../constants";
 import { IRead } from '../interfaces/IRead';
 import { IWrite } from "../interfaces/IWrite";
 import { NonEmptyArray, TCreateBulkBR, TCreateOneBR, TDeleteBulkBR, TDeleteByIdBR, TFindByIdBR, TRestoreBulkBR, TRestoreByIdBR, TUpdateBulkBR, TUpdateByIdBR } from "./baseTypes";
+
+//@ts-expect-error
+const { fn, col } = DB
 
 //@ts-expect-error
 export class BaseRepository<T extends ModelCtor, U extends Model> implements IWrite<T>, IRead<T> {
@@ -10,9 +14,9 @@ export class BaseRepository<T extends ModelCtor, U extends Model> implements IWr
     protected readonly pageNumber = Constant.DEFAULT_PAGE_NUMBER
 
     protected constructor(
-        protected readonly _model: ModelCtor<U>,
+        public readonly _model: ModelCtor<U>,
         public readonly primary_key: keyof T,
-        public readonly attributes: NonEmptyArray<string> = ['created_on'],
+        public readonly attributes: NonEmptyArray<any> = ['created_on'],
         public readonly order: Array<keyof U> | Array<[keyof U, 'ASC' | 'DESC']> = [],
         public readonly include: object[] = [],
     ) { }
@@ -134,4 +138,14 @@ export class BaseRepository<T extends ModelCtor, U extends Model> implements IWr
     CountAllBR = async (): Promise<number> => {
         return await this.CountBR({})
     };
+
+    findColumnMinMax = async ({ columnName }: { columnName: string }) => {
+        // return await this.findBulkBR({   //TODO fix this 
+        return await this._model.findAll({
+            attributes: [
+                [fn('max', col(columnName)), 'max'],
+                [fn('min', col(columnName)), 'min'],
+            ]
+        })
+    }
 };
