@@ -1,6 +1,7 @@
 import { compare } from 'bcrypt';
 import { Application, Request, Response } from 'express';
 import jwt from "jsonwebtoken";
+import { Op } from 'sequelize';
 import { v4 } from 'uuid';
 import { Constant, Messages } from '../../constants';
 import { DBTransaction, JsonResponse, randomAlphaNumeric, TryCatch, validateBody } from '../../helper';
@@ -24,7 +25,7 @@ export class AuthController extends BaseController<IAuth, IMAuth> {
 
     public init() {
         this.router.post('/login', validateBody(AuthValidation.login), TryCatch.tryCatchGlobe(this.login));
-        this.router.post('/register', validateBody(AuthValidation.register), TryCatch.tryCatchGlobe(this.userRegister));
+        this.router.post('/register', validateBody(AuthValidation.register), DBTransaction.startTransaction, TryCatch.tryCatchGlobe(this.userRegister));
         this.router.post('/forgot-password', validateBody(AuthValidation.forgotPassword), TryCatch.tryCatchGlobe(this.forgotPassword));
         // this.router.post('/newlogin', validation.login,TryCatch.tryCatchGlobe(this.login));
         // this.router.post('/newloginverify', validation.loginVerify, TryCatch.tryCatchGlobe(this.loginVerify));
@@ -90,9 +91,15 @@ export class AuthController extends BaseController<IAuth, IMAuth> {
 
     userRegister = async (req: Request, res: Response): Promise<void> => {
         const id = v4()
-        const user = await new UserRepository().createOneBR({ newData: { ...req.body, user_id: id }, created_by: id });
+        const { email, mobile } = req.body
+        const userData = await new UserRepository().findOneBR({ where: { [Op.or]: [{ email }, { mobile: mobile.toString() }] }, attributes: ['user_id', 'email', 'mobile'] })
+        if (userData) { throw new Error("SAME Email Id OR MOBILE NUMBER") }
 
-        new AuthRepository().createOneBR({ newData: { ip: '192.168.0.1', action: authActionEnum.register, user_id: id }, created_by: id });
+        await Promise.all([
+            await new UserRepository().createOneBR({ newData: { ...req.body, user_id: id }, created_by: id }),
+            await new AuthRepository().createOneBR({ newData: { ip: '192.168.0.1', action: authActionEnum.register, user_id: id }, created_by: id })
+        ]);
+
         res.locals = { status: true, message: "CREATE_SUCCESSFUL" }
         return JsonResponse.jsonSuccess(req, res, "register");
     };

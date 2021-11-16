@@ -52,8 +52,8 @@ async function doStuffWithUserModel() {
     created_by: id,
     updated_by: id
   })
-    .then(() => console.log("Created default template..."))
-    .catch(e => console.log('error', e));
+    .then(() => console.log("Created template..."))
+    .catch(e => console.log('Error: ', e));
 };
 
 

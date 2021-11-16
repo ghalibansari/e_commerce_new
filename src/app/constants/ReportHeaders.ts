@@ -1,4 +1,4 @@
-//Summary-Report Headers,Excel export  style: { font: { bold:true } }
+// Summary-Report Headers,Excel export  style: { font: { bold:true } }
 export class HeaderData {
     static readonly Diamond_match_header: object[] = [
         { name: "Match date", filterButton: true }, { name: "Ref #", filterButton: true }, { name: "Report Lab", filterButton: true }, { name: "Report Number", filterButton: true }, { name: "Carat Weight", filterButton: true },
@@ -17,7 +17,7 @@ export class HeaderData {
         { name: 'Carat Weight', filterButton: true }, { name: 'Shape', filterButton: true }, { name: 'Color', filterButton: true }, { name: 'Clarity', filterButton: true }, { name: 'Cut', filterButton: true }, { name: 'Value', filterButton: true }, { name: 'Dismissed', filterButton: true }, { name: 'Stages', filterButton: true },
         { name: 'Non match stages', filterButton: true }, { name: 'Return date', filterButton: true }
     ];
-    static readonly Collateral_accounted_header: object[] = [ 
+    static readonly Collateral_accounted_header: object[] = [
         { name: 'Status', filterButton: true }, { name: 'Date', filterButton: true }, { name: 'Company', filterButton: true }, { name: 'Ref #', filterButton: true }, { name: 'Report Lab', filterButton: true }, { name: 'Report Number', filterButton: true },
         { name: 'Carat Weight', filterButton: true }, { name: 'Shape', filterButton: true }, { name: 'Color Sub-Category', filterButton: true }, { name: 'Color Category', filterButton: true },
         { name: 'Grading Color', filterButton: true }, { name: 'Grading Shape', filterButton: true }, { name: 'Clarity', filterButton: true }, { name: 'Cut', filterButton: true }, { name: 'V/C', filterButton: true }, { name: 'DRV', filterButton: true },
@@ -39,20 +39,20 @@ export class HeaderData {
         { name: 'PWV', filterButton: true }, { name: 'IAV', filterButton: true }, { name: 'Last DiamondMatch', filterButton: true }
     ];
 
-    static readonly sinceInception_header: object[] = [{ name: "Collateral accounted",style:{alignment : { vertical: 'middle', horizontal: 'center', wrapText: true },font: { bold:true}}},{ name: 'Calculated Collateral',style:{alignment : { vertical: 'middle', horizontal: 'center', wrapText: true },font: { bold:true}} }, 
-    { name: '%',style:{alignment : { vertical: 'middle', horizontal: 'center', wrapText: true },font: { bold:true}} }, { name: 'Unaccounted',style: { font: { bold:true,color:{argb:'FF3333'}},alignment : { vertical: 'middle', horizontal: 'center', wrapText: true } } }, { name: 'Status',style:{alignment : { vertical: 'middle', horizontal: 'center', wrapText: true },font: { bold:true}}}];
+    static readonly sinceInception_header: object[] = [{ name: "Collateral accounted", style: { alignment: { vertical: 'middle', horizontal: 'center', wrapText: true }, font: { bold: true } } }, { name: 'Calculated Collateral', style: { alignment: { vertical: 'middle', horizontal: 'center', wrapText: true }, font: { bold: true } } },
+    { name: '%', style: { alignment: { vertical: 'middle', horizontal: 'center', wrapText: true }, font: { bold: true } } }, { name: 'Unaccounted', style: { font: { bold: true, color: { argb: 'FF3333' } }, alignment: { vertical: 'middle', horizontal: 'center', wrapText: true } } }, { name: 'Status', style: { alignment: { vertical: 'middle', horizontal: 'center', wrapText: true }, font: { bold: true } } }];
 
-    static readonly dailyMatch_header: object[] = [{ name: "Stones requested",style:{alignment : { vertical: 'middle', horizontal: 'center', wrapText: true },font: { bold:true}} },{ name: 'Positive match',style:{alignment : { vertical: 'middle', horizontal: 'center', wrapText: true },font: { bold:true}} },
-    { name: 'Non-match',style:{alignment : { vertical: 'middle', horizontal: 'center', wrapText: true },font: { bold:true}} }, { name: 'Stones not tested',style:{alignment : { vertical: 'middle', horizontal: 'center', wrapText: true },font: { bold:true}} }, { name: 'Matched stones',style:{alignment : { vertical: 'middle', horizontal: 'center', wrapText: true },font: { bold:true}} },{name:'Status',style:{alignment : { vertical: 'middle', horizontal: 'center', wrapText: true },font: { bold:true}}}];
+    static readonly dailyMatch_header: object[] = [{ name: "Stones requested", style: { alignment: { vertical: 'middle', horizontal: 'center', wrapText: true }, font: { bold: true } } }, { name: 'Positive match', style: { alignment: { vertical: 'middle', horizontal: 'center', wrapText: true }, font: { bold: true } } },
+    { name: 'Non-match', style: { alignment: { vertical: 'middle', horizontal: 'center', wrapText: true }, font: { bold: true } } }, { name: 'Stones not tested', style: { alignment: { vertical: 'middle', horizontal: 'center', wrapText: true }, font: { bold: true } } }, { name: 'Matched stones', style: { alignment: { vertical: 'middle', horizontal: 'center', wrapText: true }, font: { bold: true } } }, { name: 'Status', style: { alignment: { vertical: 'middle', horizontal: 'center', wrapText: true }, font: { bold: true } } }];
 
-    static readonly malcaStorage_header: object[] = [{ name: "Stones requested",style:{font: { bold:true}}},{ name: 'Positive Match Malca',style:{font: { bold:true}}},
-    { name: 'Positive match Borrower',style:{font: { bold:true}}},{ name: 'Non-match',style:{font: { bold:true}}}, { name: 'Stones not tested',style:{font: { bold:true}}}, { name: 'Matched stones',style:{font: { bold:true}}},{name:'Status',style:{font: { bold:true}}}]
+    static readonly malcaStorage_header: object[] = [{ name: "Stones requested", style: { font: { bold: true } } }, { name: 'Positive Match Malca', style: { font: { bold: true } } },
+    { name: 'Positive match Borrower', style: { font: { bold: true } } }, { name: 'Non-match', style: { font: { bold: true } } }, { name: 'Stones not tested', style: { font: { bold: true } } }, { name: 'Matched stones', style: { font: { bold: true } } }, { name: 'Status', style: { font: { bold: true } } }]
 
-    static readonly sinceInception_header2: object[] = [{ name: "Collateral at inception",style:{alignment : { vertical: 'middle', horizontal: 'center', wrapText: true },font: { bold:true}} },{ name: 'Sold',style:{alignment : { vertical: 'middle', horizontal: 'center', wrapText: true },font: { bold:true}} },
-    { name: 'Added',style:{alignment : { vertical: 'middle', horizontal: 'center', wrapText: true },font: { bold:true}} }, { name: 'Calculated Collateral',style:{alignment : { vertical: 'middle', horizontal: 'center', wrapText: true },font: { bold:true}} }, { name: 'Removed',style:{alignment : { vertical: 'middle', horizontal: 'center', wrapText: true },font: { bold:true}} }];
+    static readonly sinceInception_header2: object[] = [{ name: "Collateral at inception", style: { alignment: { vertical: 'middle', horizontal: 'center', wrapText: true }, font: { bold: true } } }, { name: 'Sold', style: { alignment: { vertical: 'middle', horizontal: 'center', wrapText: true }, font: { bold: true } } },
+    { name: 'Added', style: { alignment: { vertical: 'middle', horizontal: 'center', wrapText: true }, font: { bold: true } } }, { name: 'Calculated Collateral', style: { alignment: { vertical: 'middle', horizontal: 'center', wrapText: true }, font: { bold: true } } }, { name: 'Removed', style: { alignment: { vertical: 'middle', horizontal: 'center', wrapText: true }, font: { bold: true } } }];
 
-    static readonly sinceInception_header3: object[] = [{ name: "Previous Day Collateral",style:{alignment : { vertical: 'middle', horizontal: 'center', wrapText: true },font: { bold:true}}  },{ name: 'Sold',style:{alignment : { vertical: 'middle', horizontal: 'center', wrapText: true },font: { bold:true}} }, 
-    { name: 'Added',style:{alignment : { vertical: 'middle', horizontal: 'center', wrapText: true },font: { bold:true}}}, { name: 'Calculated Collateral',style:{alignment : { vertical: 'middle', horizontal: 'center', wrapText: true },font: { bold:true}}}];
+    static readonly sinceInception_header3: object[] = [{ name: "Previous Day Collateral", style: { alignment: { vertical: 'middle', horizontal: 'center', wrapText: true }, font: { bold: true } } }, { name: 'Sold', style: { alignment: { vertical: 'middle', horizontal: 'center', wrapText: true }, font: { bold: true } } },
+    { name: 'Added', style: { alignment: { vertical: 'middle', horizontal: 'center', wrapText: true }, font: { bold: true } } }, { name: 'Calculated Collateral', style: { alignment: { vertical: 'middle', horizontal: 'center', wrapText: true }, font: { bold: true } } }];
 
     //Transaction-Import headers for Excel-Export
     static readonly transImport_header: object[] = [{ name: 'Ref #', filterButton: true }, { name: 'Stone Status', filterButton: true }, { name: 'Company', filterButton: true }, { name: 'Report Lab', filterButton: true }, { name: 'Report Number', filterButton: true }, { name: 'Collateral Status', filterButton: true }, { name: 'Gemologist Status', filterButton: true }, { name: 'Shape', filterButton: true },
