@@ -14,13 +14,12 @@ import { OrderController } from "./modules/orders/order.controller";
 import { PinCodeController } from "./modules/pincode/pincode.controller";
 import { ProductController } from "./modules/products/product.controller";
 import { StateController } from "./modules/state/state.controller";
-import { TagController } from "./modules/tags/tag.controller";
+import { TagController } from "./modules/Tag/tag.controller";
 import { TemplateController } from "./modules/template/template.controller";
 import { UserController } from "./modules/user/user.controller";
 
 
 export function registerRoutes(app: Application): void {
-    new CustomController().register(app);
     new UserController().register(app)
     new AuthController().register(app)
     new TemplateController().register(app)
@@ -39,4 +38,5 @@ export function registerRoutes(app: Application): void {
     new TagController().register(app)
     new BrandController().register(app)
     new EmailController().register(app)
+    new CustomController().register(app);
 };

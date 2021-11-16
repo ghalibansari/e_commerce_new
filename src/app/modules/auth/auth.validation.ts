@@ -37,4 +37,10 @@ export abstract class AuthValidation extends BaseValidation {
         password: Joi.string().min(8).max(250).required(),
         otp: Joi.string().min(8).max(8).required()
     });
+
+    static readonly emailVerification = Joi.object({
+        email: Joi.string().email().required().error(new Error(Errors.INVALID_EMAIL_ID)),
+        otp: Joi.string().min(8).max(8).required()
+    });
+
 };
