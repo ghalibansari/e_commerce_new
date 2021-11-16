@@ -124,7 +124,7 @@ export class AuthController extends BaseController<IAuth, IMAuth> {
         return await JsonResponse.jsonSuccess(req, res, "resetPassword");
     }
 
-    
+
 };
 
 

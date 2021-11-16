@@ -20,7 +20,6 @@ import { UserController } from "./modules/user/user.controller";
 
 
 export function registerRoutes(app: Application): void {
-    new CustomController().register(app);
     new UserController().register(app)
     new AuthController().register(app)
     new TemplateController().register(app)
@@ -39,4 +38,5 @@ export function registerRoutes(app: Application): void {
     new TagController().register(app)
     new BrandController().register(app)
     new EmailController().register(app)
+    new CustomController().register(app);
 };
