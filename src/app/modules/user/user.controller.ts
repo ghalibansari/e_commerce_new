@@ -3,6 +3,7 @@ import { Messages } from "../../constants";
 import { AuthGuard, DBTransaction, JsonResponse, TryCatch, validateBody, validateParams } from "../../helper";
 import { BaseController } from "../BaseController";
 import { BaseHelper } from "../BaseHelper";
+import { UserAddressMd } from "../user-address/user-address.model";
 import { UserRepository } from "./user.repository";
 import { IMUser, IUser } from "./user.types";
 import { UserValidation } from "./user.validation";
@@ -28,6 +29,7 @@ export class UserController extends BaseController<IUser, IMUser> {
 
         this.router.post("/trans", validateBody(UserValidation.addUser), DBTransaction.startTransaction, TryCatch.tryCatchGlobe(this.createOne))
         this.router.get("/test", TryCatch.tryCatchGlobe(this.test));
+        this.router.get("/profile", TryCatch.tryCatchGlobe(this.viewProfile));
     }
 
     createOne = async (req: Request, res: Response): Promise<void> => {
@@ -42,5 +44,12 @@ export class UserController extends BaseController<IUser, IMUser> {
         // const data = await new NotificationService().sendMail({to: 'amangoswami2042000@gmail.com, ak8828979484@gmail.com', subject: 'terter bro new mail', html: `<h1>hellooo pppp</h1>`});
         res.locals = { data, status: true, message: Messages.CREATE_SUCCESSFUL }
         return await JsonResponse.jsonSuccess(req, res, `test`)
+    };
+
+    viewProfile = async (req: Request, res: Response): Promise<void> => {
+        const { user: { user_id } }: any = req
+        const data = await new UserRepository().findOneBR({ where: { user_id }, attributes: ['first_name', 'last_name', 'mobile', 'email', 'gender'], include: [{ model: UserAddressMd, as: 'addresses', attributes: ['is_default', 'address_1', 'address_2', 'city', 'state', 'pin_code'] }] })
+        res.locals = { data, message: Messages.FETCH_SUCCESSFUL }
+        return await JsonResponse.jsonSuccess(req, res, `shop`);
     };
 };

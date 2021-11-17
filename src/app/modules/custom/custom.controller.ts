@@ -34,7 +34,7 @@ export class CustomController {
 
     test = async (req: Request, res: Response): Promise<void> => {
         // const lal = await new UserRepository().findBulkBR({ include: [{ model: AuthMd, as: 'xxx' }] });
-        const lal = await new CategoriesRepository().findBulkBR({ where: { show_on_home_screen: true, parent_id: null }, include: [{ model: CategoriesMd, as: 'sub_cat', attributes: ['category_name', 'parent_id'] }], attributes: ['category_name', 'parent_id'], raw: false, order: [] });
+        const lal = await new CategoriesRepository().findBulkBR({ where: { show_on_home_screen: true, parent_id: null }, include: [{ model: CategoriesMd, as: 'sub_cat', attributes: ['category_name', 'parent_id'] }], attributes: ['category_name', 'parent_id'], order: [] });
         res.locals = { data: { lal }, message: Messages.FETCH_SUCCESSFUL };
         return await JsonResponse.jsonSuccess(req, res, `homePage`);
     };

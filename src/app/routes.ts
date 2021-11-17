@@ -2,6 +2,7 @@ import { Application } from "express";
 import { AuthController } from "./modules/auth/auth.controller";
 import { BannerController } from "./modules/banners/banner.controller";
 import { BrandController } from "./modules/brand/brand.controller";
+import { CartController } from "./modules/cart/cart.controller";
 import { CategoryController } from "./modules/categories/categories.controller";
 import { CityController } from "./modules/city/city.controller";
 import { CouponController } from "./modules/coupon/coupon.controller";
@@ -16,8 +17,8 @@ import { ProductController } from "./modules/products/product.controller";
 import { StateController } from "./modules/state/state.controller";
 import { TagController } from "./modules/tags/tag.controller";
 import { TemplateController } from "./modules/template/template.controller";
+import { UserAddressController } from "./modules/user-address/user-address.controller";
 import { UserController } from "./modules/user/user.controller";
-
 
 export function registerRoutes(app: Application): void {
     new UserController().register(app)
@@ -26,9 +27,11 @@ export function registerRoutes(app: Application): void {
     new CategoryController().register(app)
     new BrandController().register(app)
     new BannerController().register(app)
+    new UserAddressController().register(app);
     new StateController().register(app)
     new PinCodeController().register(app)
     new ImageController().register(app)
+    new CartController().register(app)
     new ProductController().register(app)
     new CouponController().register(app)
     new OrderController().register(app)
@@ -38,5 +41,7 @@ export function registerRoutes(app: Application): void {
     new TagController().register(app)
     new BrandController().register(app)
     new EmailController().register(app)
+
+
     new CustomController().register(app);
 };

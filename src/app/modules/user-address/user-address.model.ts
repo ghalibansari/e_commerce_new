@@ -1,6 +1,6 @@
 import { cloneDeep } from 'lodash';
 import { DataTypes } from 'sequelize';
-import { v4 as uuidv4 } from 'uuid';
+import { v4 } from 'uuid';
 import { DB } from "../../../configs/DB";
 import { TableName } from "../../constants";
 import { modelCommonColumns, modelCommonOptions, modelCommonPrimaryKeyProperty } from '../BaseModel';
@@ -16,37 +16,37 @@ const UserAddressMd = DB.define<IMUserAddress>(
         address_1: { allowNull: false, type: DataTypes.STRING },
         address_2: { allowNull: false, type: DataTypes.STRING, },
         city: { allowNull: false, type: DataTypes.STRING, },
-        state:  { allowNull: false, type: DataTypes.STRING, },
-        pin_code:  { allowNull: false, type: DataTypes.STRING, },
+        state: { allowNull: false, type: DataTypes.STRING, },
+        pin_code: { allowNull: false, type: DataTypes.STRING, },
         ...cloneDeep(modelCommonColumns)
     },
     cloneDeep(modelCommonOptions)
 );
 
-// async function doStuffWithUserModel() {
-//     await UserAddressMd.sync()
-//     // await UserMd.sync({ force: true })
-//     const id = uuidv4()
 
-//     const newUser = await UserAddressMd.create({
-//         address_id: id,
-//         user_id: id,
-//         is_default: true,
-//         address_1: "Maharashtra",
-//         address_2: "Maharashtra",
-//         city: "mumbai",
-//         state:"mumbai",
-//         pin_code:"gh",
-//         created_by: id,
-//         updated_by: id
-//     })
-//         .then(() => console.log("Created default user..."))
-//         .catch(e => console.log(e))
-//     // console.log(newUser);
-// }
+
+
+async function doStuffWithUserModel() {
+    // await UserAddressMd.sync({ force: true })
+    const id = v4()
+
+    await UserAddressMd.create({
+        address_id: id,
+        user_id: id,
+        is_default: true,
+        address_1: "Bhopal Road 1",
+        address_2: "Bhopal Road 2nd lane",
+        city: "Bhopal",
+        state: "MP",
+        pin_code: "400123",
+        created_by: id,
+        updated_by: id
+    })
+        .then((user) => console.log("Created default address...", user))
+        .catch((e: any) => console.log(e));
+}
 
 // doStuffWithUserModel()
-// // //categoriesMd.sync()
 
 export { UserAddressMd };
 

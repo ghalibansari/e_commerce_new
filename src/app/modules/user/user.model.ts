@@ -5,6 +5,8 @@ import { v4 as uuidv4 } from 'uuid';
 import { DB } from "../../../configs/DB";
 import { TableName } from "../../constants";
 import { modelCommonColumns, modelCommonOptions, modelCommonPrimaryKeyProperty } from '../BaseModel';
+import { CartMd } from '../cart/cart.model';
+import { UserAddressMd } from '../user-address/user-address.model';
 import { IMUser, UserGenderEnum } from './user.types';
 
 const UserMd = DB.define<IMUser>(
@@ -28,35 +30,39 @@ const UserMd = DB.define<IMUser>(
 // UserMd.hasMany(AuthMd, {
 //     foreignKey: 'user_id',
 //     as: 'auths'
-// });
+// });// { , as: 'addresses', sourceKey: 'user_id' }
+UserMd.hasMany(UserAddressMd, { foreignKey: 'user_id', as: 'addresses' });
+UserAddressMd.belongsTo(UserMd, { foreignKey: "user_id", as: "user", targetKey: "user_id" })
 
+UserMd.hasMany(CartMd, { foreignKey: 'user_id', as: 'cart' });
+CartMd.belongsTo(UserMd, { foreignKey: 'user_id', as: 'user', targetKey: "user_id" });
+// UserMd.belongsTo(ProductMd,{})
+// UserMd.sync({ alter: true })
+// CartMd.sync({ force: true })
 
 async function doStuffWithUserModel() {
-    // await DB.sync({ force: true })
 
     const id = uuidv4()
     const salt = await genSalt(8);
     const password = await hash('demo1234', salt);
 
-    // const newUser = await UserMd.create({
-    //     user_id: id,
-    //     first_name: "demo",
-    //     last_name: "John",
-    //     mobile: "8754219635",
-    //     email: "demo@demo.com",
-    //     gender: UserGenderEnum.m,
-    //     email_verified_at: new Date(),
-    //     password: password,
-    //     created_by: id,
-    //     updated_by: id
-    // })
-    //     .then(() => console.log("Created default user..."))
-    //     .catch(e => console.log(e))
-    // console.log(newUser);
+    await UserMd.create({
+
+        user_id: id,
+        first_name: "Trigger",
+        last_name: "Johnny",
+        mobile: "8754555735",
+        email: "John123@demo.com",
+        gender: UserGenderEnum.m,
+        email_verified_at: new Date(),
+        password: password,
+        created_by: id,
+        updated_by: id
+    })
+        .then(() => console.log("Created default user..."))
+        .catch(e => console.log(e))
 }
 
 // doStuffWithUserModel();
-// UserMd.hasMany(AuthMd)
 
 export { UserMd };
-

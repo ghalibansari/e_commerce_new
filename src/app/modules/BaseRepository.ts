@@ -16,7 +16,7 @@ export class BaseRepository<T extends ModelCtor, U extends Model> implements IWr
     protected constructor(
         public readonly _model: ModelCtor<U>,
         public readonly primary_key: keyof T,
-        public readonly attributes: NonEmptyArray<any> = ['created_on'],
+        public readonly attributes: NonEmptyArray<any | keyof U> = ['created_on'],
         public readonly order: Array<keyof U> | Array<[keyof U, 'ASC' | 'DESC']> = [],
         public readonly include: object[] = [],
     ) { }
@@ -56,7 +56,7 @@ export class BaseRepository<T extends ModelCtor, U extends Model> implements IWr
         offset = 0,
         limit = 10,
         include = this.include,
-        raw = true
+        raw = false
     }): Promise<U[] | []> => {
         //@ts-expect-error
         where['is_active'] === undefined && (where['is_active'] = true);

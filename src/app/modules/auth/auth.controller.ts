@@ -106,6 +106,7 @@ export class AuthController extends BaseController<IAuth, IMAuth> {
 
         if (!user) throw new Error("Invalid Email!!");
         const otp = randomAlphaNumeric(8)
+
         await new AuthRepository().createOneBR({ newData: { ip: "192.168.0.1", action: authActionEnum.forgot_pass, user_id: user.user_id, token: otp }, created_by: user.user_id });
         await new BaseHelper().sendEmail({ template_name: "forgot_password", to: email, paramsVariable: { OTP: otp, NAME: user.first_name } })
         res.locals = { status: true, message: Messages.OTP_SENT_SUCCESSFULLY };
