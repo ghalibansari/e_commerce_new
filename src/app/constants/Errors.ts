@@ -29,9 +29,12 @@ export class Errors {
     static readonly INVALID_FINGERPRINT: string = "Invalid fingerPrint"
     static readonly DEVICE_NOT_REGISTERED: string = "device not registered"
     static readonly DIAMOND_MATCH_NOT_REGISTERED: string = "diamondMatch not registered"
+    static readonly EMAIL_IN_USE: string = "Email In Use"
+
     static readonly DIAMOND_MATCH_IS_NOT_THERE: string = "diamond Match is not there"
     static readonly EMAIL_ID: string = "Email Id Required";
     static readonly PASSWORD: string = "Password should contain at least 1 capital, 1 small, 1 number and 1 symbol";
+    static readonly NUMBER_IN_USE: string = "Number In Use"
     static readonly OLD_PASSWORD: string = "Old Password should contain at least 1 capital, 1 small, 1 number and 1 symbol";
     static readonly NEW_PASSWORD: string = "New Password should contain at least 1 capital, 1 small, 1 number and 1 symbol";
     static readonly OTP: string = "Otp Required";

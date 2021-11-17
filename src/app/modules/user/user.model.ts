@@ -26,33 +26,28 @@ const UserMd = DB.define<IMUser>(
     cloneDeep(modelCommonOptions)
 );
 
-// UserMd.hasMany(AuthMd, { foreignKey: 'user_id', as: 'xxx' });
-// UserMd.hasMany(AuthMd, {
-//     foreignKey: 'user_id',
-//     as: 'auths'
-// });// { , as: 'addresses', sourceKey: 'user_id' }
+
 UserMd.hasMany(UserAddressMd, { foreignKey: 'user_id', as: 'addresses' });
 UserAddressMd.belongsTo(UserMd, { foreignKey: "user_id", as: "user", targetKey: "user_id" })
 
+
 UserMd.hasMany(CartMd, { foreignKey: 'user_id', as: 'cart' });
 CartMd.belongsTo(UserMd, { foreignKey: 'user_id', as: 'user', targetKey: "user_id" });
-// UserMd.belongsTo(ProductMd,{})
-// UserMd.sync({ alter: true })
-// CartMd.sync({ force: true })
+
 
 async function doStuffWithUserModel() {
+    await UserMd.sync({ force: true })
 
     const id = uuidv4()
     const salt = await genSalt(8);
     const password = await hash('demo1234', salt);
 
     await UserMd.create({
-
         user_id: id,
-        first_name: "Trigger",
-        last_name: "Johnny",
-        mobile: "8754555735",
-        email: "John123@demo.com",
+        first_name: "demo",
+        last_name: "John",
+        mobile: "8754219635",
+        email: "demo@demo.com",
         gender: UserGenderEnum.m,
         email_verified_at: new Date(),
         password: password,
@@ -66,3 +61,4 @@ async function doStuffWithUserModel() {
 // doStuffWithUserModel();
 
 export { UserMd };
+

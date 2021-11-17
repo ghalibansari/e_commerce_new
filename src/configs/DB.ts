@@ -13,3 +13,4 @@ const DB = new Sequelize(config.url, { pool: { max: 1 } })
 
 
 export { Sequelize, DB };
+

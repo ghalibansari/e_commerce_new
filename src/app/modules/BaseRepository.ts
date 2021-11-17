@@ -65,10 +65,11 @@ export class BaseRepository<T extends ModelCtor, U extends Model> implements IWr
     };
 
 
-    findOneBR = async ({ where = {}, attributes = this.attributes, include = this.include, raw = true }): Promise<U | null> => {
+    findOneBR = async ({ where = {}, attributes = this.attributes, order = this.order, include = this.include, raw = true }): Promise<U | null> => {
         //@ts-expect-error
         where['is_active'] === undefined && (where['is_active'] = true);
-        return await this._model.findOne({ where, attributes, include, raw })
+        //@ts-expect-error
+        return await this._model.findOne({ where, attributes, include, order, raw })
     }
 
 

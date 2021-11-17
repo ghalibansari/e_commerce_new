@@ -4,6 +4,7 @@ import { v4 as uuidv4 } from 'uuid';
 import { DB } from "../../../configs/DB";
 import { TableName } from "../../constants";
 import { modelCommonColumns, modelCommonOptions, modelCommonPrimaryKeyProperty } from '../BaseModel';
+// import { IMTag } from "./tag.types";
 import { IMTag } from "./tag.types";
 
 const TagMd = DB.define<IMTag>(
@@ -43,3 +44,4 @@ async function doStuffWithUserModel() {
 //doStuffWithUserModel()
 //TagMd.sync({ force: true })
 export { TagMd };
+
