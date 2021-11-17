@@ -1,6 +1,5 @@
+import { NextFunction, Request, Response } from 'express';
 import { DB } from '../../configs/DB';
-import {Request, Response, NextFunction} from 'express';
-import  {Transaction} from 'sequelize'
 
 export abstract class DBTransaction{
 

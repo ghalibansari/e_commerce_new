@@ -35,7 +35,7 @@ async function doStuffWithUserModel() {
         product_id: id,
         category_id: id,
         brand_id: id,
-        name: 'Dove',
+        name: 'Dovhh',
         description: 'Beauty Soap',
         weight: 1.12,
         amount: 3,
@@ -47,7 +47,7 @@ async function doStuffWithUserModel() {
     // console.log(newUser);
 }
 
-//doStuffWithUserModel()
+// doStuffWithUserModel()
 
 // ProductMd.sync()
 

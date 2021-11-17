@@ -29,30 +29,32 @@ const UserMd = DB.define<IMUser>(
 //     foreignKey: 'user_id',
 //     as: 'auths'
 // });
+// UserMd.hasMany(UserAddressMd,{foreignKey:'user_id', as:'addresses'})
+// UserAddressMd.belongsTo(UserMd,{foreignKey:'user_id',as:'user', targetKey:'user_id'})
 
 
 async function doStuffWithUserModel() {
-    // await DB.sync({ force: true })
+    await UserMd.sync({ force: true })
 
     const id = uuidv4()
     const salt = await genSalt(8);
     const password = await hash('demo1234', salt);
 
-    // const newUser = await UserMd.create({
-    //     user_id: id,
-    //     first_name: "demo",
-    //     last_name: "John",
-    //     mobile: "8754219635",
-    //     email: "demo@demo.com",
-    //     gender: UserGenderEnum.m,
-    //     email_verified_at: new Date(),
-    //     password: password,
-    //     created_by: id,
-    //     updated_by: id
-    // })
-    //     .then(() => console.log("Created default user..."))
-    //     .catch(e => console.log(e))
-    // console.log(newUser);
+    const newUser = await UserMd.create({
+        user_id: id,
+        first_name: "demo",
+        last_name: "John",
+        mobile: "8754219635",
+        email: "demo@demo.com",
+        gender: UserGenderEnum.m,
+        email_verified_at: new Date(),
+        password: password,
+        created_by: id,
+        updated_by: id
+    })
+        .then(() => console.log("Created default user..."))
+        .catch(e => console.log(e))
+    console.log(newUser);
 }
 
 // doStuffWithUserModel();

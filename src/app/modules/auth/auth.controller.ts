@@ -1,6 +1,7 @@
 import { compare } from 'bcrypt';
 import { Application, Request, Response } from 'express';
 import jwt from "jsonwebtoken";
+import moment from 'moment';
 import { Op } from 'sequelize';
 import { v4 } from 'uuid';
 import { Constant, Messages } from '../../constants';
@@ -64,8 +65,7 @@ export class AuthController extends BaseController<IAuth, IMAuth> {
     };
 
     changePassword = async (req: Request, res: Response): Promise<void> => {
-        const { email, oldPassword, newPassword } = req.body
-        const { user: { user_id } }: any = req
+        const { user: { user_id }, body: { email, oldPassword, newPassword } }: any = req
 
         if (oldPassword == newPassword) throw new Error("Old And New Password is Same");
 
@@ -86,16 +86,22 @@ export class AuthController extends BaseController<IAuth, IMAuth> {
 
     userRegister = async (req: Request, res: Response): Promise<void> => {
         const id = v4()
-        const { email, mobile } = req.body
+        const { transaction, body, body: { email, mobile, first_name } }: any = req
+
         const userData = await new UserRepository().findOneBR({ where: { [Op.or]: [{ email }, { mobile: mobile.toString() }] }, attributes: ['user_id', 'email', 'mobile'] })
-        if (userData) { throw new Error("SAME Email Id OR MOBILE NUMBER") }
+        if (userData?.email == email) { throw new Error("Email In Use") }
+        if (userData?.mobile == mobile) { throw new Error("Number In Use") }
+
+        const otp = randomAlphaNumeric(8)
 
         await Promise.all([
-            await new UserRepository().createOneBR({ newData: { ...req.body, user_id: id }, created_by: id }),
-            await new AuthRepository().createOneBR({ newData: { ip: '192.168.0.1', action: authActionEnum.register, user_id: id }, created_by: id })
+            await new UserRepository().createOneBR({ newData: { ...body, user_id: id }, created_by: id, transaction }),
+            await new AuthRepository().createOneBR({ newData: { ip: '192.168.0.1', action: authActionEnum.register, user_id: id, token: otp }, created_by: id, transaction }),
         ]);
+        
+        new BaseHelper().sendEmail({ template_name: "user_registration", to: email, paramsVariable: { OTP: otp, NAME: first_name } })
 
-        res.locals = { status: true, message: "CREATE_SUCCESSFUL" }
+        res.locals = { status: true, message: Messages.SUCCESSFULLY_REGISTERED }
         return JsonResponse.jsonSuccess(req, res, "register");
     };
 
@@ -103,11 +109,15 @@ export class AuthController extends BaseController<IAuth, IMAuth> {
     forgotPassword = async (req: Request, res: Response): Promise<void> => {
         const { email } = req.body
         const user = await new UserRepository().findOneBR({ where: { email } });
+        if (!user) throw new Error("Invalid Email");
+        
+        const auth = await new AuthRepository().findOneBR({ where: { action: authActionEnum.forgot_pass, user_id: user.user_id ,created_at: { [Op.gte]: moment().subtract(60, "seconds") } } });
+        if(auth) throw new Error("Already Sent Email");
 
-        if (!user) throw new Error("Invalid Email!!");
         const otp = randomAlphaNumeric(8)
         await new AuthRepository().createOneBR({ newData: { ip: "192.168.0.1", action: authActionEnum.forgot_pass, user_id: user.user_id, token: otp }, created_by: user.user_id });
-        await new BaseHelper().sendEmail({ template_name: "forgot_password", to: email, paramsVariable: { OTP: otp, NAME: user.first_name } })
+        new BaseHelper().sendEmail({ template_name: "forgot_password", to: email, paramsVariable: { OTP: otp, NAME: user.first_name } })
+        
         res.locals = { status: true, message: Messages.OTP_SENT_SUCCESSFULLY };
         return await JsonResponse.jsonSuccess(req, res, "forgot Password");
 
@@ -121,7 +131,7 @@ export class AuthController extends BaseController<IAuth, IMAuth> {
         const user = await userRepo.findOneBR({ where: { email } });
         if (!user) throw new Error("Invalid Email!!");
 
-        const auth = await authRepo.findOneBR({ where: { user_id: user.user_id, token: otp } })
+        const auth = await authRepo.findOneBR({ where: { user_id: user.user_id, token: otp, created_at: { [Op.gte]: moment().subtract(300, "seconds") } } })
         if (!auth) throw new Error("Invalid email or otp");
 
         await authRepo.updateByIdBR({ id: auth.auth_id, newData: { is_active: false }, updated_by: user.user_id })
@@ -130,10 +140,4 @@ export class AuthController extends BaseController<IAuth, IMAuth> {
         res.locals = { status: true, message: Messages.PASSWORD_RESET_SUCCESS_PLEASE_LOGIN_WITH_YOUR_NEW_PASSWORD };
         return await JsonResponse.jsonSuccess(req, res, "resetPassword");
     }
-
-
 };
-
-
-
-

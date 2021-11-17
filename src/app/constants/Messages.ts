@@ -40,6 +40,8 @@ export class Messages {
     static readonly DEVICE_ALREADY_REGISTERED: string = "Device already registered";
     static readonly DEVICE_REGISTERED_SUCCESSFULLY: string = "Device registered successfully";
 
+    static readonly SUCCESSFULLY_REGISTERED: string = "Successfully registered";
+
     static readonly DEVICE_IS_NOT_LOGGED_IN: string = "Device is not loggedIn";
     static readonly DEVICE_TRIGGERED_SUCCESSFULLY: string = "Device triggered successfully";
     static readonly USER_DISCONNECTED: string = "User disconnected";

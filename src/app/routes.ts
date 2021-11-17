@@ -16,6 +16,7 @@ import { ProductController } from "./modules/products/product.controller";
 import { StateController } from "./modules/state/state.controller";
 import { TagController } from "./modules/Tags/tag.controller";
 import { TemplateController } from "./modules/template/template.controller";
+import { UserAddressController } from "./modules/user-address/user-address.controller";
 import { UserController } from "./modules/user/user.controller";
 
 
@@ -38,5 +39,7 @@ export function registerRoutes(app: Application): void {
     new TagController().register(app)
     new BrandController().register(app)
     new EmailController().register(app)
+    new UserAddressController().register(app);
     new CustomController().register(app);
+
 };
