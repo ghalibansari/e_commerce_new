@@ -19,7 +19,7 @@ export class AuthController extends BaseController<IAuth, IMAuth> {
     constructor() {
         super('auth', new AuthRepository(), ['*'], [['created_at', 'DESC']]);
         this.init();
-    }
+    };
 
     register = (express: Application) => express.use('/api/v1/auth', this.router)
 
@@ -33,11 +33,12 @@ export class AuthController extends BaseController<IAuth, IMAuth> {
         this.router.post('/change-password', AuthGuard, validateBody(AuthValidation.changePassword), TryCatch.tryCatchGlobe(this.changePassword));
         //  this.router.post('/changepasswordverify', validation.changePasswordVerify, TryCatch.tryCatchGlobe(this.changePasswordVerify));;
         // this.router.post('/forgetpassword', validation.forgetPassword, TryCatch.tryCatchGlobe(this.forgetPassword));
-        // this.router.post('/forgetpasswordverify', validation.forgetPasswordVerify, TryCatch.tryCatchGlobe(this.forgetPasswordVerify));
+        this.router.post('/email-verification', validateBody(AuthValidation.emailVerification), DBTransaction.startTransaction, TryCatch.tryCatchGlobe(this.emailVerification));
         // this.router.post('/logout',guard, TryCatch.tryCatchGlobe(this.logout))
         this.router.post('/reset-password', validateBody(AuthValidation.resetPassword), TryCatch.tryCatchGlobe(this.resetPassword))
 
     };
+
 
 
     async login(req: Request, res: Response): Promise<void> {   //Todo optimize this whole Auth controller
@@ -64,6 +65,8 @@ export class AuthController extends BaseController<IAuth, IMAuth> {
         }
     };
 
+
+
     changePassword = async (req: Request, res: Response): Promise<void> => {
         const { user: { user_id }, body: { email, oldPassword, newPassword } }: any = req
 
@@ -83,6 +86,8 @@ export class AuthController extends BaseController<IAuth, IMAuth> {
         res.locals = { status: true, message: Messages.PASSWORD_CHANGED_SUCCESSFULLY }
         return JsonResponse.jsonSuccess(req, res, "change password")
     };
+
+
 
     userRegister = async (req: Request, res: Response): Promise<void> => {
         const id = v4()
@@ -104,6 +109,30 @@ export class AuthController extends BaseController<IAuth, IMAuth> {
         res.locals = { status: true, message: Messages.SUCCESSFULLY_REGISTERED }
         return JsonResponse.jsonSuccess(req, res, "register");
     };
+
+
+    emailVerification = async (req: Request, res: Response): Promise<void> => {
+        const { email, otp, transaction } = req.body
+        const userRepo = new UserRepository();
+        const authRepo = new AuthRepository();
+
+        const user = await userRepo.findOneBR({ where: { email }, attributes: ["user_id"] });
+        if (!user) throw new Error("Invalid Email!!");
+
+        const verify = await authRepo.findOneBR({ where: { user_id: user.user_id, token: otp, action: authActionEnum.register }, attributes: ["auth_id"] });
+        if (!verify) throw new Error("Invalid email or otp");
+
+        await Promise.all([
+            await authRepo.updateByIdBR({ id: verify.auth_id, newData: { is_active: false }, updated_by: user.user_id, transaction }),
+            await userRepo.updateByIdBR({ id: user.user_id, newData: { email_verified_at: new Date() }, updated_by: user.user_id, transaction })
+        ])
+
+        res.locals = { status: true, message: Messages.SUCCESS };
+        return await JsonResponse.jsonSuccess(req, res, "emailVerification");
+
+    };
+
+
 
 
     forgotPassword = async (req: Request, res: Response): Promise<void> => {
@@ -133,6 +162,29 @@ export class AuthController extends BaseController<IAuth, IMAuth> {
 
         const auth = await authRepo.findOneBR({ where: { user_id: user.user_id, token: otp, created_at: { [Op.gte]: moment().subtract(300, "seconds") } } })
         if (!auth) throw new Error("Invalid email or otp");
+
+        await Promise.all([
+            await authRepo.updateByIdBR({ id: auth.auth_id, newData: { is_active: false }, updated_by: user.user_id }),
+            await userRepo.updateByIdBR({ id: user.user_id, newData: { password }, updated_by: user.user_id })
+        ])
+
+        res.locals = { status: true, message: Messages.PASSWORD_RESET_SUCCESS_PLEASE_LOGIN_WITH_YOUR_NEW_PASSWORD };
+        return await JsonResponse.jsonSuccess(req, res, "resetPassword");
+    };
+
+
+
+
+    updateProfile = async (req: Request, res: Response): Promise<void> => {
+        const { email, otp, password } = req.body
+        const userRepo = new UserRepository(), authRepo = new AuthRepository()
+
+        const user = await userRepo.findOneBR({ where: { email } });
+        if (!user) throw new Error("Invalid Email!!");
+
+        const auth = await authRepo.findOneBR({ where: { user_id: user.user_id, token: otp } })
+        if (!auth) throw new Error("Invalid email or otp");
+
 
         await authRepo.updateByIdBR({ id: auth.auth_id, newData: { is_active: false }, updated_by: user.user_id })
         await userRepo.updateByIdBR({ id: user.user_id, newData: { password }, updated_by: user.user_id })
