@@ -31,7 +31,7 @@ UserMd.hasMany(UserAddressMd, { foreignKey: 'user_id', as: 'addresses' });
 UserAddressMd.belongsTo(UserMd, { foreignKey: "user_id", as: "user", targetKey: "user_id" })
 
 
-UserMd.hasMany(CartMd, { foreignKey: 'user_id', as: 'cart' });
+UserMd.hasMany(CartMd, { foreignKey: 'user_id', as: 'carts' });
 CartMd.belongsTo(UserMd, { foreignKey: 'user_id', as: 'user', targetKey: "user_id" });
 
 

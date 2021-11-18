@@ -1,6 +1,5 @@
 import { cloneDeep } from "lodash";
 import { DataTypes } from "sequelize";
-import { createModuleResolutionCache } from "typescript";
 import { v4 as uuidv4 } from "uuid";
 import { DB } from "../../../configs/DB";
 import { TableName } from "../../constants";
@@ -18,15 +17,22 @@ const CityMd = DB.define<IMCity>(
     cloneDeep(modelCommonOptions)
 );
 
+// UserMd.hasMany(UserAddressMd, { foreignKey: 'user_id', as: 'addresses' });
+// UserAddressMd.belongsTo(UserMd, { foreignKey: "user_id", as: "user", targetKey: "user_id" })
+
+// CityMd.hasOne(StatesMd, { foreignKey: 'state_id', as: 'cities' })
+// StatesMd.belongsTo(CityMd, { foreignKey: 'state_id', as: 'state', targetKey: 'state_id' })
+
 async function doStuffWithUserModel() {
 
-console.log('doStuffWithUserModel')
+    console.log('doStuffWithUserModel')
     // await CityMd.sync({ force: true })
+    // await StatesMd.sync({ force: true })
     const id = uuidv4()
 
     const newUser = await CityMd.create({
         city_id: id,
-        name: "Mumbai",
+        name: "Palghar",
         created_by: id,
         updated_by: id
     })

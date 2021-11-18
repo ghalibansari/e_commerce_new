@@ -4,6 +4,7 @@ import { v4 as uuidv4 } from 'uuid';
 import { DB } from "../../../configs/DB";
 import { TableName } from "../../constants";
 import { modelCommonColumns, modelCommonOptions, modelCommonPrimaryKeyProperty } from '../BaseModel';
+import { CartMd } from '../cart/cart.model';
 import { IMProduct } from './product.type';
 
 
@@ -22,9 +23,9 @@ const ProductMd = DB.define<IMProduct>(
     cloneDeep(modelCommonOptions)
 );
 
-// ImageMd.belongsTo(UserMd, { foreignKey: 'user_is', as: 'user' })
-// ImageMd.belongsTo(UserMd, { foreignKey: 'created_by', as: 'created_by_user' })
-// ImageMd.belongsTo(UserMd, { foreignKey: 'updated_by', as: 'updated_by_user' })
+ProductMd.hasMany(CartMd, { foreignKey: 'product_id', as: 'carts' });
+CartMd.belongsTo(ProductMd, { foreignKey: 'product_id', as: 'product', targetKey: "product_id" });
+
 
 async function doStuffWithUserModel() {
     // await ImageMd.sync({ force: true })
@@ -35,14 +36,14 @@ async function doStuffWithUserModel() {
         product_id: id,
         category_id: id,
         brand_id: id,
-        name: 'Dovhh',
-        description: 'Beauty Soap',
+        name: 'Mortein',
+        description: 'House Essentails',
         weight: 1.12,
         amount: 3,
         created_by: id,
         updated_by: id
     })
-        .then(() => console.log("Created default user..."))
+        .then(() => console.log("Created default product..."))
         .catch(e => console.log(e))
     // console.log(newUser);
 }

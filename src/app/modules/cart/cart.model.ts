@@ -11,34 +11,32 @@ const CartMd = DB.define<IMCart>(
     TableName.CART,
     {
         cart_id: cloneDeep(modelCommonPrimaryKeyProperty),
-        product_id: { allowNull: false, type: DataTypes.STRING },
-        user_id: { type: DataTypes.UUID, defaultValue: null },
+        product_id: { allowNull: false, type: DataTypes.UUID },
+        user_id: { allowNull: false, type: DataTypes.UUID },
         quantity: { allowNull: false, type: DataTypes.INTEGER },
         ...cloneDeep(modelCommonColumns)
     },
     cloneDeep(modelCommonOptions)
 );
 
-// async function doStuffWithUserModel() {
-//     await CartMd.sync()
-//     await CartMd.sync({ force: true })
-//     const id = uuidv4()
 
-//     const newUser = await CartMd.create({
-//         cart_id: id,
-//         product_id: id,
-//         user_id: id,
-//         quantity: 78992338,
-//         created_by: id,
-//         updated_by: id
-//     })
-//         .then(() => console.log("Created default user..."))
-//         .catch(e => console.log(e))
-//     // console.log(newUser);
-// }
+async function doStuffWithUserModel() {
+
+    const id = uuidv4()
+
+    await CartMd.create({
+        cart_id: id,
+        product_id: id,
+        user_id: '67fa328b-f5bd-4b23-88db-97e10803e428',
+        quantity: 9,
+        created_by: id,
+        updated_by: id
+    })
+        .then(() => console.log("Created default cart..."))
+        .catch(e => console.log(e))
+}
 
 // doStuffWithUserModel()
-//categoriesMd.sync()
 
 export { CartMd };
 
