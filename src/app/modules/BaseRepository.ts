@@ -120,6 +120,10 @@ export class BaseRepository<T extends ModelCtor, U extends Model> implements IWr
         return await this.deleteBulkBR({ where: { [this.primary_key]: id }, deleted_by, delete_reason, transaction })
     };
 
+    // deleteOneBR = async ({ where, deleted_by, delete_reason, transaction }: TDeleteOneBR): Promise<number> => {
+    //     return await this.deleteBulkBR({ where, deleted_by, delete_reason, transaction })
+    // };
+
 
     restoreBulkBR = async ({ where, transaction }: TRestoreBulkBR<U>): Promise<void> => {
         return await this._model.restore({ where, transaction })

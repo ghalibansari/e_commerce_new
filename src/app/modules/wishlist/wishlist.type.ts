@@ -7,7 +7,6 @@ interface IBWishlist extends IBCommon {
     wishlist_id: string
     product_id: IProduct['product_id']
     user_id: IUser['user_id']
-    quantity: number
 }
 
 interface IWishlist extends Optional<IBWishlist, 'wishlist_id'> { }
@@ -15,3 +14,4 @@ interface IWishlist extends Optional<IBWishlist, 'wishlist_id'> { }
 interface IMWishlist extends Model<IBWishlist, IWishlist>, IBWishlist, IMCommon { }
 
 export { IWishlist, IMWishlist };
+

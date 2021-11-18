@@ -84,4 +84,9 @@ export class Messages {
     static readonly CLOSED_BUSINESS_FAILED_WITH_OPENED: string = "Close of business failure, Business is not opened"
     static readonly OPEN_BUSINESS_FAILED_FOR_DAILY_WITH_CLOSED: string = "Open of business failure. Business is already closed"
 
+    static readonly ADD_TO_WISHLIST: string = "Added in wishlist"
+    static readonly REMOVE_SUCCESSFULLY: string = "Remove successfully"
+    static readonly DELETED_BY_USER_WISHLIST: string = "Delete by user"
+
+
 }

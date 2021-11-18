@@ -19,6 +19,7 @@ import { TagController } from "./modules/Tag/tag.controller";
 import { TemplateController } from "./modules/template/template.controller";
 import { UserAddressController } from "./modules/user-address/user-address.controller";
 import { UserController } from "./modules/user/user.controller";
+import { WishlistController } from "./modules/wishlist/wishlist.controller";
 
 export function registerRoutes(app: Application): void {
     new UserController().register(app)
@@ -42,8 +43,12 @@ export function registerRoutes(app: Application): void {
     new BrandController().register(app)
     new EmailController().register(app)
     new UserAddressController().register(app);
+    new WishlistController().register(app);
 
 
 
+
+
+    
     new CustomController().register(app);
 };

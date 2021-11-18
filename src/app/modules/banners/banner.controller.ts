@@ -7,7 +7,7 @@ import { BannerValidation } from './banner.validation';
 
 export class BannerController extends BaseController<IBanner, IMBanner> {
     constructor() {
-        super("banner", new BannerRepository(), ['*'], [['banner_text', 'DESC']], [], [])
+        super("banner", new BannerRepository(), ['banner_text','order_sequence','show_on_home_screen','banner_image'], [['banner_text', 'DESC']], [], [])
         this.init();
     }
 
