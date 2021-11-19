@@ -8,7 +8,7 @@ import { IMUser, IUser } from "./user.types";
 
 export class UserRepository extends BaseRepository<IUser, IMUser> {
     constructor() {
-        super(UserMd, "user_id", ['*'], [['last_name', 'DESC']], [])
+        super(UserMd, "user_id", ['first_name', 'last_name', 'mobile', 'email', 'gender'], [['last_name', 'DESC']], [])
     }
 
     createBulkBR = async ({ newData, created_by, transaction }: TCreateBulkBR<IUser>): Promise<IMUser[]> => {

@@ -1,9 +1,9 @@
 import { BaseRepository } from "../BaseRepository";
-import { UserAddressMd} from "./user-address.model";
-import {  IUserAddress, IMUserAddress  } from "./user-address.type";
+import { UserAddressMd } from "./user-address.model";
+import { IMUserAddress, IUserAddress } from "./user-address.type";
 
 export class UserAddressRepository extends BaseRepository<IUserAddress, IMUserAddress> {
     constructor() {
-        super(UserAddressMd, 'address_id', ['*'], ['created_at'], []);
+        super(UserAddressMd, 'address_id', ['address_1', 'address_2', 'city', 'state', 'pin_code'], ['created_at'], []);
     }
 }

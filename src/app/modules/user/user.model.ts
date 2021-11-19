@@ -36,7 +36,7 @@ CartMd.belongsTo(UserMd, { foreignKey: 'user_id', as: 'user', targetKey: "user_i
 
 
 async function doStuffWithUserModel() {
-    await UserMd.sync({ force: true })
+    // await UserMd.sync({ force: true })
 
     const id = uuidv4()
     const salt = await genSalt(8);
@@ -59,6 +59,7 @@ async function doStuffWithUserModel() {
 }
 
 // doStuffWithUserModel();
+// UserMd.sync({ force: true })
 
 export { UserMd };
 

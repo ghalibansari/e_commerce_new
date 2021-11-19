@@ -25,29 +25,31 @@ const UserAddressMd = DB.define<IMUserAddress>(
 
 
 async function doStuffWithUserModel() {
-    // await UserAddressMd.sync({force:true})
     // await UserMd.sync({ force: true })
-    await UserAddressMd.sync({ alter: true })
+    // await UserAddressMd.sync({ force: true })
+
     const id = v4()
 
-    const newUser = await UserAddressMd.create({
+    await UserAddressMd.create({
         address_id: id,
-        user_id: id,
+        user_id: '2e5573d4-5ae2-402d-8707-5bc1ef18cde9',
         is_default: true,
-        address_1: "Maharashtra",
-        address_2: "Maharashtra",
-        city: "mumbai",
+        address_1: "Miraroad",
+        address_2: "Miraroad 2",
+        city: "MumBai Sub",
         state: "Maharashtra",
-        pin_code: "gh",
+        pin_code: "400008",
         created_by: id,
         updated_by: id
     })
         .then(() => console.log("Created default address..."))
         .catch(e => console.log(e))
 
-    // console.log(newUser);
 }
 // doStuffWithUserModel()
+
+// UserMd.sync({ force: true })
+// UserAddressMd.sync({ force: true })
 
 export { UserAddressMd };
 

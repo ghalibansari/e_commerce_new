@@ -29,8 +29,15 @@ export type TUpdateByIdBR<U extends Model> = {
     transaction?: Transaction
 };
 
+export type TUpdateOneBR<U extends Model> = {
+    where: object;
+    newData: Partial<U>
+    updated_by: IUser['user_id']
+    transaction?: Transaction
+};
+
 export type TUpdateBulkBR<U extends Model> = {
-    where: U['_attributes'];
+    where: Partial<U['_attributes']>;
     newData: Omit<Partial<U>, 'created_by' | 'updated_by' | 'deleted_by'>
     updated_by: IUser['user_id']
     transaction?: Transaction
