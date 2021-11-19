@@ -36,7 +36,7 @@ export class UserController extends BaseController<IUser, IMUser> {
     createOne = async (req: Request, res: Response): Promise<void> => {
         const { body, transaction, user: { user_id } }: any = req
         const data = await this.repo.createOneBR({ newData: body, created_by: user_id, transaction })
-        res.locals = { data, message: Messages.CREATE_SUCCESSFUL }
+        res.locals = { status: true, data, message: Messages.CREATE_SUCCESSFUL }
         return await JsonResponse.jsonSuccess(req, res, `createOneBC`)
     };
 
@@ -50,7 +50,7 @@ export class UserController extends BaseController<IUser, IMUser> {
     viewProfile = async (req: Request, res: Response): Promise<void> => {
         const { user: { user_id } }: any = req
         const data = await new UserRepository().findBulkBR({ where: { user_id }, attributes: ['first_name', 'last_name', 'mobile', 'email', 'gender'], include: [{ model: UserAddressMd, as: 'addresses', attributes: ['is_default', 'address_1', 'address_2', 'city', 'state', 'pin_code'] }] })
-        res.locals = { data, message: Messages.FETCH_SUCCESSFUL }
+        res.locals = { status: true, data, message: Messages.FETCH_SUCCESSFUL }
         return await JsonResponse.jsonSuccess(req, res, `shop`);
     };
 

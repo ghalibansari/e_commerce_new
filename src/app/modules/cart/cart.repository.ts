@@ -19,13 +19,13 @@ export class CartRepository extends BaseRepository<ICart, IMCart> {
 
     removeFromCart = async ({ product_id, user_id, delete_reason = "remove from cart by user", transaction }: { product_id: IProduct['product_id'], user_id: IUser['user_id'], delete_reason?: string, transaction?: Transaction }) => {
         const cart = await this.findOneBR({ where: { user_id, product_id }, attributes: ['cart_id'] });
-        if(!cart) throw new Error('Invalid product_id')
+        if (!cart) throw new Error('Invalid product_id')
         await this.deleteByIdBR({ id: cart.cart_id, delete_reason, deleted_by: user_id, transaction });
     }
 
-    moveToWishList = async ({product_id, user_id, transaction}: { product_id: IProduct['product_id'], user_id: IUser['user_id'], transaction: Transaction }) => {
-        await this.removeFromCart({product_id, user_id, delete_reason: "move to wishlist", transaction})
-        await new WishlistRepository().addToWishlist({product_id, user_id, transaction})   
+    moveToWishList = async ({ product_id, user_id, transaction }: { product_id: IProduct['product_id'], user_id: IUser['user_id'], transaction: Transaction }) => {
+        await this.removeFromCart({ product_id, user_id, delete_reason: "move to wishlist", transaction })
+        await new WishlistRepository().addToWishlist({ product_id, user_id, transaction })
     }
-    
-}
+
+};
