@@ -33,7 +33,7 @@ export class ProductController extends BaseController<IProduct, IMProduct> {
 
     similarProducts = async (req: Request, res: Response): Promise<void> => {
         const { query: { category_id, limit } }: any = req;
-        const data = await new ProductRepository().similarRandomProducts({ category_id, limit: limit || 100 });
+        const data = await new ProductRepository().similarRandomProducts({ category_id, limit: limit || 10 });
         res.locals = { data, message: Messages.FETCH_SUCCESSFUL, status: true }
         return await JsonResponse.jsonSuccess(req, res, "similarProducts");
 
