@@ -15,7 +15,7 @@ import { OrderController } from "./modules/orders/order.controller";
 import { PinCodeController } from "./modules/pincode/pincode.controller";
 import { ProductController } from "./modules/products/product.controller";
 import { StateController } from "./modules/state/state.controller";
-import { TagController } from "./modules/Tag/tag.controller";
+import { TagController } from "./modules/tag/tag.controller";
 import { TemplateController } from "./modules/template/template.controller";
 import { UserAddressController } from "./modules/user-address/user-address.controller";
 import { UserController } from "./modules/user/user.controller";
@@ -49,6 +49,6 @@ export function registerRoutes(app: Application): void {
 
 
 
-    
+
     new CustomController().register(app);
 };
