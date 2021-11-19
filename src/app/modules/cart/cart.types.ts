@@ -7,7 +7,7 @@ interface IBCart extends IBCommon {
     cart_id: string
     product_id: IProduct['product_id']
     user_id: IUser['user_id']
-    quantity?: number
+    quantity: number
 }
 
 interface ICart extends Optional<IBCart, 'cart_id'> { }
@@ -15,3 +15,4 @@ interface ICart extends Optional<IBCart, 'cart_id'> { }
 interface IMCart extends Model<IBCart, ICart>, IBCart, IMCommon { }
 
 export { ICart, IMCart };
+

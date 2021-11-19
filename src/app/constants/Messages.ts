@@ -86,5 +86,12 @@ export class Messages {
     static readonly ADD_TO_WISHLIST: string = "Added in wishlist"
     static readonly REMOVE_SUCCESSFULLY: string = "Remove successfully"
     static readonly DELETED_BY_USER_WISHLIST: string = "Delete by user"
+<<<<<<< Updated upstream
     static readonly SUCCESSFULLY_ADDED_TO_CART: string = "Product successfully added to cart"
+=======
+
+    static readonly ADD_TO_CART: string = "Added in cart"
+
+
+>>>>>>> Stashed changes
 }
