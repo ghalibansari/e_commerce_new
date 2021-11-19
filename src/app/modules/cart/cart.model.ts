@@ -1,6 +1,6 @@
 import { cloneDeep } from 'lodash';
 import { DataTypes } from 'sequelize';
-import { v4 as uuidv4 } from 'uuid';
+import { v4 } from 'uuid';
 import { DB } from "../../../configs/DB";
 import { TableName } from "../../constants";
 import { modelCommonColumns, modelCommonOptions, modelCommonPrimaryKeyProperty } from '../BaseModel';
@@ -13,7 +13,7 @@ const CartMd = DB.define<IMCart>(
         cart_id: cloneDeep(modelCommonPrimaryKeyProperty),
         product_id: { allowNull: false, type: DataTypes.UUID },
         user_id: { allowNull: false, type: DataTypes.UUID },
-        quantity: { allowNull: false, type: DataTypes.INTEGER },
+        quantity: { allowNull: false, type: DataTypes.INTEGER, defaultValue: 1 },
         ...cloneDeep(modelCommonColumns)
     },
     cloneDeep(modelCommonOptions)
@@ -22,7 +22,7 @@ const CartMd = DB.define<IMCart>(
 
 async function doStuffWithUserModel() {
 
-    const id = uuidv4()
+    const id = v4()
 
     await CartMd.create({
         cart_id: id,

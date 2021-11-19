@@ -1,8 +1,8 @@
+import { Messages } from "app/constants";
 import { Application, Request, Response } from "express";
-import { Messages } from "../../constants";
-import { AuthGuard, DBTransaction, JsonResponse, TryCatch, validateBody, validateParams } from "../../helper";
+import { AuthGuard, JsonResponse, TryCatch, validateBody, validateParams } from "../../helper";
 import { BaseController } from "../BaseController";
-import { CartRepository} from "./cart.repository";
+import { CartRepository } from "./cart.repository";
 import { ICart, IMCart } from "./cart.types";
 import { cartValidation } from "./cart.validation";
 
@@ -24,5 +24,18 @@ export class CartController extends BaseController<ICart, IMCart> {
         this.router.post("/bulk", validateBody(cartValidation.addCartBulk), TryCatch.tryCatchGlobe(this.createBulkBC))
         this.router.put("/:id", validateParams(cartValidation.findById), validateBody(cartValidation.editCart), TryCatch.tryCatchGlobe(this.updateByIdkBC))
         this.router.delete("/:id", validateParams(cartValidation.findById), TryCatch.tryCatchGlobe(this.deleteByIdBC))
-    }
+
+
+    };
+
+    addToCart = async (req: Request, res: Response) => {
+        const { user: { user_id }, query: { product_id, quantity } }: any = req
+        if (quantity) await this.repo.createOneBR({ newData: { product_id, quantity, user_id }, created_by: user_id });
+        res.locals = { message: Messages.SUCCESSFULLY_ADDED_TO_CART }
+        return await JsonResponse.jsonSuccess(req, res, "addToCart");
+    };
+
+
+
+
 };
