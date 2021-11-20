@@ -19,14 +19,14 @@ export class WishlistController extends BaseController<IWishlist, IMWishlist> {
 
     init() {
         this.router.get("/", TryCatch.tryCatchGlobe(this.index));
-        this.router.get("/:id", validateParams(WishlistValidation.findById), TryCatch.tryCatchGlobe(this.findByIdBC))
+        // this.router.get("/:id", validateParams(WishlistValidation.findById), TryCatch.tryCatchGlobe(this.findByIdBC))
         // this.router.post("/", validateBody(WishlistValidation.addWishlist), TryCatch.tryCatchGlobe(this.createOneBC))
         // this.router.post("/bulk", validateBody(WishlistValidation.addWishlistBulk), TryCatch.tryCatchGlobe(this.createBulkBC))
-        this.router.put("/:id", validateParams(WishlistValidation.findById), validateBody(WishlistValidation.editWishlist), TryCatch.tryCatchGlobe(this.updateByIdkBC))
         // this.router.delete("/:id", validateParams(WishlistValidation.findById), TryCatch.tryCatchGlobe(this.deleteByIdBC))
+        this.router.put("/:id", validateParams(WishlistValidation.findById), validateBody(WishlistValidation.editWishlist), TryCatch.tryCatchGlobe(this.updateByIdkBC))
 
         this.router.post("/add-to-wishlist", validateParams(WishlistValidation.findByProduct_id), TryCatch.tryCatchGlobe(this.addToWishlist))
-        this.router.post("/move-to-cart", validateParams(WishlistValidation.findByProduct_id),DBTransaction.startTransaction, TryCatch.tryCatchGlobe(this.moveToCart))
+        this.router.post("/move-to-cart", validateParams(WishlistValidation.findByProduct_id), DBTransaction.startTransaction, TryCatch.tryCatchGlobe(this.moveToCart))
         this.router.delete("/remove-from-wishlist", validateParams(WishlistValidation.findByProduct_id), TryCatch.tryCatchGlobe(this.removeFromWishlist))
         // this.router.get("/getWishlist",TryCatch.tryCatchGlobe(this.getWishlist))
     };

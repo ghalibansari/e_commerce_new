@@ -19,7 +19,7 @@ export class CartController extends BaseController<ICart, IMCart> {
 
     init() {
         this.router.get("/", TryCatch.tryCatchGlobe(this.index));
-        this.router.get("/:id", validateParams(cartValidation.findById), TryCatch.tryCatchGlobe(this.findByIdBC))
+        // this.router.get("/:id", validateParams(cartValidation.findById), TryCatch.tryCatchGlobe(this.findByIdBC))
         // this.router.post("/", validateBody(cartValidation.addCart), TryCatch.tryCatchGlobe(this.createOneBC))
         // this.router.post("/bulk", validateBody(cartValidation.addCartBulk), TryCatch.tryCatchGlobe(this.createBulkBC))
         // this.router.put("/:id", validateParams(cartValidation.findById), validateBody(cartValidation.editCart), TryCatch.tryCatchGlobe(this.updateByIdkBC))

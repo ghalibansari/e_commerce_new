@@ -1,5 +1,5 @@
 import { Application } from "express";
-import { AuthGuard, TryCatch, validateBody, validateParams } from "../../helper";
+import { AuthGuard, TryCatch, validateBody } from "../../helper";
 import { BaseController } from "../BaseController";
 import { PinCodeRepository } from "./pincode.repository";
 import { IMPinCode, IPinCode } from "./pincode.types";
@@ -18,10 +18,10 @@ export class PinCodeController extends BaseController<IPinCode, IMPinCode> {
 
     init() {
         this.router.get("/", TryCatch.tryCatchGlobe(this.indexBC));
-        this.router.get("/:id", validateParams(PinCodeValidation.findById), TryCatch.tryCatchGlobe(this.findByIdBC))
+        // this.router.get("/:id", validateParams(PinCodeValidation.findById), TryCatch.tryCatchGlobe(this.findByIdBC))
         this.router.post("/", validateBody(PinCodeValidation.addPinCodes), TryCatch.tryCatchGlobe(this.createOneBC))
-        this.router.post("/bulk", validateBody(PinCodeValidation.addPinCodeBulk), TryCatch.tryCatchGlobe(this.createBulkBC))
-        this.router.put("/:id", validateParams(PinCodeValidation.findById), validateBody(PinCodeValidation.editPinCode), TryCatch.tryCatchGlobe(this.updateByIdkBC))
-        this.router.delete("/:id", validateParams(PinCodeValidation.findById), TryCatch.tryCatchGlobe(this.deleteByIdBC))
+        // this.router.post("/bulk", validateBody(PinCodeValidation.addPinCodeBulk), TryCatch.tryCatchGlobe(this.createBulkBC))
+        // this.router.put("/:id", validateParams(PinCodeValidation.findById), validateBody(PinCodeValidation.editPinCode), TryCatch.tryCatchGlobe(this.updateByIdkBC))
+        // this.router.delete("/:id", validateParams(PinCodeValidation.findById), TryCatch.tryCatchGlobe(this.deleteByIdBC))
     }
 };

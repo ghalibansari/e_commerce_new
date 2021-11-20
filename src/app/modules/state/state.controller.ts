@@ -17,10 +17,10 @@ export class StateController extends BaseController<IStates, IMStates> {
 
     init() {
         this.router.get("/", TryCatch.tryCatchGlobe(this.indexBC));
-        this.router.get("/:id", validateParams(StatesValidation.findById), TryCatch.tryCatchGlobe(this.findByIdBC))
+        // this.router.get("/:id", validateParams(StatesValidation.findById), TryCatch.tryCatchGlobe(this.findByIdBC))
         this.router.post("/", validateBody(StatesValidation.addStates), TryCatch.tryCatchGlobe(this.createOneBC))
         this.router.post("/bulk", validateBody(StatesValidation.addStateBulk), TryCatch.tryCatchGlobe(this.createBulkBC))
         this.router.put("/:id", validateParams(StatesValidation.findById), validateBody(StatesValidation.editState), TryCatch.tryCatchGlobe(this.updateByIdkBC))
-        this.router.delete("/:id", validateParams(StatesValidation.findById), TryCatch.tryCatchGlobe(this.deleteByIdBC))
+        // this.router.delete("/:id", validateParams(StatesValidation.findById), TryCatch.tryCatchGlobe(this.deleteByIdBC))
     }
 };

@@ -5,6 +5,7 @@ import { BrandController } from "./modules/brand/brand.controller";
 import { CartController } from "./modules/cart/cart.controller";
 import { CategoryController } from "./modules/categories/categories.controller";
 import { CityController } from "./modules/city/city.controller";
+import { ContactUsController } from "./modules/contact-us/contact-us.controller";
 import { CouponController } from "./modules/coupon/coupon.controller";
 import { CustomController } from "./modules/custom/custom.controller";
 import { EmailController } from "./modules/emailHistory/email.controller";
@@ -30,6 +31,7 @@ export function registerRoutes(app: Application): void {
     new BannerController().register(app)
     new UserAddressController().register(app);
     new StateController().register(app)
+    new ContactUsController().register(app)
     new PinCodeController().register(app)
     new ImageController().register(app)
     new CartController().register(app)
@@ -40,10 +42,8 @@ export function registerRoutes(app: Application): void {
     new OrderProductController().register(app)
     new CityController().register(app)
     new TagController().register(app)
-    new BrandController().register(app)
     new EmailController().register(app)
-    new UserAddressController().register(app);
-    new WishlistController().register(app);
+    new WishlistController().register(app)
 
 
 

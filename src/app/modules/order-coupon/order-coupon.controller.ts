@@ -17,10 +17,10 @@ export class OrderCouponController extends BaseController<IOrderCoupon, IMOrderC
 
     init() {
         this.router.get("/", TryCatch.tryCatchGlobe(this.indexBC));
-        this.router.get("/:id", validateParams(OrderCouponValidation.findById), TryCatch.tryCatchGlobe(this.findByIdBC))
+        // this.router.get("/:id", validateParams(OrderCouponValidation.findById), TryCatch.tryCatchGlobe(this.findByIdBC))
         this.router.post("/", validateBody(OrderCouponValidation.addOrderCoupon), TryCatch.tryCatchGlobe(this.createOneBC))
         this.router.post("/bulk", validateBody(OrderCouponValidation.addOrderCouponBulk), TryCatch.tryCatchGlobe(this.createBulkBC))
         this.router.put("/:id", validateParams(OrderCouponValidation.findById), validateBody(OrderCouponValidation.editOrderCoupon), TryCatch.tryCatchGlobe(this.updateByIdkBC))
-        this.router.delete("/:id", validateParams(OrderCouponValidation.findById), TryCatch.tryCatchGlobe(this.deleteByIdBC))
+        // this.router.delete("/:id", validateParams(OrderCouponValidation.findById), TryCatch.tryCatchGlobe(this.deleteByIdBC))
     }
 };

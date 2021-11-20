@@ -20,27 +20,27 @@ const ContactUsMd = DB.define<IMContactUs>(
     cloneDeep(modelCommonOptions)
 );
 
-// async function doStuffWithUserModel() {
-//     await ContactUsMd.sync()
-//     // await UserMd.sync({ force: true })
-//     const id = uuidv4()
+async function doStuffWithUserModel() {
+    // await ContactUsMd.sync({ force: true })
+    // a
+    const id = uuidv4()
 
-//     const newUser = await ContactUsMd.create({
-//         contactUs_id: id,
-//         name: "demo",
-//         email: "demo@demo.com",
-//         contact_no: "78992338",
-//         message: "chloe",
-//         created_by: id,
-//         updated_by: id
-//     })
-//         .then(() => console.log("Created default user..."))
-//         .catch(e => console.log(e))
-//     // console.log(newUser);
-// }
+    const newUser = await ContactUsMd.create({
+        contact_us_id: id,
+        name: "Cjot",
+        email: "demo2@demo.com",
+        contact_no: "78992338",
+        message: "chor",
+        created_by: id,
+        updated_by: id
+    })
+        .then(() => console.log("Created default user..."))
+        .catch(e => console.log(e))
+    // console.log(newUser);
+}
 
 // doStuffWithUserModel()
-// // //categoriesMd.sync()
+// ContactUsMd.sync({ force: true })
 
 export { ContactUsMd };
 

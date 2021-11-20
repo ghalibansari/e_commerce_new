@@ -17,10 +17,10 @@ export class OrderProductController extends BaseController<IOrderProduct, IMOrde
 
     init() {
         this.router.get("/", TryCatch.tryCatchGlobe(this.indexBC));
-        this.router.get("/:id", validateParams(OrderProductValidation.findById), TryCatch.tryCatchGlobe(this.findByIdBC))
+        // this.router.get("/:id", validateParams(OrderProductValidation.findById), TryCatch.tryCatchGlobe(this.findByIdBC))
         this.router.post("/", validateBody(OrderProductValidation.addOrderProduct), TryCatch.tryCatchGlobe(this.createOneBC))
-        this.router.post("/bulk", validateBody(OrderProductValidation.addOrderProductBulk), TryCatch.tryCatchGlobe(this.createBulkBC))
+        // this.router.post("/bulk", validateBody(OrderProductValidation.addOrderProductBulk), TryCatch.tryCatchGlobe(this.createBulkBC))
         this.router.put("/:id", validateParams(OrderProductValidation.findById), validateBody(OrderProductValidation.editOrderProduct), TryCatch.tryCatchGlobe(this.updateByIdkBC))
-        this.router.delete("/:id", validateParams(OrderProductValidation.findById), TryCatch.tryCatchGlobe(this.deleteByIdBC))
+        // this.router.delete("/:id", validateParams(OrderProductValidation.findById), TryCatch.tryCatchGlobe(this.deleteByIdBC))
     }
 };

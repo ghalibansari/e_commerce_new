@@ -18,10 +18,10 @@ export class CategoryController extends BaseController<ICategories, IMCategories
 
     init() {
         this.router.get("/", TryCatch.tryCatchGlobe(this.indexBC));
-        this.router.get("/:id", validateParams(categoriesValidation.findById), TryCatch.tryCatchGlobe(this.findByIdBC))
+        // this.router.get("/:id", validateParams(categoriesValidation.findById), TryCatch.tryCatchGlobe(this.findByIdBC))
         this.router.post("/", validateBody(categoriesValidation.addCategory), TryCatch.tryCatchGlobe(this.createOneBC))
-        this.router.post("/bulk", validateBody(categoriesValidation.addCategoriesBulk), TryCatch.tryCatchGlobe(this.createBulkBC))
+        // this.router.post("/bulk", validateBody(categoriesValidation.addCategoriesBulk), TryCatch.tryCatchGlobe(this.createBulkBC))
         this.router.put("/:id", validateParams(categoriesValidation.findById), validateBody(categoriesValidation.editCategory), TryCatch.tryCatchGlobe(this.updateByIdkBC))
-        this.router.delete("/:id", validateParams(categoriesValidation.findById), TryCatch.tryCatchGlobe(this.deleteByIdBC))
+        // this.router.delete("/:id", validateParams(categoriesValidation.findById), TryCatch.tryCatchGlobe(this.deleteByIdBC))
     }
 };

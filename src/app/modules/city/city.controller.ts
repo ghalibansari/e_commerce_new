@@ -1,8 +1,8 @@
 import { Application } from "express";
 import { AuthGuard, TryCatch, validateBody, validateParams } from "../../helper";
 import { BaseController } from "../BaseController";
-import { IMCity, ICity } from "./city.types";
 import { CityRepository } from "./city.repository";
+import { ICity, IMCity } from "./city.types";
 import { CityValidation } from "./city.validation";
 
 
@@ -17,10 +17,10 @@ export class CityController extends BaseController<ICity, IMCity> {
 
     init() {
         this.router.get("/", TryCatch.tryCatchGlobe(this.indexBC));
-        this.router.get("/:id", validateParams(CityValidation.findById), TryCatch.tryCatchGlobe(this.findByIdBC))
+        // this.router.get("/:id", validateParams(CityValidation.findById), TryCatch.tryCatchGlobe(this.findByIdBC))
         this.router.post("/", validateBody(CityValidation.addCity), TryCatch.tryCatchGlobe(this.createOneBC))
-        this.router.post("/bulk", validateBody(CityValidation.addCityBulk), TryCatch.tryCatchGlobe(this.createBulkBC))
+        // this.router.post("/bulk", validateBody(CityValidation.addCityBulk), TryCatch.tryCatchGlobe(this.createBulkBC))
         this.router.put("/:id", validateParams(CityValidation.findById), validateBody(CityValidation.editCity), TryCatch.tryCatchGlobe(this.updateByIdkBC))
-        this.router.delete("/:id", validateParams(CityValidation.findById), TryCatch.tryCatchGlobe(this.deleteByIdBC))
+        // this.router.delete("/:id", validateParams(CityValidation.findById), TryCatch.tryCatchGlobe(this.deleteByIdBC))
     }
 };
