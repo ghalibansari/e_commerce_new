@@ -9,7 +9,7 @@ const config = { url: "postgres://lcfxmnrq:X6HSV_8HDi3YiIZfpfUIVHXI7L6gojFM@fann
 //   : new Sequelize(config.database, config.username, config.password, config);
 
 
-const DB = new Sequelize(config.url, { pool: { max: 1 } })
+const DB = new Sequelize(config.url, { pool: { max: 2 } })
 
 
 export { Sequelize, DB };
