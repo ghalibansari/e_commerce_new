@@ -103,7 +103,7 @@ export class AuthController extends BaseController<IAuth, IMAuth> {
             await new UserRepository().createOneBR({ newData: { ...body, user_id: id }, created_by: id, transaction }),
             await new AuthRepository().createOneBR({ newData: { ip: '192.168.0.1', action: authActionEnum.register, user_id: id, token: otp }, created_by: id, transaction }),
         ]);
-        
+
         new BaseHelper().sendEmail({ template_name: "user_registration", to: email, paramsVariable: { OTP: otp, NAME: first_name } })
 
         res.locals = { status: true, message: Messages.SUCCESSFULLY_REGISTERED }
@@ -137,17 +137,17 @@ export class AuthController extends BaseController<IAuth, IMAuth> {
 
     forgotPassword = async (req: Request, res: Response): Promise<void> => {
         const { email } = req.body
-        const user = await new UserRepository().findOneBR({ where: { email } });
+        const user = await new UserRepository().findOneBR({ where: { email }, attributes: ["user_id", 'first_name'] });
         if (!user) throw new Error("Invalid Email");
-        
-        const auth = await new AuthRepository().findOneBR({ where: { action: authActionEnum.forgot_pass, user_id: user.user_id ,created_at: { [Op.gte]: moment().subtract(60, "seconds") } } });
-        if(auth) throw new Error("Already Sent Email");
+
+        const auth = await new AuthRepository().findOneBR({ where: { action: authActionEnum.forgot_pass, user_id: user.user_id, created_at: { [Op.gte]: moment().subtract(600, "seconds") } } });
+        if (auth) throw new Error("Already Sent Email");
 
         const otp = randomAlphaNumeric(8)
 
         await new AuthRepository().createOneBR({ newData: { ip: "192.168.0.1", action: authActionEnum.forgot_pass, user_id: user.user_id, token: otp }, created_by: user.user_id });
         new BaseHelper().sendEmail({ template_name: "forgot_password", to: email, paramsVariable: { OTP: otp, NAME: user.first_name } })
-        
+
         res.locals = { status: true, message: Messages.OTP_SENT_SUCCESSFULLY };
         return await JsonResponse.jsonSuccess(req, res, "forgot Password");
 
@@ -158,7 +158,7 @@ export class AuthController extends BaseController<IAuth, IMAuth> {
         const { email, otp, password } = req.body
         const userRepo = new UserRepository(), authRepo = new AuthRepository()
 
-        const user = await userRepo.findOneBR({ where: { email } });
+        const user = await userRepo.findOneBR({ where: { email }, attributes: ['user_id', "first_name"] });
         if (!user) throw new Error("Invalid Email!!");
 
         const auth = await authRepo.findOneBR({ where: { user_id: user.user_id, token: otp, created_at: { [Op.gte]: moment().subtract(300, "seconds") } } })
@@ -167,7 +167,7 @@ export class AuthController extends BaseController<IAuth, IMAuth> {
         await Promise.all([
             await authRepo.updateByIdBR({ id: auth.auth_id, newData: { is_active: false }, updated_by: user.user_id }),
             await userRepo.updateByIdBR({ id: user.user_id, newData: { password }, updated_by: user.user_id })
-        ])
+        ]);
 
         res.locals = { status: true, message: Messages.PASSWORD_RESET_SUCCESS_PLEASE_LOGIN_WITH_YOUR_NEW_PASSWORD };
         return await JsonResponse.jsonSuccess(req, res, "resetPassword");
@@ -176,21 +176,4 @@ export class AuthController extends BaseController<IAuth, IMAuth> {
 
 
 
-    updateProfile = async (req: Request, res: Response): Promise<void> => {
-        const { email, otp, password } = req.body
-        const userRepo = new UserRepository(), authRepo = new AuthRepository()
-
-        const user = await userRepo.findOneBR({ where: { email } });
-        if (!user) throw new Error("Invalid Email!!");
-
-        const auth = await authRepo.findOneBR({ where: { user_id: user.user_id, token: otp } })
-        if (!auth) throw new Error("Invalid email or otp");
-
-
-        await authRepo.updateByIdBR({ id: auth.auth_id, newData: { is_active: false }, updated_by: user.user_id })
-        await userRepo.updateByIdBR({ id: user.user_id, newData: { password }, updated_by: user.user_id })
-
-        res.locals = { status: true, message: Messages.PASSWORD_RESET_SUCCESS_PLEASE_LOGIN_WITH_YOUR_NEW_PASSWORD };
-        return await JsonResponse.jsonSuccess(req, res, "resetPassword");
-    }
 };
