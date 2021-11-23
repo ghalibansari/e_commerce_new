@@ -48,21 +48,18 @@ export class AuthController extends BaseController<IAuth, IMAuth> {
         if (!userData) { throw new Error("Invalid Email Id") }
 
         const comparePassword = await compare(password, userData?.password!)
-        if (comparePassword) {
-            const { user_id }: any = userData
-            // @ts-expect-error
-            delete userData.password
-            const token = jwt.sign({ ...userData }, Constant.jwt_key);
-            res.locals.data = token
-            new AuthRepository().createOneBR({ newData: { ip: '192.168.0.1', action: authActionEnum.login, token, user_id: user_id }, created_by: user_id })
-            res.locals.message = Messages.SUCCESSFULLY_LOGIN;
-            return JsonResponse.jsonSuccess(req, res, "login")
+        if (!comparePassword) {
+            throw new Error("Incorrect Password")
         }
-        else {
-            res.locals.data = null;
-            res.locals.message = "Invalid Email or Password.";
-            return JsonResponse.jsonError(req, res, "login");
-        }
+        const { user_id }: any = userData
+        // @ts-expect-error
+        delete userData.password
+        const token = jwt.sign({ ...userData }, Constant.jwt_key);
+        res.locals.data = token
+        new AuthRepository().createOneBR({ newData: { ip: '192.168.0.1', action: authActionEnum.login, token, user_id: user_id }, created_by: user_id })
+        res.locals = { status: true, message: Messages.SUCCESSFULLY_LOGIN };
+        return JsonResponse.jsonSuccess(req, res, "login")
+
     };
 
 

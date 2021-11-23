@@ -1,6 +1,3 @@
-//@ts-expect-error
-import axios, {AxiosPromise} from 'axios'
-import {Constant} from "../constants";
 
 interface IJtDownload {
     fileName: string;
@@ -24,4 +21,4 @@ interface IJtDownloadResponse { //Todo make JT response wait less...
 
 // const JtSaveImage = async(args: IJtSaveImage):Promise<AxiosPromise<IJtDownloadResponse>> => axios.post(Constant.JT_Company_save_image, args);
 
-export {IJtDownload, IJtDownloadResponse, IJtSaveImage}
+export { IJtDownload, IJtDownloadResponse, IJtSaveImage };
