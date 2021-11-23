@@ -57,7 +57,7 @@ export class AuthController extends BaseController<IAuth, IMAuth> {
         const token = jwt.sign({ ...userData }, Constant.jwt_key);
         res.locals.data = token
         new AuthRepository().createOneBR({ newData: { ip: '192.168.0.1', action: authActionEnum.login, token, user_id: user_id }, created_by: user_id })
-        res.locals = { status: true, message: Messages.SUCCESSFULLY_LOGIN };
+        res.locals = { status: true, message: Messages.SUCCESSFULLY_LOGIN, data: token };
         return JsonResponse.jsonSuccess(req, res, "login")
 
     };
