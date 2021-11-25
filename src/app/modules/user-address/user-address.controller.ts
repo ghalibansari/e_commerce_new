@@ -28,7 +28,6 @@ export class UserAddressController extends BaseController<IUserAddress, IMUserAd
 
     addUserAddress = async (req: Request, res: Response): Promise<void> => {
         const { body, transaction, user: { user_id } }: any = req
-        console.log("OOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO", user_id)
         const userAdd = await this.repo.findBulkBR({ where: { user_id }, attributes: ["address_id", "is_default"] });
         if (!userAdd.length) body.is_default = true;
         else if (userAdd.length && body.is_default) {
@@ -54,5 +53,5 @@ export class UserAddressController extends BaseController<IUserAddress, IMUserAd
         const { count } = await this.repo.updateByIdBR({ id: address.address_id, newData: body, updated_by: user_id })
         res.locals = { status: !!count, message: !!count ? Messages.UPDATE_SUCCESSFUL : Messages.UPDATE_FAILED };
         return await JsonResponse.jsonSuccess(req, res, `{this.url}.updateProfile`)
-    }
+    };
 };
