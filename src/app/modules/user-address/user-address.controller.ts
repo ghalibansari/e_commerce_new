@@ -21,10 +21,11 @@ export class UserAddressController extends BaseController<IUserAddress, IMUserAd
         // this.router.get("/:id", validateParams(UserAddressValidation.findById), TryCatch.tryCatchGlobe(this.findByIdBC))
         this.router.post("/", validateBody(UserAddressValidation.addUserAddress), DBTransaction.startTransaction, TryCatch.tryCatchGlobe(this.addUserAddress))
         // this.router.post("/bulk", validateBody(UserAddressValidation.addUserAddressBulk), TryCatch.tryCatchGlobe(this.createBulkBC))
-        this.router.put('/', validateBody(UserAddressValidation.updateUserAddress), TryCatch.tryCatchGlobe(this.updateUserAddress))
+        this.router.put('/:id', validateBody(UserAddressValidation.updateUserAddress), DBTransaction.startTransaction, TryCatch.tryCatchGlobe(this.updateUserAddress))
         // this.router.put("/:id", validateParams(UserAddressValidation.findById), validateBody(UserAddressValidation.editUserAddress), TryCatch.tryCatchGlobe(this.updateByIdkBC))
         this.router.delete("/:id", validateParams(UserAddressValidation.findById), TryCatch.tryCatchGlobe(this.deleteByIdBC))
     };
+
 
     addUserAddress = async (req: Request, res: Response): Promise<void> => {
         const { body, transaction, user: { user_id } }: any = req
@@ -43,15 +44,28 @@ export class UserAddressController extends BaseController<IUserAddress, IMUserAd
         return await JsonResponse.jsonSuccess(req, res, "addUserAddress")
     };
 
+
     updateUserAddress = async (req: Request, res: Response): Promise<void> => {
-        const { body, user: { user_id }, query: { id } }: any = req
-        const address = await this.repo.findOneBR({ where: { address_id: id, user_id, }, attributes: ['address_id'] })
-        // const def = await this.repo.findOneBR({where:{address_id : id}, attributes:['is_default']})
+        const { body, transaction, user: { user_id }, params: { id } }: any = req
+
+        const address = await this.repo.findBulkBR({ where: { user_id, }, attributes: ['address_id', "is_default"] });
         if (!address) throw new Error('Address Not Found')
 
-        // else if(!def) throw new Error('address is not default')
-        const { count } = await this.repo.updateByIdBR({ id: address.address_id, newData: body, updated_by: user_id })
+        if (!address.length) throw new Error("ADDRESS NOT FOUND")
+        if (address.length == 1 && address[0].address_id == id) body.is_default = true;
+
+        else if (address.length > 1 && body.is_default) {
+            let emptyArray = []
+            for (let i = 0; i < address.length; i++) {
+                emptyArray.push(address[i].address_id)
+            };
+            //@ts-expect-error
+            await this.repo.updateBulkBR({ where: { "address_id": emptyArray }, newData: { is_default: false }, updated_by: user_id, transaction })
+        };
+
+        const { count } = await this.repo.updateByIdBR({ id, newData: body, updated_by: user_id });
         res.locals = { status: !!count, message: !!count ? Messages.UPDATE_SUCCESSFUL : Messages.UPDATE_FAILED };
         return await JsonResponse.jsonSuccess(req, res, `{this.url}.updateProfile`)
     };
+
 };

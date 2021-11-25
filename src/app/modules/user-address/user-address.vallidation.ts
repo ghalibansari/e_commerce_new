@@ -4,7 +4,7 @@ import { IUserAddress } from "./user-address.type";
 
 export abstract class UserAddressValidation extends BaseValidation {
     static readonly addUserAddress = Joi.object<IUserAddress>({
-        is_default: Joi.boolean().required(),
+        is_default: Joi.boolean(),
         address_1: Joi.string().required(),
         address_2: Joi.string().required(),
         city: Joi.string().required(),
@@ -26,9 +26,6 @@ export abstract class UserAddressValidation extends BaseValidation {
     });
 
     static readonly updateUserAddress = Joi.object<IUserAddress>({
-        address_id: Joi.string(),
-        user_id: Joi.string(),
-        is_default: Joi.boolean(),
         address_1: Joi.string(),
         address_2: Joi.string(),
         city: Joi.string(),
