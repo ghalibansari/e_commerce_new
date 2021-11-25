@@ -8,7 +8,7 @@ import { BrandValidation } from './brand.validation';
 
 export class BrandController extends BaseController<IBrand, IMBrand> {
     constructor() {
-        super("brand", new BrandRepository(), ['banner_image', 'banner_image'], [['brand_name', 'DESC']], [], [])
+        super("brand", new BrandRepository(), ['brand_image', 'brand_image'], [['brand_name', 'DESC']], [], [])
         this.init();
     }
 

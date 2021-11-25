@@ -13,7 +13,7 @@ const BrandMd = DB.define<IMBrand>(
         brand_name: { allowNull: false, type: DataTypes.STRING },
         order_sequence: { allowNull: false, type: DataTypes.INTEGER },
         show_on_home_screen: { type: DataTypes.BOOLEAN, defaultValue: false },
-        banner_image: { type: DataTypes.STRING, allowNull: true },
+        brand_image: { type: DataTypes.STRING, allowNull: true },
         show_on_header: { type: DataTypes.BOOLEAN, defaultValue: false },
         tag_id: { type: DataTypes.UUID },
         ...cloneDeep(modelCommonColumns)
@@ -23,14 +23,14 @@ const BrandMd = DB.define<IMBrand>(
 
 async function doStuffWithUserModel() {
 
-    // await BrandMd.sync({ force: true })
+    // await BrandMd.sync({ alter: true })
 
     const newUser = await BrandMd.create({
         brand_id: v4(),
         brand_name: "myBrand",
         order_sequence: 11,
         show_on_home_screen: true,
-        banner_image: "yahoo.com/la.img",
+        brand_image: "yahoo.com/la.img",
         show_on_header: true,
         created_by: v4(),
         updated_by: v4(),

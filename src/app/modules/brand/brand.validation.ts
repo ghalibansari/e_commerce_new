@@ -8,7 +8,7 @@ export class BrandValidation extends BaseValidation {
         brand_name: Joi.string().required(),
         order_sequence: Joi.number(),
         show_on_home_screen: Joi.boolean(),
-        banner_image: Joi.string(),
+        brand_image: Joi.string(),
         show_on_header: Joi.boolean(),
         tag_id: Joi.string(),
 
@@ -24,7 +24,7 @@ export class BrandValidation extends BaseValidation {
         is_active: Joi.boolean(),
         order_sequence: Joi.number(),
         show_on_home_screen: Joi.boolean(),
-        banner_image: Joi.string(),
+        brand_image: Joi.string(),
         show_on_header: Joi.boolean(),
         tag_id: Joi.string(),
     });
