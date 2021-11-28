@@ -16,7 +16,7 @@ const CouponMd = DB.define<IMCoupon>(
         min_cart_amount: { allowNull: false, type: DataTypes.INTEGER },
         offer_start_date: { type: DataTypes.DATE },
         offer_end_date: { type: DataTypes.DATE },
-        max_cart_amount: { allowNull: false, type: DataTypes.INTEGER },
+        max_discount_amount: { allowNull: false, type: DataTypes.INTEGER },
         ...cloneDeep(modelCommonColumns)
     },
     cloneDeep(modelCommonOptions)
@@ -36,7 +36,7 @@ async function doStuffWithUserModel() {
         type: CouponEnum.percent,
         discount: 9.5,
         min_cart_amount: 12000,
-        max_cart_amount: 20000,
+        max_discount_amount: 20000,
         offer_start_date: new Date(),
         offer_end_date: new Date(),
         created_by: id,

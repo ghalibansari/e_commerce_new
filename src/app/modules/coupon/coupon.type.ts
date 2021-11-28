@@ -14,7 +14,7 @@ interface IBCoupon extends IBCommon {
     min_cart_amount: number
     offer_start_date: Date
     offer_end_date: Date
-    max_cart_amount: number
+    max_discount_amount: number
 }
 
 interface ICoupon extends Optional<IBCoupon, 'coupon_id'> { }
