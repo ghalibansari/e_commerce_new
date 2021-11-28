@@ -1,7 +1,9 @@
 import { Application, Request, Response } from "express";
+import { Op } from "sequelize";
 import { Messages } from "../../constants";
 import { AuthGuard, DBTransaction, JsonResponse, TryCatch, validateParams } from "../../helper";
 import { BaseController } from "../BaseController";
+import { BaseValidation } from "../BaseValidation";
 import { CartRepository } from "./cart.repository";
 import { ICart, IMCart } from "./cart.types";
 import { cartValidation } from "./cart.validation";
@@ -26,16 +28,10 @@ export class CartController extends BaseController<ICart, IMCart> {
         // this.router.delete("/:id", validateParams(cartValidation.findById), TryCatch.tryCatchGlobe(this.deleteByIdBC))
 
         this.router.post("/add-to-cart", validateParams(cartValidation.findByProduct_id), TryCatch.tryCatchGlobe(this.addToCart))
-        this.router.post("/add-to-cart", validateParams(cartValidation.findByProduct_id), TryCatch.tryCatchGlobe(this.addToCart))
-        this.router.post("/move-to-wishList", validateParams(cartValidation.findByRemoveProduct_id), DBTransaction.startTransaction, TryCatch.tryCatchGlobe(this.moveToWishList))
+        this.router.delete("/remove-from-cart", validateParams(cartValidation.findByProduct_id), TryCatch.tryCatchGlobe(this.removeFromCart))
+        this.router.post("/move-to-wishlist", validateParams(cartValidation.findByRemoveProduct_id), DBTransaction.startTransaction, TryCatch.tryCatchGlobe(this.moveToWishList))
 
-    }
-
-    index = async (req: Request, res: Response) => {
-        const { user: { user_id } }: any = req;
-        req.query.where = { user_id };
-        await this.indexBC(req, res);
-    }
+    };
 
     addToCart = async (req: Request, res: Response) => {
         const { query: { product_id, quantity }, user: { user_id } }: any = req;
@@ -44,7 +40,7 @@ export class CartController extends BaseController<ICart, IMCart> {
 
         res.locals = { status: true, message: Messages.ADD_TO_CART };
         return await JsonResponse.jsonSuccess(req, res, `AddToCart`);
-    }
+    };
 
     removeFromCart = async (req: Request, res: Response) => {
         const { query: { product_id }, user: { user_id } }: any = req;
@@ -53,7 +49,7 @@ export class CartController extends BaseController<ICart, IMCart> {
 
         res.locals = { status: true, message: Messages.REMOVE_SUCCESSFULLY };
         return await JsonResponse.jsonSuccess(req, res, `removeFromCart`);
-    }
+    };
 
     moveToWishList = async (req: Request, res: Response) => {
         const { query: { product_id }, user: { user_id }, transaction }: any = req;
@@ -62,5 +58,34 @@ export class CartController extends BaseController<ICart, IMCart> {
 
         res.locals = { status: true, message: Messages.SUCCESS };
         return await JsonResponse.jsonSuccess(req, res, `moveToWishList`);
-    }
+    };
+
+    index = async (req: Request, res: Response): Promise<void> => {
+        await BaseValidation.index.validateAsync(req.query);
+
+        let { where, attributes, order, search, pageSize, pageNumber }: any = req.query;
+        const { user: { user_id } }: any = req
+
+        where ||= {}
+        search ||= ''
+        order ||= this.order
+        attributes ||= this.attributes
+        pageNumber ||= this.pageNumber
+        pageSize ||= this.pageSize
+
+
+        where['user_id'] = user_id
+
+        //search
+        if (search && search.length > 2 && this.searchColumn.length) {
+            where[Op.or] = []
+            for (const col of this.searchColumn) {
+                where[Op.or].push({ [col]: { [Op.iLike]: `%${search}%` } })
+            }
+        }
+
+        const { page, data } = await new CartRepository().index({ where, attributes, include: this.include, order, pageNumber, pageSize })
+        res.locals = { status: true, page, data, message: Messages.FETCH_SUCCESSFUL }
+        return await JsonResponse.jsonSuccess(req, res, `{this.url}.indexBC`)
+    };
 };

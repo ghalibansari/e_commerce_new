@@ -42,6 +42,12 @@ export class CustomController {
     filter = async (req: Request, res: Response): Promise<void> => {
         const data = await new CustomRepository().filter()
         res.locals = { status: true, data, message: Messages.FETCH_SUCCESSFUL }
-        return await JsonResponse.jsonSuccess(req, res, `shop`);
+        return await JsonResponse.jsonSuccess(req, res, `filter`);
     };
+
+    // shop = async (req: Request, res: Response): Promise<void> => {
+    //     const data = await new ProductRepository().indexBR()
+    //     res.locals = { status: true, data, message: Messages.FETCH_SUCCESSFUL }
+    //     return await JsonResponse.jsonSuccess(req, res, `shop`);
+    // };
 };

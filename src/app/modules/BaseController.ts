@@ -16,8 +16,8 @@ export abstract class BaseController<T, U extends Model> {
     public constructor(
         protected readonly url: string,
         protected readonly repo: BaseRepository<T, U>,
-        private readonly attributes = repo.attributes,
-        private readonly order = repo.order,
+        public readonly attributes = repo.attributes,
+        public readonly order = repo.order,
         protected readonly include = repo.include,
         protected readonly searchColumn: Array<keyof T> = [],
         protected readonly pageSize = Constant.DEFAULT_PAGE_SIZE

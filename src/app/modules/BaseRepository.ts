@@ -136,13 +136,15 @@ export class BaseRepository<T extends ModelCtor, U extends Model> implements IWr
     };
 
 
-    CountBR = async (where: U["_attributes"] = {}): Promise<number> => {
+    CountBR = async (where: Partial<U["_attributes"]> = {}): Promise<number> => {
+        //@ts-expect-error
+        where['is_active'] === undefined && (where['is_active'] = true);
         return await this._model.count({ where })
     };
 
 
-    CountAllBR = async (): Promise<number> => {
-        return await this.CountBR({})
+    CountAllBR = async (where: Partial<U["_attributes"]> = {}): Promise<number> => {
+        return await this.CountBR(where)
     };
 
     findColumnMinMax = async ({ columnName }: { columnName: string }) => {

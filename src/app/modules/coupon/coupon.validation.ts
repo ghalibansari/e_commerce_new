@@ -8,6 +8,7 @@ export abstract class CouponValidation extends BaseValidation {
         type: Joi.boolean().required(),
         discount: Joi.number().required(),
         min_cart_amount: Joi.number().required(),
+        max_cart_amount: Joi.number().required(),
         offer_start_date: Joi.date(),
         offer_end_date: Joi.date(),
     });
@@ -18,6 +19,7 @@ export abstract class CouponValidation extends BaseValidation {
         coupon_id: Joi.string(),
         type: Joi.string(),
         discount: Joi.string(),
+        max_cart_amount: Joi.number(),
         min_cart_amount: Joi.number(),
         offer_start_date: Joi.date(),
         offer_end_date: Joi.date(),

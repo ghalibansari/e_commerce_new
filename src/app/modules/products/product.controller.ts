@@ -1,6 +1,6 @@
 import { Application, Request, Response } from "express";
 import { Messages } from "../../constants";
-import { AuthGuard, JsonResponse, TryCatch, validateBody } from "../../helper";
+import { AuthGuard, JsonResponse, TryCatch, validateParams } from "../../helper";
 import { BaseController } from "../BaseController";
 import { ProductRepository } from "./product.repository";
 import { IMProduct, IProduct } from "./product.type";
@@ -11,7 +11,7 @@ export class ProductController extends BaseController<IProduct, IMProduct> {
 
     constructor() {
         //url, user0repo, attributes/columns, include/joints, sort, search-columns 
-        super("product", new ProductRepository(), ['category_id', 'product_id', 'name'], [['amount', 'DESC']], [],)
+        super("product", new ProductRepository(), ['category_id', 'product_id', 'name', "weight", "amount", "description"], [['amount', 'DESC']], [],)
         this.init()
     };
 
@@ -20,10 +20,10 @@ export class ProductController extends BaseController<IProduct, IMProduct> {
     init() {
         this.router.get("/similar-products", TryCatch.tryCatchGlobe(this.similarProducts));
 
-        this.router.get("/", TryCatch.tryCatchGlobe(this.indexBC));
-        // this.router.get("/:id", validateParams(ProductValidation.findById), TryCatch.tryCatchGlobe(this.findByIdBC))
-        this.router.post("/", validateBody(ProductValidation.addProduct), TryCatch.tryCatchGlobe(this.createOneBC))
-        this.router.post("/bulk", validateBody(ProductValidation.addProductBulk), TryCatch.tryCatchGlobe(this.createBulkBC))
+        // this.router.get("/", TryCatch.tryCatchGlobe(this.indexBC));
+        this.router.get("/:id", validateParams(ProductValidation.findById), TryCatch.tryCatchGlobe(this.findByIdBC))
+        // this.router.post("/", validateBody(ProductValidation.addProduct), TryCatch.tryCatchGlobe(this.createOneBC))
+        // this.router.post("/bulk", validateBody(ProductValidation.addProductBulk), TryCatch.tryCatchGlobe(this.createBulkBC))
         // this.router.put("/:id", validateParams(ProductValidation.findById), validateBody(ProductValidation.editProduct), TryCatch.tryCatchGlobe(this.updateByIdkBC))
         // this.router.delete("/:id", validateParams(ProductValidation.findById), TryCatch.tryCatchGlobe(this.deleteByIdBC));
 

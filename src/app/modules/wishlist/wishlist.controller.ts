@@ -42,7 +42,7 @@ export class WishlistController extends BaseController<IWishlist, IMWishlist> {
 
         await new WishlistRepository().addToWishlist({ product_id, user_id })
 
-        res.locals = { message: Messages.ADD_TO_WISHLIST };
+        res.locals = { status: true, message: Messages.ADD_TO_WISHLIST };
         return await JsonResponse.jsonSuccess(req, res, `AddToWishlist`);
     }
 
