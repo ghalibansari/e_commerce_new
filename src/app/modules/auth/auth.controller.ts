@@ -41,7 +41,7 @@ export class AuthController extends BaseController<IAuth, IMAuth> {
 
 
 
-    async login(req: Request, res: Response): Promise<void> {   //Todo optimize this whole Auth controller
+    login = async (req: Request, res: Response): Promise<void> => {
         const { email, password } = req.body
         // const ip = req.connection.remoteAddress || req.socket.remoteAddress
         const userData = await new UserRepository().findOneBR({ where: { email }, attributes: ['user_id', 'email', 'password', 'first_name', 'last_name'] })

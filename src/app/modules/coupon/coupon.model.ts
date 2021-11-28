@@ -4,19 +4,15 @@ import { v4 as uuidv4 } from 'uuid';
 import { DB } from "../../../configs/DB";
 import { TableName } from "../../constants";
 import { modelCommonColumns, modelCommonOptions, modelCommonPrimaryKeyProperty } from '../BaseModel';
-import { IMCoupon } from './coupon.type';
+import { CouponEnum, IMCoupon } from './coupon.type';
 
 
 const CouponMd = DB.define<IMCoupon>(
     TableName.COUPON,
     {
         coupon_id: cloneDeep(modelCommonPrimaryKeyProperty),
-        type: {
-            type: DataTypes.BOOLEAN,
-        },
-        discount: {
-            type: DataTypes.FLOAT,
-        },
+        type: { type: DataTypes.STRING },
+        discount: { type: DataTypes.FLOAT },
         min_cart_amount: { allowNull: false, type: DataTypes.INTEGER },
         offer_start_date: { type: DataTypes.DATE },
         offer_end_date: { type: DataTypes.DATE },
@@ -37,7 +33,7 @@ async function doStuffWithUserModel() {
 
     await CouponMd.create({
         coupon_id: id,
-        type: true,
+        type: CouponEnum.percent,
         discount: 9.5,
         min_cart_amount: 12000,
         max_cart_amount: 20000,

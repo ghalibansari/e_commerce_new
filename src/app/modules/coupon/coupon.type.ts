@@ -1,9 +1,15 @@
 import { Model, Optional } from "sequelize";
 import { IBCommon, IMCommon } from "../baseTypes";
 
+export enum CouponEnum {
+    rupees = 'rupees',
+    percent = 'percentage',
+};
+
+
 interface IBCoupon extends IBCommon {
     coupon_id: string
-    type: boolean
+    type: CouponEnum
     discount: number
     min_cart_amount: number
     offer_start_date: Date
