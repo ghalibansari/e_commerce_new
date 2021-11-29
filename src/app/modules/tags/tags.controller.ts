@@ -1,9 +1,9 @@
 import { Application } from "express";
 import { AuthGuard, TryCatch, validateBody } from "../../helper";
 import { BaseController } from "../BaseController";
-import { TagRepository } from "./tag.repository";
-import { IMTag, ITag } from "./tag.types";
-import { TagValidation } from "./tag.validation";
+import { TagRepository } from "./tags.repository";
+import { IMTag, ITag } from "./tags.types";
+import { TagValidation } from "./tags.validation";
 
 export class TagController extends BaseController<ITag, IMTag> {
     constructor() {

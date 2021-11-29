@@ -1,6 +1,6 @@
 import Joi from "joi";
 import { BaseValidation } from "../BaseValidation";
-import { ITag } from "./tag.types";
+import { ITag } from "./tags.types";
 
 
 export abstract class TagValidation extends BaseValidation {

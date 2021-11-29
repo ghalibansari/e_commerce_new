@@ -41,7 +41,7 @@ export class CouponController extends BaseController<ICoupon, IMCoupon> {
 
         let totalAmount = 0;
 
-        for (const i = 0; i < carts.length; i++) {
+        for (let i = 0; i < carts.length; i++) {
             //@ts-expect-error
             const amount = carts[i].product.amount * carts[i].quantity
             totalAmount = totalAmount + amount;

@@ -3,8 +3,8 @@ import { DataTypes } from 'sequelize';
 import { v4 as uuidv4 } from 'uuid';
 import { DB } from "../../../configs/DB";
 import { TableName } from "../../constants";
-import { IMTag } from "../../modules/tag/tag.types";
 import { modelCommonColumns, modelCommonOptions, modelCommonPrimaryKeyProperty } from '../BaseModel';
+import { IMTag } from './tags.types';
 
 const TagMd = DB.define<IMTag>(
     TableName.TAG_MASTER,

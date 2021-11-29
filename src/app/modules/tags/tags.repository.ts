@@ -1,6 +1,6 @@
 import { BaseRepository } from "../BaseRepository";
-import { TagMd } from "./tag.model";
-import { IMTag, ITag } from "./tag.types";
+import { TagMd } from "./tags.model";
+import { IMTag, ITag } from "./tags.types";
 
 export class TagRepository extends BaseRepository<ITag, IMTag> {
     constructor() {
