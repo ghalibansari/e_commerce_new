@@ -9,6 +9,7 @@ export enum CouponEnum {
 
 interface IBCoupon extends IBCommon {
     coupon_id: string
+    name: string
     type: CouponEnum
     discount: number
     min_cart_amount: number

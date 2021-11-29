@@ -1,9 +1,8 @@
 import { NextFunction, Request, Response } from "express";
 import { JsonResponse } from "./JsonResponse";
-import Joi from "joi";
 
 
-const validate = (key: 'body'|'params'|'query') => {
+const validate = (key: 'body' | 'params' | 'query') => {
     //FIXME: remove any type.
     return (schema: any) => {
         return async (req: Request, res: Response, next: NextFunction) => {
@@ -20,5 +19,7 @@ const validate = (key: 'body'|'params'|'query') => {
 
 const validateBody = validate('body')
 const validateParams = validate('params')
+const validateQuery = validate("query")
 
-export { validateBody, validateParams };
+export { validateBody, validateParams, validateQuery };
+

@@ -13,6 +13,7 @@ const CouponMd = DB.define<IMCoupon>(
         coupon_id: cloneDeep(modelCommonPrimaryKeyProperty),
         type: { type: DataTypes.STRING },
         discount: { type: DataTypes.FLOAT },
+        name: { type: DataTypes.STRING },
         min_cart_amount: { allowNull: false, type: DataTypes.INTEGER },
         offer_start_date: { type: DataTypes.DATE },
         offer_end_date: { type: DataTypes.DATE },
@@ -34,6 +35,7 @@ async function doStuffWithUserModel() {
     await CouponMd.create({
         coupon_id: id,
         type: CouponEnum.percent,
+        name: "coup",
         discount: 9.5,
         min_cart_amount: 12000,
         max_discount_amount: 20000,
