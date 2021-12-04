@@ -53,8 +53,15 @@ export class CartRepository extends BaseRepository<ICart, IMCart> {
         limit = pageNumber * pageSize
         if (limit < count) hasNextPage
         //@ts-expect-error
-        const data = await this.findBulkBR({ where, attributes, order, offset, limit, include });
-        return { data, page: { hasNextPage, totalCount, currentPage: pageNumber, totalPage } }
+        const carts = await this.findBulkBR({ where, attributes, order, offset, limit, include });
+        let totalAmount = 0;
+
+        for (let i = 0; i < carts.length; i++) {
+            //@ts-expect-error
+            const amount = carts[i].product.amount * carts[i].quantity
+            totalAmount = totalAmount + amount;
+        }
+        return { data: { carts, totalAmount }, page: { hasNextPage, totalCount, currentPage: pageNumber, totalPage } }
     };
 
 

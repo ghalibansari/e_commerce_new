@@ -4,6 +4,7 @@ import { Messages } from "../../constants";
 import { AuthGuard, DBTransaction, JsonResponse, TryCatch, validateParams } from "../../helper";
 import { BaseController } from "../BaseController";
 import { BaseValidation } from "../BaseValidation";
+import { ProductRepository } from "../products/product.repository";
 import { CartRepository } from "./cart.repository";
 import { ICart, IMCart } from "./cart.types";
 import { cartValidation } from "./cart.validation";
@@ -83,8 +84,9 @@ export class CartController extends BaseController<ICart, IMCart> {
                 where[Op.or].push({ [col]: { [Op.iLike]: `%${search}%` } })
             }
         }
-
-        const { page, data } = await new CartRepository().index({ where, attributes, include: this.include, order, pageNumber, pageSize })
+        const ProductRepo = new ProductRepository()
+        const include = [{ model: ProductRepo._model, as: "product", attributes: ['name', 'amount', 'product_id'] }];
+        const { page, data } = await new CartRepository().index({ where, attributes, include, order, pageNumber, pageSize })
         res.locals = { status: true, page, data, message: Messages.FETCH_SUCCESSFUL }
         return await JsonResponse.jsonSuccess(req, res, `{this.url}.indexBC`)
     };
