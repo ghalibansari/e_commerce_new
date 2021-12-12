@@ -1,9 +1,9 @@
 import { cloneDeep } from 'lodash';
 import { DataTypes } from 'sequelize';
-import { v4 } from 'uuid';
 import { DB } from "../../../configs/DB";
 import { TableName } from "../../constants";
 import { modelCommonColumns, modelCommonOptions, modelCommonPrimaryKeyProperty } from '../BaseModel';
+import { ProductMd } from '../products/product.model';
 import { IMBrand } from './brand.types';
 
 const BrandMd = DB.define<IMBrand>(
@@ -21,23 +21,27 @@ const BrandMd = DB.define<IMBrand>(
     cloneDeep(modelCommonOptions)
 );
 
-async function doStuffWithUserModel() {
+BrandMd.hasMany(ProductMd, { foreignKey: 'brand_id', as: 'products' });
+ProductMd.belongsTo(BrandMd, { foreignKey: 'brand_id', as: 'brand', targetKey: "brand_id" });
 
-    // await BrandMd.sync({ alter: true })
+// async function doStuffWithUserModel() {
 
-    const newUser = await BrandMd.create({
-        brand_id: v4(),
-        brand_name: "myBrand",
-        order_sequence: 11,
-        show_on_home_screen: true,
-        brand_image: "yahoo.com/la.img",
-        show_on_header: true,
-        created_by: v4(),
-        updated_by: v4(),
-    })
-        .then(() => console.log("Created default Brand..."))
-        .catch(e => console.log(e))
-}
+//     // await BrandMd.sync({ force: true })
+//     // await ProductMd.sync({force: true})
+
+//     const newUser = await BrandMd.create({
+//         brand_id: v4(),
+//         brand_name: "myBrand",
+//         order_sequence: 11,
+//         show_on_home_screen: true,
+//         brand_image: "yahoo.com/la.img",
+//         show_on_header: true,
+//         created_by: v4(),
+//         updated_by: v4(),
+//     })
+//         .then(() => console.log("Created default Brand..."))
+//         .catch(e => console.log(e))
+// }
 
 
 

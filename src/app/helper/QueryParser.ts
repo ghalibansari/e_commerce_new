@@ -1,5 +1,4 @@
 import { NextFunction, Request, Response } from 'express';
-import moment from 'moment';
 import { JsonResponse } from './JsonResponse';
 
 
@@ -14,10 +13,10 @@ const parseBoolFromString = async (value: any): Promise<any> => {
     else if (!isNaN(value)) {
         return Number(value);
     } else {
-        console.log(moment(value).isValid(), "moment(value).isValid()")
-        if (moment(value).isValid()) {
-            return new Date(value);
-        }
+        // console.log(moment(value).isValid(), "moment(value).isValid()")
+        // if (moment(value).isValid()) {
+        //     return new Date(value);
+        // }
         return value;
     }
 }
@@ -51,9 +50,8 @@ const parseObject = async (obj: { [x: string]: any }): Promise<any> => {
         if (obj.hasOwnProperty(key)) {
             value = obj[key];
             value = value.split("'").join('"')
-            // result[key] = await parseValue(value);
-            result[key] = JSON.parse(value)
-
+            result[key] = await parseValue(value);
+            // result[key] = JSON.parse(value)
         }
     }
     return result;
@@ -62,7 +60,7 @@ const parseObject = async (obj: { [x: string]: any }): Promise<any> => {
 const queryParser = () => {
     return async (req: Request, res: Response, next: NextFunction) => {
         try {
-            req.query = await parseObject(req.query);
+            req.query = await parseValue(req.query);
             next();
         } catch (err: any) {
             res.locals.message = `QuerParam: ${err?.message ?? err}`

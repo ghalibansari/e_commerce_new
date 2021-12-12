@@ -5,7 +5,6 @@ import { DB } from "../../../configs/DB";
 import { TableName } from "../../constants";
 import { modelCommonColumns, modelCommonOptions, modelCommonPrimaryKeyProperty } from '../BaseModel';
 import { CartMd } from '../cart/cart.model';
-import { CategoriesMd } from '../categories/categories.model';
 import { IMProduct } from './product.type';
 
 
@@ -27,8 +26,8 @@ const ProductMd = DB.define<IMProduct>(
 ProductMd.hasMany(CartMd, { foreignKey: 'product_id', as: 'carts' });
 CartMd.belongsTo(ProductMd, { foreignKey: 'product_id', as: 'product', targetKey: "product_id" });
 
-CategoriesMd.hasMany(ProductMd, { foreignKey: 'category_id', as: 'categories' });
-ProductMd.belongsTo(CategoriesMd, { foreignKey: 'category_id', as: 'category', targetKey: "category_id" });
+// CategoriesMd.hasMany(ProductMd, { foreignKey: 'category_id', as: 'categories' });
+// ProductMd.belongsTo(CategoriesMd, { foreignKey: 'category_id', as: 'category', targetKey: "category_id" });
 
 
 async function doStuffWithUserModel() {
@@ -38,8 +37,8 @@ async function doStuffWithUserModel() {
 
     await ProductMd.create({
         product_id: id,
-        category_id: id,
-        brand_id: id,
+        category_id: "776bbd6e-d00a-4efc-810c-6b71528a418f",
+        brand_id: "5784f73b-6290-49b9-ae2e-42af4e00b91e",
         name: 'axe',
         description: 'House talc',
         weight: 1.12,
@@ -54,7 +53,6 @@ async function doStuffWithUserModel() {
 
 // doStuffWithUserModel()
 
-// ProductMd.sync()
 
 export { ProductMd };
 

@@ -4,6 +4,7 @@ import { v4 as uuidv4 } from 'uuid';
 import { DB } from "../../../configs/DB";
 import { TableName } from "../../constants";
 import { modelCommonColumns, modelCommonOptions, modelCommonPrimaryKeyProperty } from '../BaseModel';
+import { ProductMd } from '../products/product.model';
 import { IMCategories } from './categories.type';
 
 
@@ -26,6 +27,9 @@ const CategoriesMd = DB.define<IMCategories>(
 
 CategoriesMd.hasMany(CategoriesMd, { foreignKey: "parent_id", as: "sub_cat" });
 CategoriesMd.belongsTo(CategoriesMd, { foreignKey: "parent_id", as: "parent", targetKey: "category_id" });
+
+CategoriesMd.hasMany(ProductMd, { foreignKey: 'category_id', as: 'products' });
+ProductMd.belongsTo(CategoriesMd, { foreignKey: 'category_id', as: 'category', targetKey: "category_id" });
 
 
 async function doStuffWithUserModel() {
