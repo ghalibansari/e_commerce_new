@@ -3,6 +3,7 @@ import { Op } from "sequelize";
 import { Messages } from "../../constants";
 import { JsonResponse, TryCatch } from "../../helper";
 import { BrandMd } from "../brand/brand.model";
+import { BrandRepository } from "../brand/brand.repository";
 import { CategoriesMd } from "../categories/categories.model";
 import { CategoriesRepository } from "../categories/categories.repository";
 import { ProductRepository } from "../products/product.repository";
@@ -24,7 +25,8 @@ export class CustomController {
     this.router.get("/filter", TryCatch.tryCatchGlobe(this.filter));
 
     this.router.get("/test", TryCatch.tryCatchGlobe(this.test));
-    this.router.get("/shop", TryCatch.tryCatchGlobe(this.shop));
+    this.router.get("/shop", TryCatch.tryCatchGlobe(this.shop)); //todo amir validation
+    this.router.get("/search", TryCatch.tryCatchGlobe(this.search));
   }
 
   home = async (req: Request, res: Response): Promise<void> => {
@@ -61,6 +63,19 @@ export class CustomController {
     return await JsonResponse.jsonSuccess(req, res, `filter`);
   };
 
+  search = async (req: Request, res: Response): Promise<void> => {
+    const { search } = req.query;
+
+    const [product, category, brand] = await Promise.all([
+      new ProductRepository().findBulkBR({ where: { [Op.or]: [{ name: { [Op.like]: `%${search}%` } }, { description: { [Op.like]: `%${search}%` } }] }, attributes: ['product_id', 'name', 'description'] }),
+      new CategoriesRepository().findBulkBR({ where: { name: { [Op.like]: `%${search}%` } }, attributes: ['category_id', 'name'] }),
+      new BrandRepository().findBulkBR({ where: { name: { [Op.like]: `%${search}%` } }, attributes: ['brand_id', 'name'] }),
+    ])
+    const data = { product, category, brand };
+    res.locals = { status: true, data, message: Messages.FETCH_SUCCESSFUL };
+    return await JsonResponse.jsonSuccess(req, res, `filter`);
+  };
+
   shop = async (req: Request, res: Response): Promise<void> => {
     let {
       attributes,
@@ -81,9 +96,9 @@ export class CustomController {
     pageNumber ||= pageNumber;
     pageSize ||= pageSize;
 
-    
 
-    if (minAmount || maxAmount || true) {
+
+    if (minAmount || maxAmount) {
       where[Op.and] = [];
       if (minAmount) where[Op.and].push({ amount: { [Op.gte]: minAmount } });
       if (maxAmount) where[Op.and].push({ amount: { [Op.lte]: maxAmount } });
@@ -108,7 +123,7 @@ export class CustomController {
       {
         model: CategoriesMd,
         as: "category",
-        attributes: ["category_name","category_id"],
+        attributes: ["category_name", "category_id"],
         where: categoryWhere,
       },
     ];
