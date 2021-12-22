@@ -1,7 +1,7 @@
-import Joi, { string } from "joi";
+import Joi from "joi";
 import { BaseValidation } from "../BaseValidation";
 
-export abstract class UserValidation extends BaseValidation {
+export abstract class CustomValidation extends BaseValidation {
   static readonly addUser = Joi.object<any>({
     // first_name: Joi.string().min(3).max(100).required(),
     // last_name: Joi.string().min(3).max(100).required(),
@@ -22,21 +22,17 @@ export abstract class UserValidation extends BaseValidation {
     // password: Joi.string().min(8).max(100)
   });
 
-  static readonly searchColumn = Joi.object<any>({
-    attributes: Joi.array().items(Joi.string().required()),
-    pageNumber: Joi.number()
-      .min(1)
-      .max(999)
-      .error(new Error("Invalid pageNumber")),
-    pageSize: Joi.number()
-      .min(1)
-      .max(1000)
-      .error(new Error("Invalid pageSize")),
-    rangeFilters: Joi.string().error(new Error("Invalid Query rangeFilters")),
-    order: Joi.array().items(Joi.string()).error(new Error("Invalid sort")),
-    search: Joi.string().max(55).error(new Error("Invalid search")),
+  static readonly search = Joi.object<any>({
+    search: Joi.string().min(3).max(70).required()
+  });
+
+  static readonly shop = Joi.object<any>({
+    order: Joi.array(),
+    pageSize: Joi.number().min(0).max(100),
+    pageNumber: Joi.number().min(0).max(100),
     category_id: Joi.string(),
-    price:Joi.string().min(1).max(100000),
-    brand_id:string(),
+    minAmount: Joi.number().min(0).max(100000),
+    maxAmount: Joi.number().min(0).max(100000),
+    brand_id: Joi.string()
   });
 }
