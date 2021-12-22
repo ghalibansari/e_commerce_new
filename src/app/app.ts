@@ -7,7 +7,7 @@ import { Constant } from "./constants";
 import { queryParser } from "./helper/QueryParser";
 import { registerRoutes } from "./routes";
 import { registerViewRoutes } from "./viewRoutes";
-
+import cors from "cors";
 
 
 
@@ -26,6 +26,7 @@ class App {
      * Add all middleware
      */
     private middleware(): void {
+        this.app.use(cors());
         this.app.use(express.json({ limit: '100mb' }));
         this.app.use(bodyParser.urlencoded({ limit: "10mb", extended: true, parameterLimit: 50000 }));
         this.app.use(queryParser());
@@ -51,12 +52,6 @@ class App {
         //     express.static(__dirname + '/../public/uploads/event_lead')
         // );
         // app.use((req, res, next)=>{console.log(req.originalUrl, "req.originalUrl", req.method, "req.method"); next()})
-        this.app.use((req: Request, res: Response, next: NextFunction) => {
-            res.header("Access-Control-Allow-Origin", "*");
-            res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept, Authorization, credentials, withCredentials");
-            res.header("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE");
-            next();
-        });
     }
 
     /**
