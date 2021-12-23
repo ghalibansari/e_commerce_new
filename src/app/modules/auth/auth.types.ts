@@ -1,4 +1,4 @@
-import { Model, Optional } from "sequelize/types";
+import { Model, Optional } from "sequelize";
 import { IBCommon, IMCommon } from "../baseTypes";
 
 export enum authActionEnum {

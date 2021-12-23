@@ -5,7 +5,7 @@ import { ICategories } from "../categories/categories.type";
 import { ProductMd } from "./product.model";
 import { IMProduct, IProduct } from "./product.type";
 
-//@ts-expect-error
+
 const { fn, col, literal, random } = DB
 
 export class ProductRepository extends BaseRepository<IProduct, IMProduct> {
@@ -14,6 +14,7 @@ export class ProductRepository extends BaseRepository<IProduct, IMProduct> {
     }
 
     similarRandomProducts = async ({ category_id, limit }: { category_id: ICategories['category_id'], limit: number }) => {
+        //@ts-expect-error
         return await this.findBulkBR({ where: { category_id }, order: [literal('RANDOM()'), literal('RANDOM()')], limit, attributes: ['product_id', 'category_id', "name"] })//
     };
 

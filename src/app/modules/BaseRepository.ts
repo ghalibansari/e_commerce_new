@@ -5,7 +5,7 @@ import { IRead } from '../interfaces/IRead';
 import { IWrite } from "../interfaces/IWrite";
 import { NonEmptyArray, TCreateBulkBR, TCreateOneBR, TDeleteBulkBR, TDeleteByIdBR, TFindByIdBR, TRestoreBulkBR, TRestoreByIdBR, TUpdateBulkBR, TUpdateByIdBR } from "./baseTypes";
 
-//@ts-expect-error
+
 const { fn, col } = DB
 
 //@ts-expect-error
