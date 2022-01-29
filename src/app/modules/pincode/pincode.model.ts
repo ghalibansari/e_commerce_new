@@ -10,8 +10,10 @@ import { IMPinCode } from './pincode.types';
 const PinCodeMd = DB.define<IMPinCode>(
     TableName.PIN_CODE_MASTER,
     {
-        pin_code_id: cloneDeep(modelCommonPrimaryKeyProperty),
+        pincode_id: cloneDeep(modelCommonPrimaryKeyProperty),
+        city_id: { allowNull: false, type: DataTypes.UUID},
         area_name: { allowNull: false, type: DataTypes.STRING },
+        pincode: { allowNull: false, type: DataTypes.NUMBER },
         ...cloneDeep(modelCommonColumns)
     },
     cloneDeep(modelCommonOptions)

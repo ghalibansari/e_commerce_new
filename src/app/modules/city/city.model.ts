@@ -12,6 +12,7 @@ const CityMd = DB.define<IMCity>(
     {
         city_id: cloneDeep(modelCommonPrimaryKeyProperty),
         name: { allowNull: false, type: DataTypes.STRING },
+        state_id: { allowNull: false, type: DataTypes.UUID},
         ...cloneDeep(modelCommonColumns)
     },
     cloneDeep(modelCommonOptions)
@@ -20,8 +21,6 @@ const CityMd = DB.define<IMCity>(
 // UserMd.hasMany(UserAddressMd, { foreignKey: 'user_id', as: 'addresses' });
 // UserAddressMd.belongsTo(UserMd, { foreignKey: "user_id", as: "user", targetKey: "user_id" })
 
-// CityMd.hasOne(StatesMd, { foreignKey: 'state_id', as: 'cities' })
-// StatesMd.belongsTo(CityMd, { foreignKey: 'state_id', as: 'state', targetKey: 'state_id' })
 
 async function doStuffWithUserModel() {
 

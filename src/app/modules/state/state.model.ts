@@ -17,6 +17,9 @@ const StatesMd = DB.define<IMStates>(
     cloneDeep(modelCommonOptions)
 );
 
+CityMd.hasOne(StatesMd, { foreignKey: 'state_id', as: 'cities' })
+StatesMd.belongsTo(CityMd, { foreignKey: 'state_id', as: 'state', targetKey: 'state_id' })
+
 async function doStuffWithUserModel() {
     await StatesMd.sync()
     // await UserMd.sync({ force: true })

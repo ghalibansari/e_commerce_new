@@ -12,6 +12,7 @@ const CouponMd = DB.define<IMCoupon>(
     {
         coupon_id: cloneDeep(modelCommonPrimaryKeyProperty),
         type: { type: DataTypes.STRING },
+        description: { type: DataTypes.TEXT, allowNull: true },
         discount: { type: DataTypes.FLOAT },
         name: { type: DataTypes.STRING },
         min_cart_amount: { allowNull: false, type: DataTypes.INTEGER },

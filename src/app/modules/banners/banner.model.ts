@@ -15,6 +15,8 @@ const BannerMd = DB.define<IMBanner>(
         order_sequence: { allowNull: false, type: DataTypes.INTEGER },
         show_on_home_screen: { type: DataTypes.BOOLEAN, defaultValue: true },
         banner_image: { type: DataTypes.STRING, allowNull: true },
+        link_to: { type: DataTypes.STRING, allowNull: false },
+        link_id: { type: DataTypes.UUID, allowNull: false },
         ...cloneDeep(modelCommonColumns)
     },
     cloneDeep(modelCommonOptions)

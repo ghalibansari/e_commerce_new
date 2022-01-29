@@ -14,6 +14,7 @@ const ProductMd = DB.define<IMProduct>(
         product_id: cloneDeep(modelCommonPrimaryKeyProperty),
         category_id: { allowNull: false, type: DataTypes.UUID },
         brand_id: { allowNull: false, type: DataTypes.UUID },
+        tag_id: { allowNull: false, type: DataTypes.UUID },
         name: { allowNull: false, type: DataTypes.STRING },
         description: { allowNull: true, type: DataTypes.STRING },
         weight: { allowNull: false, type: DataTypes.FLOAT },
