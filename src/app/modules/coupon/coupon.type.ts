@@ -12,6 +12,7 @@ interface IBCoupon extends IBCommon {
     name: string
     type: CouponEnum
     discount: number
+    description: string
     min_cart_amount: number
     offer_start_date: Date
     offer_end_date: Date

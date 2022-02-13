@@ -1,6 +1,6 @@
 import { createTransport, Transporter } from 'nodemailer';
 import { v4 } from 'uuid';
-import { EmailRepository } from '../modules/emailHistory/email.repository';
+import { EmailHistoryRepository } from '../modules/email-history/email-history.repository';
 import { LoggerMd } from '../modules/logger/logger.model';
 import { loggerLevelEnum } from '../modules/logger/logger.types';
 
@@ -34,7 +34,7 @@ export class NotificationService {
                 .catch(err => {
                     result = JSON.stringify(err);
                 })
-            await new EmailRepository().createOneBR({ newData: { from: this.from, to, cc, bcc, subject, html, success, result }, created_by: v4() })
+            await new EmailHistoryRepository().createOneBR({ newData: { from: this.from, to, cc, bcc, subject, html, success, result }, created_by: v4() })
         } catch (err: any) {
             LoggerMd.create({ stack: JSON.stringify(err.stack), level: loggerLevelEnum.api, message: JSON.stringify(err.message), updated_by: v4(), created_by: v4() }).catch((e: any) => console.log(e, " Failed logging"))
         }

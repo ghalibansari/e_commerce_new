@@ -14,6 +14,7 @@ const modelCommonColumns = {
 };
 
 const modelCommonOptions = {
+    freezeTableName: true,
     timestamps: true,
     paranoid: true,
     createdAt: 'created_at',

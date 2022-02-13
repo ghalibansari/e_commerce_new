@@ -20,7 +20,6 @@ export class UserRepository extends BaseRepository<IUser, IMUser> {
             //@ts-expect-error
             newData[i].updated_by = created_by
         }
-        //@ts-expect-error
         return await this._model.bulkCreate(newData, { transaction });
     };
 

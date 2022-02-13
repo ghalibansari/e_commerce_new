@@ -9,7 +9,7 @@ export abstract class OrderValidation extends BaseValidation {
         transaction_id: Joi.string(),
         grand_total: Joi.number().required(),
         shipping_charges: Joi.number(),
-        status: Joi.string().required(),
+        type: Joi.string().required(),
     });
 
     static readonly addOrderBulk = Joi.array().items(this.addOrder)
@@ -20,6 +20,6 @@ export abstract class OrderValidation extends BaseValidation {
         transaction_id: Joi.string(),
         grand_total: Joi.number(),
         shipping_charges: Joi.number(),
-        status: Joi.string(),
+        type: Joi.string(),
     });
 };

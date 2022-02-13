@@ -1,9 +1,11 @@
 import { cloneDeep } from 'lodash';
 import { DataTypes } from 'sequelize';
-import { v4 as uuidv4 } from 'uuid';
 import { DB } from "../../../configs/DB";
 import { TableName } from "../../constants";
 import { modelCommonColumns, modelCommonOptions, modelCommonPrimaryKeyProperty } from '../BaseModel';
+import { BrandMd } from '../brand/brand.model';
+import { CategoriesMd } from '../categories/categories.model';
+import { ProductMd } from '../products/product.model';
 import { IMTag } from './tags.types';
 
 const TagMd = DB.define<IMTag>(
@@ -11,36 +13,22 @@ const TagMd = DB.define<IMTag>(
     {
         tag_id: cloneDeep(modelCommonPrimaryKeyProperty),
         name: { allowNull: false, type: DataTypes.STRING },
-
         text_color_code: { allowNull: true, type: DataTypes.STRING },
-
         background_color_code: { allowNull: true, type: DataTypes.STRING },
         ...cloneDeep(modelCommonColumns)
     },
 
     cloneDeep(modelCommonOptions)
 );
-async function doStuffWithUserModel() {
 
-    console.log('doStuffWithUserModel')
-    // await CityMd.sync({ force: true })
-    const id = uuidv4()
+TagMd.hasMany(BrandMd, { foreignKey: 'tag_id', as: 'brands' });
+BrandMd.belongsTo(TagMd, { foreignKey: 'tag_id', as: 'tag', targetKey: "tag_id" });
 
-    const newUser = await TagMd.create({
-        tag_id: id,
-        name: "cadbury",
-        text_color_code: "string",
-        background_color_code: "string",
-        created_by: id,
-        updated_by: id
-    })
-        .then(() => console.log("Created default user..."))
-        .catch(e => console.log(e))
-    //console.log(newUser);
-}
+TagMd.hasMany(CategoriesMd, { foreignKey: 'tag_id', as: 'categories' });
+CategoriesMd.belongsTo(TagMd, { foreignKey: 'tag_id', as: 'tag', targetKey: "tag_id" });
 
+TagMd.hasMany(ProductMd, { foreignKey: 'tag_id', as: 'products' });
+ProductMd.belongsTo(TagMd, { foreignKey: 'tag_id', as: 'tag', targetKey: "tag_id" });
 
-//doStuffWithUserModel()
-//TagMd.sync({ force: true })
 export { TagMd };
 

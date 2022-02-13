@@ -4,7 +4,7 @@ import { IOrderCoupon } from "./order-coupon.type";
 
 export abstract class OrderCouponValidation extends BaseValidation {
     static readonly addOrderCoupon = Joi.object<IOrderCoupon>({
-        order_product_id: Joi.string(),
+        order_coupon_id: Joi.string(),
         order_id: Joi.string(),
         type: Joi.boolean().required(),
         discount: Joi.number().required(),
@@ -16,7 +16,7 @@ export abstract class OrderCouponValidation extends BaseValidation {
     static readonly addOrderCouponBulk = Joi.array().items(this.addOrderCoupon)
 
     static readonly editOrderCoupon = Joi.object<IOrderCoupon>({
-        order_product_id: Joi.string(),
+        order_coupon_id: Joi.string(),
         type: Joi.string(),
         discount: Joi.string(),
         min_cart_amount: Joi.number(),

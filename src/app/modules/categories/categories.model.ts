@@ -1,6 +1,5 @@
 import { cloneDeep } from 'lodash';
 import { DataTypes } from 'sequelize';
-import { v4 as uuidv4 } from 'uuid';
 import { DB } from "../../../configs/DB";
 import { TableName } from "../../constants";
 import { modelCommonColumns, modelCommonOptions, modelCommonPrimaryKeyProperty } from '../BaseModel';
@@ -30,30 +29,6 @@ CategoriesMd.belongsTo(CategoriesMd, { foreignKey: "parent_id", as: "parent", ta
 
 CategoriesMd.hasMany(ProductMd, { foreignKey: 'category_id', as: 'products' });
 ProductMd.belongsTo(CategoriesMd, { foreignKey: 'category_id', as: 'category', targetKey: "category_id" });
-
-
-async function doStuffWithUserModel() {
-    // await CategoriesMd.sync({ force: true });
-    const id = uuidv4()
-
-    const newUser = await CategoriesMd.create({
-        category_id: id,
-        category_name: "demo",
-        // parent_id: id,
-        order_sequence: 78992338,
-        show_on_home_screen: true,
-        show_on_header: true,
-        category_image: "demo",
-        created_by: id,
-        updated_by: id
-    })
-        .then(() => console.log("Created default user..."))
-        .catch(e => console.log(e))
-    // console.log(newUser);
-};
-
-// doStuffWithUserModel()
-// CategoriesMd.sync({ alter: true }).catch((e) => console.log(e));
 
 export { CategoriesMd };
 

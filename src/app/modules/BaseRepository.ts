@@ -1,4 +1,4 @@
-import { Model, ModelCtor } from 'sequelize';
+import { CreationAttributes, Model, ModelCtor } from 'sequelize';
 import { DB } from "../../configs/DB";
 import { Constant } from "../constants";
 import { IRead } from '../interfaces/IRead';
@@ -85,7 +85,7 @@ export class BaseRepository<T extends ModelCtor, U extends Model> implements IWr
             //@ts-expect-error
             newData[i].updated_by = created_by
         }
-        return await this._model.bulkCreate(newData, { transaction })
+        return await this._model.bulkCreate(newData as unknown as CreationAttributes<U>[], { transaction })
     };
 
 
@@ -139,6 +139,7 @@ export class BaseRepository<T extends ModelCtor, U extends Model> implements IWr
     CountBR = async (where: Partial<U["_attributes"]> = {}): Promise<number> => {
         //@ts-expect-error
         where['is_active'] === undefined && (where['is_active'] = true);
+        //@ts-expect-error
         return await this._model.count({ where })
     };
 

@@ -1,5 +1,6 @@
 import bodyParser from "body-parser";
-import express, { Application, NextFunction, Request, Response } from "express";
+import cors from "cors";
+import express, { Application } from "express";
 import expressLayouts from 'express-ejs-layouts';
 import session from "express-session";
 import path from 'path';
@@ -7,7 +8,6 @@ import { Constant } from "./constants";
 import { queryParser } from "./helper/QueryParser";
 import { registerRoutes } from "./routes";
 import { registerViewRoutes } from "./viewRoutes";
-import cors from "cors";
 
 
 
@@ -18,7 +18,7 @@ class App {
         this.middleware();
         // this.app.use('/api', this.setupApiRoutes);
         this.setupApiRoutes();
-        // this.setupWebRoute();
+        // this.setupWebRoute(); //TODO: remove old admin routes and files.
         setTimeout(() => this.setupCron(), 30000);
     }
 

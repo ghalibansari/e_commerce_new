@@ -26,7 +26,7 @@ const TemplateMd = DB.define<IMTemplate>(
 );
 
 async function doStuffWithUserModel() {
-  // await TemplateMd.sync({ force: true });
+  await TemplateMd.sync();
   const id = uuidv4();
 
   const newUser = await TemplateMd.create({

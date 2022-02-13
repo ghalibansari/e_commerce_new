@@ -8,7 +8,7 @@ interface IBOrder extends IBCommon {
     transaction_id: string
     grand_total: number
     shipping_charges: number
-    status: string
+    type: string
 }
 
 interface IOrder extends Optional<IBOrder, 'order_id'> { }

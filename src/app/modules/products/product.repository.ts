@@ -10,7 +10,7 @@ const { fn, col, literal, random } = DB
 
 export class ProductRepository extends BaseRepository<IProduct, IMProduct> {
     constructor() {
-        super(ProductMd, 'product_id', ['*'], ['amount'], []);
+        super(ProductMd, 'product_id', ['*'], [], []);
     }
 
     similarRandomProducts = async ({ category_id, limit }: { category_id: ICategories['category_id'], limit: number }) => {

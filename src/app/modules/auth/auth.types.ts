@@ -1,5 +1,6 @@
 import { Model, Optional } from "sequelize";
 import { IBCommon, IMCommon } from "../baseTypes";
+import { IUser } from "../user/user.types";
 
 export enum authActionEnum {
     login = 'login',
@@ -11,15 +12,13 @@ export enum authActionEnum {
 };
 interface IBAuth extends IBCommon {
     auth_id: string;
-    user_id: string;
+    user_id: IUser["user_id"];
     action: authActionEnum
     ip: String;
     token?: String;
 };
 
-interface IAuth extends Optional<IBAuth, 'auth_id'> {
-};
-
+interface IAuth extends Optional<IBAuth, 'auth_id'> { };
 
 interface IMAuth extends Model<IBAuth, IAuth>, IBAuth, IMCommon { }
 

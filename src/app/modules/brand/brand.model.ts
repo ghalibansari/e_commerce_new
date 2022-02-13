@@ -24,28 +24,5 @@ const BrandMd = DB.define<IMBrand>(
 BrandMd.hasMany(ProductMd, { foreignKey: 'brand_id', as: 'products' });
 ProductMd.belongsTo(BrandMd, { foreignKey: 'brand_id', as: 'brand', targetKey: "brand_id" });
 
-// async function doStuffWithUserModel() {
-
-//     // await BrandMd.sync({ force: true })
-//     // await ProductMd.sync({force: true})
-
-//     const newUser = await BrandMd.create({
-//         brand_id: v4(),
-//         brand_name: "myBrand",
-//         order_sequence: 11,
-//         show_on_home_screen: true,
-//         brand_image: "yahoo.com/la.img",
-//         show_on_header: true,
-//         created_by: v4(),
-//         updated_by: v4(),
-//     })
-//         .then(() => console.log("Created default Brand..."))
-//         .catch(e => console.log(e))
-// }
-
-
-
-// doStuffWithUserModel();
-
 export { BrandMd };
 
