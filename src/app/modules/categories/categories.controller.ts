@@ -1,9 +1,8 @@
 import { Application } from "express";
-import { AuthGuard, TryCatch, validateBody, validateParams } from "../../helper";
+import { AuthGuard, TryCatch } from "../../helper";
 import { BaseController } from "../BaseController";
 import { CategoriesRepository } from "./categories.repository";
 import { ICategories, IMCategories } from "./categories.type";
-import { categoriesValidation } from "./categories.validation";
 
 
 export class CategoryController extends BaseController<ICategories, IMCategories> {
@@ -19,9 +18,9 @@ export class CategoryController extends BaseController<ICategories, IMCategories
     init() {
         this.router.get("/", TryCatch.tryCatchGlobe(this.indexBC));
         // this.router.get("/:id", validateParams(categoriesValidation.findById), TryCatch.tryCatchGlobe(this.findByIdBC))
-        this.router.post("/", validateBody(categoriesValidation.addCategory), TryCatch.tryCatchGlobe(this.createOneBC))
+        // this.router.post("/", validateBody(categoriesValidation.addCategory), TryCatch.tryCatchGlobe(this.createOneBC))
         // this.router.post("/bulk", validateBody(categoriesValidation.addCategoriesBulk), TryCatch.tryCatchGlobe(this.createBulkBC))
-        this.router.put("/:id", validateParams(categoriesValidation.findById), validateBody(categoriesValidation.editCategory), TryCatch.tryCatchGlobe(this.updateByIdkBC))
+        // this.router.put("/:id", validateParams(categoriesValidation.findById), validateBody(categoriesValidation.editCategory), TryCatch.tryCatchGlobe(this.updateByIdkBC))
         // this.router.delete("/:id", validateParams(categoriesValidation.findById), TryCatch.tryCatchGlobe(this.deleteByIdBC))
     }
 };

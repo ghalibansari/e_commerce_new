@@ -1,5 +1,5 @@
 import { Application } from "express";
-import { AuthGuard, TryCatch, validateBody, validateParams } from "../../helper";
+import { AuthGuard, TryCatch, validateBody } from "../../helper";
 import { BaseController } from "../BaseController";
 import { EnquiryRepository } from "./enquiry.repository";
 import { IEnquiry, IMEnquiry } from "./enquiry.type";
@@ -17,8 +17,8 @@ export class ContactUsController extends BaseController<IEnquiry, IMEnquiry> {
     register = (express: Application) => express.use(`/api/v1/${this.url}`, AuthGuard, this.router)
 
     init() {
-        this.router.get("/", TryCatch.tryCatchGlobe(this.indexBC));
-        this.router.get("/:id", validateParams(ContactUsValidation.findById), TryCatch.tryCatchGlobe(this.findByIdBC))
+        // this.router.get("/", TryCatch.tryCatchGlobe(this.indexBC));
+        // this.router.get("/:id", validateParams(ContactUsValidation.findById), TryCatch.tryCatchGlobe(this.findByIdBC))
         this.router.post("/", validateBody(ContactUsValidation.addContactUs), TryCatch.tryCatchGlobe(this.createOneBC))
         // this.router.post("/bulk", validateBody(ContactUsValidation.addContactUsBulk), TryCatch.tryCatchGlobe(this.createBulkBC))
         // this.router.put("/:id", validateParams(ContactUsValidation.findById), validateBody(ContactUsValidation.editContactUs), TryCatch.tryCatchGlobe(this.updateByIdkBC))

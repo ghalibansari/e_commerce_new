@@ -1,6 +1,6 @@
 import { Application, Request, Response } from "express";
 import { Messages } from "../../constants";
-import { AuthGuard, DBTransaction, JsonResponse, TryCatch, validateBody } from "../../helper";
+import { AuthGuard, JsonResponse, TryCatch, validateBody } from "../../helper";
 import { BaseController } from "../BaseController";
 import { BaseHelper } from "../BaseHelper";
 import { UserAddressMd } from "../user-address/user-address.model";
@@ -20,16 +20,16 @@ export class UserController extends BaseController<IUser, IMUser> {
     register = (express: Application) => express.use(`/api/v1/${this.url}`, AuthGuard, this.router)
 
     init() {
-        this.router.get("/", TryCatch.tryCatchGlobe(this.indexBC));
+        // this.router.get("/", TryCatch.tryCatchGlobe(this.indexBC));
         // this.router.get("/:id", validateParams(UserValidation.findById), TryCatch.tryCatchGlobe(this.findByIdBC))
-        this.router.post("/", validateBody(UserValidation.addUser), TryCatch.tryCatchGlobe(this.createOneBC))
+        // this.router.post("/", validateBody(UserValidation.addUser), TryCatch.tryCatchGlobe(this.createOneBC))
         // this.router.post("/bulk", validateBody(UserValidation.addUserBulk), TryCatch.tryCatchGlobe(this.createBulkBC))
         this.router.put('/profile', validateBody(UserValidation.editProfile), TryCatch.tryCatchGlobe(this.updateProfile));
         // this.router.put("/:id", validateParams(UserValidation.findById), validateBody(UserValidation.editUser), TryCatch.tryCatchGlobe(this.updateByIdkBC))
         // this.router.delete("/:id", validateParams(UserValidation.findById), TryCatch.tryCatchGlobe(this.deleteByIdBC))
 
-        this.router.post("/trans", validateBody(UserValidation.addUser), DBTransaction.startTransaction, TryCatch.tryCatchGlobe(this.createOne))
-        this.router.get("/test", TryCatch.tryCatchGlobe(this.test));
+        // this.router.post("/trans", validateBody(UserValidation.addUser), DBTransaction.startTransaction, TryCatch.tryCatchGlobe(this.createOne))
+        // this.router.get("/test", TryCatch.tryCatchGlobe(this.test));
         this.router.get("/profile", TryCatch.tryCatchGlobe(this.viewProfile));
     }
 

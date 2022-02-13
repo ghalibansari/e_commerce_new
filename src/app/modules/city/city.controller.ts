@@ -18,7 +18,7 @@ export class CityController extends BaseController<ICity, IMCity> {
     init() {
         this.router.get("/", TryCatch.tryCatchGlobe(this.indexBC));
         // this.router.get("/:id", validateParams(CityValidation.findById), TryCatch.tryCatchGlobe(this.findByIdBC))
-        this.router.post("/", validateBody(CityValidation.addCity), TryCatch.tryCatchGlobe(this.createOneBC))
+        // this.router.post("/", validateBody(CityValidation.addCity), TryCatch.tryCatchGlobe(this.createOneBC))
         // this.router.post("/bulk", validateBody(CityValidation.addCityBulk), TryCatch.tryCatchGlobe(this.createBulkBC))
         this.router.put("/:id", validateParams(CityValidation.findById), validateBody(CityValidation.editCity), TryCatch.tryCatchGlobe(this.updateByIdkBC))
         // this.router.delete("/:id", validateParams(CityValidation.findById), TryCatch.tryCatchGlobe(this.deleteByIdBC))

@@ -17,14 +17,20 @@ export class UserAddressController extends BaseController<IUserAddress, IMUserAd
     register = (express: Application) => express.use(`/api/v1/${this.url}`, AuthGuard, this.router)
 
     init() {
-        this.router.get("/", TryCatch.tryCatchGlobe(this.indexBC));
-        // this.router.get("/:id", validateParams(UserAddressValidation.findById), TryCatch.tryCatchGlobe(this.findByIdBC))
+        this.router.get("/", TryCatch.tryCatchGlobe(this.index));
+        this.router.get("/:id", validateParams(UserAddressValidation.findById), TryCatch.tryCatchGlobe(this.findByIdBC))
         this.router.post("/", validateBody(UserAddressValidation.addUserAddress), DBTransaction.startTransaction, TryCatch.tryCatchGlobe(this.addUserAddress))
         // this.router.post("/bulk", validateBody(UserAddressValidation.addUserAddressBulk), TryCatch.tryCatchGlobe(this.createBulkBC))
         this.router.put('/:id', validateBody(UserAddressValidation.updateUserAddress), DBTransaction.startTransaction, TryCatch.tryCatchGlobe(this.updateUserAddress))
         // this.router.put("/:id", validateParams(UserAddressValidation.findById), validateBody(UserAddressValidation.editUserAddress), TryCatch.tryCatchGlobe(this.updateByIdkBC))
         this.router.delete("/:id", validateParams(UserAddressValidation.findById), TryCatch.tryCatchGlobe(this.deleteByIdBC))
     };
+
+    index = async (req: Request, res: Response) => {
+        const { user: { user_id } }: any = req;
+        req.query.where = { user_id };
+        await this.indexBC(req, res);
+    }
 
 
     addUserAddress = async (req: Request, res: Response): Promise<void> => {
