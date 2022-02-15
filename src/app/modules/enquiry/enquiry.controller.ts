@@ -10,7 +10,7 @@ export class ContactUsController extends BaseController<IEnquiry, IMEnquiry> {
 
     constructor() {
         //url, user0repo, attributes/columns, include/joints, sort, search-columns 
-        super("contact-us", new EnquiryRepository(), ['enquiry_id', 'name', 'email', 'contact_no', 'message'], [['name', 'DESC']], [],)
+        super("contact-us", new EnquiryRepository(), ['contact_us_id', 'name', 'email', 'contact_no', 'message'], [['name', 'DESC']], [],)
         this.init()
     }
 

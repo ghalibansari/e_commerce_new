@@ -13,7 +13,7 @@ export class UserController extends BaseController<IUser, IMUser> {
 
     constructor() {
         //url, user0repo, attributes/columns, include/joints, sort, search-columns 
-        super("user", new UserRepository(), [''], [['last_name', 'DESC']], [], ['first_name', 'last_name'])
+        super("user", new UserRepository(), ['*'], [['last_name', 'DESC']], [], ['first_name', 'last_name'])
         this.init()
     }
 

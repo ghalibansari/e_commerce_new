@@ -5,7 +5,7 @@ import { IMTemplate, ITemplate } from "./template.types";
 
 export class TemplateController extends BaseController<ITemplate, IMTemplate> {
     constructor() {
-        super("template", new TemplateRepository(), [''], [['title', 'DESC']], [], [])
+        super("template", new TemplateRepository(), ['*'], [['title', 'DESC']], [], [])
         this.init();
     }
 

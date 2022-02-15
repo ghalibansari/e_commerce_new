@@ -4,6 +4,6 @@ import { IMOrderProduct, IOrderProduct } from "./order-products.type";
 
 export class OrderProductRepository extends BaseRepository<IOrderProduct, IMOrderProduct> {
     constructor() {
-        super(OrderProductMd, 'order_product_id', [''], ['amount'], []);
+        super(OrderProductMd, 'order_product_id', ['*'], ['amount'], []);
     }
 }

@@ -11,7 +11,7 @@ export class ProductController extends BaseController<IProduct, IMProduct> {
 
     constructor() {
         //url, user0repo, attributes/columns, include/joints, sort, search-columns 
-        super("product", new ProductRepository(), ['category_id', 'product_id', 'name', "weight", "selling_price", "description"], [['created_at', 'DESC']], [],)
+        super("product", new ProductRepository(), ['category_id', 'product_id', 'name', "weight", "amount", "description"], [['created_at', 'DESC']], [],)
         this.init()
     };
 

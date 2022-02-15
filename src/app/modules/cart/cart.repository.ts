@@ -10,7 +10,7 @@ import { ICart, IMCart } from "./cart.types";
 
 export class CartRepository extends BaseRepository<ICart, IMCart> {
     constructor() {
-        super(CartMd, 'cart_id', [''], ['created_at'], []);
+        super(CartMd, 'cart_id', ['*'], ['created_at'], []);
     }
 
     addToCart = async ({ product_id, quantity, user_id, transaction }: { product_id: IProduct['product_id'], quantity: ICart['quantity'], user_id: IUser['user_id'], transaction?: Transaction }) => {
