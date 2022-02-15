@@ -4,6 +4,6 @@ import { ICoupon, IMCoupon } from "./coupon.type";
 
 export class CouponRepository extends BaseRepository<ICoupon, IMCoupon> {
     constructor() {
-        super(CouponMd, 'coupon_id', ['*'], ['type'], []);
+        super(CouponMd, 'coupon_id', [''], ['type'], []);
     }
 }

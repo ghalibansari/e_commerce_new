@@ -8,7 +8,7 @@ import { IMWishlist, IWishlist } from "./wishlist.type";
 
 export class WishlistRepository extends BaseRepository<IWishlist, IMWishlist> {
     constructor() {
-        super(WishlistMd, 'wishlist_id', ['*'], ['created_at'], []);
+        super(WishlistMd, 'wishlist_id', [''], ['created_at'], []);
     }
 
     addToWishlist = async ({ product_id, user_id, transaction }: { product_id: IProduct['product_id'], user_id: IUser['user_id'], transaction?: Transaction }) => {
@@ -23,8 +23,8 @@ export class WishlistRepository extends BaseRepository<IWishlist, IMWishlist> {
         await this.deleteByIdBR({ id: wishlist.wishlist_id, deleted_by: user_id, delete_reason: 'remove from wishlist by user', transaction });
     }
 
-    moveToCart = async ({product_id, user_id, transaction}: { product_id: IProduct['product_id'], user_id: IUser['user_id'], transaction: Transaction }) => {
-        await this.removeFromWishlist({product_id, user_id, delete_reason: "move to cart", transaction})
-        await new CartRepository().addToCart({product_id, quantity: 1, user_id, transaction})   
+    moveToCart = async ({ product_id, user_id, transaction }: { product_id: IProduct['product_id'], user_id: IUser['user_id'], transaction: Transaction }) => {
+        await this.removeFromWishlist({ product_id, user_id, delete_reason: "move to cart", transaction })
+        await new CartRepository().addToCart({ product_id, quantity: 1, user_id, transaction })
     }
 }

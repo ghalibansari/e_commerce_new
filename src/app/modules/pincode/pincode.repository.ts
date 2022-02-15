@@ -4,6 +4,6 @@ import { IMPinCode, IPinCode } from "./pincode.types";
 
 export class PinCodeRepository extends BaseRepository<IPinCode, IMPinCode> {
     constructor() {
-        super(PinCodeMd, 'pincode_id', ['*'], ['created_at'], []);
+        super(PinCodeMd, 'pincode_id', [''], ['created_at'], []);
     }
 }

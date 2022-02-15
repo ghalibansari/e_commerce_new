@@ -7,6 +7,7 @@ import { BrandRepository } from "../brand/brand.repository";
 import { CategoriesMd } from "../categories/categories.model";
 import { CategoriesRepository } from "../categories/categories.repository";
 import { ProductRepository } from "../products/product.repository";
+import { IProduct } from "../products/product.type";
 import { CustomRepository } from "./custom.repository";
 import { CustomValidation } from "./custom.validation";
 
@@ -94,7 +95,7 @@ export class CustomController {
         let where: any = {};
         let brandWhere: any = { is_active: true };
         let categoryWhere: any = { is_active: true };
-        const attributes = ["name", "description", "amount", "weight"];
+        const attributes: Array<keyof IProduct> = ["name", "description", "selling_price", "weight"];
         order ||= order;
         pageNumber ||= pageNumber;
         pageSize ||= pageSize;

@@ -16,9 +16,9 @@ export class BaseRepository<T extends ModelCtor, U extends Model> implements IWr
     protected constructor(
         public readonly _model: ModelCtor<U>,
         public readonly primary_key: keyof U,
-        public readonly attributes: NonEmptyArray<any | keyof U> = ['created_on'],
+        public readonly attributes: NonEmptyArray<keyof T & string | ''> = ['created_on'],
         public readonly order: Array<keyof U> | Array<[keyof U, 'ASC' | 'DESC']> = [],
-        public readonly include: object[] = [],
+        public readonly include: object[] = []
     ) { }
 
 
@@ -148,8 +148,7 @@ export class BaseRepository<T extends ModelCtor, U extends Model> implements IWr
         return await this.CountBR(where)
     };
 
-    findColumnMinMax = async ({ columnName }: { columnName: string }) => {
-        // return await this.findBulkBR({   //TODO fix this 
+    findColumnMinMax = async ({ columnName }: { columnName: keyof T & string }) => {
         return await this._model.findAll({
             attributes: [
                 [fn('max', col(columnName)), 'max'],

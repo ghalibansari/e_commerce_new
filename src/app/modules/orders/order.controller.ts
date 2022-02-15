@@ -9,7 +9,7 @@ export class OrderController extends BaseController<IOrder, IMOrder> {
 
     constructor() {
         //url, user0repo, attributes/columns, include/joints, sort, search-columns 
-        super("order", new OrderRepository(), ['transaction_id', 'grand_total', 'shipping_charges', 'status'], [['created_at', 'DESC']], [],)
+        super("order", new OrderRepository(), ['transaction_id', 'grand_total', 'shipping_charges', 'type'], [['created_at', 'DESC']], [],)
         this.init()
     }
 

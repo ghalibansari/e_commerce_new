@@ -8,7 +8,7 @@ export class OrderCouponController extends BaseController<IOrderCoupon, IMOrderC
 
     constructor() {
         //url, user0repo, attributes/columns, include/joints, sort, search-columns 
-        super("order_coupon", new OrderCouponRepository(), ['order_address_id', 'type', 'min_cart_amount'], [['type', 'DESC']], [],)
+        super("order_coupon", new OrderCouponRepository(), ['order_coupon_id', 'type', 'min_cart_amount'], [['type', 'DESC']], [],)
         this.init()
     }
 

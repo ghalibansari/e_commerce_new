@@ -9,7 +9,7 @@ export class CategoryController extends BaseController<ICategories, IMCategories
 
     constructor() {
         //url, user0repo, attributes/columns, include/joints, sort, search-columns 
-        super("category", new CategoriesRepository(), ['category_name', 'is_active', 'order_sequence', 'show_on_homeScreen', 'category_image'], [['category_name', 'DESC']], [],)
+        super("category", new CategoriesRepository(), ['category_name', 'is_active', 'order_sequence', 'show_on_home_screen', 'category_image'], [['category_name', 'DESC']], [],)
         this.init()
     }
 

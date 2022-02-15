@@ -4,6 +4,6 @@ import { ILogger, IMLogger } from "./logger.types";
 
 export class LoggerRepository extends BaseRepository<ILogger, IMLogger> {
     constructor() {
-        super(LoggerMd, 'logger_id', ['*'], ['created_at'], []);
+        super(LoggerMd, 'logger_id', [''], ['created_at'], []);
     }
 }

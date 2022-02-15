@@ -17,7 +17,7 @@ import { AuthRepository } from './authRepository';
 
 export class AuthController extends BaseController<IAuth, IMAuth> {
     constructor() {
-        super('auth', new AuthRepository(), ['*'], [['created_at', 'DESC']]);
+        super('auth', new AuthRepository(), [''], [['created_at', 'DESC']]);
         this.init();
     };
 

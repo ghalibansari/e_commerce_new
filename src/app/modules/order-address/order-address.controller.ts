@@ -9,7 +9,7 @@ export class OrderAddressController extends BaseController<IOrderAddress, IMOrde
 
     constructor() {
         //url, user0repo, attributes/columns, include/joints, sort, search-columns 
-        super("order-address", new OrderAddressRepository(), [''], [['order_address_id', 'DESC']], [],)
+        super("order-address", new OrderAddressRepository(), ['order_address_id', 'order_id', 'address_1', "address_2", "city", "state", "pin_code"], [['order_address_id', 'DESC']], [],)
         this.init()
     }
 

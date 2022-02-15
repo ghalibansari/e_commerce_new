@@ -4,6 +4,6 @@ import { IMOrderCoupon, IOrderCoupon } from "./order-coupon.type";
 
 export class OrderCouponRepository extends BaseRepository<IOrderCoupon, IMOrderCoupon> {
     constructor() {
-        super(OrderCouponMd, 'order_coupon_id', ['*'], ['type'], []);
+        super(OrderCouponMd, 'order_coupon_id', [''], ['type'], []);
     }
 }
