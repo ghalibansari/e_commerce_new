@@ -9,7 +9,7 @@ export class PinCodeController extends BaseController<IPinCode, IMPinCode> {
 
     constructor() {
         //url, user0repo, attributes/columns, include/joints, sort, search-columns 
-        super("pin-code", new PinCodeRepository(), ['pin_code_id', 'area_name', 'is_active'], [['area_name', 'DESC']], [])
+        super("pin-code", new PinCodeRepository(), ['pincode_id', 'area_name', 'is_active'], [['area_name', 'DESC']], [])
         this.init()
     }
 

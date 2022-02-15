@@ -16,7 +16,7 @@ export class BaseRepository<T extends ModelCtor, U extends Model> implements IWr
     protected constructor(
         public readonly _model: ModelCtor<U>,
         public readonly primary_key: keyof U,
-        public readonly attributes: NonEmptyArray<any | keyof U> = ['created_on'],
+        public readonly attributes: NonEmptyArray<keyof T & string | '*'> = ['created_on'],
         public readonly order: Array<keyof U> | Array<[keyof U, 'ASC' | 'DESC']> = [],
         public readonly include: object[] = [],
     ) { }
