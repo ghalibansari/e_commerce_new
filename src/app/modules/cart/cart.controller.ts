@@ -32,7 +32,7 @@ export class CartController extends BaseController<ICart, IMCart> {
         this.router.delete("/remove-from-cart", validateParams(cartValidation.findByProduct_id), TryCatch.tryCatchGlobe(this.removeFromCart))
         this.router.post("/move-to-wishlist", validateParams(cartValidation.findByRemoveProduct_id), DBTransaction.startTransaction, TryCatch.tryCatchGlobe(this.moveToWishList))
 
-    };
+    }
 
     addToCart = async (req: Request, res: Response) => {
         const { query: { product_id, quantity }, user: { user_id } }: any = req;
@@ -74,7 +74,6 @@ export class CartController extends BaseController<ICart, IMCart> {
         pageNumber ||= this.pageNumber
         pageSize ||= this.pageSize
 
-
         where['user_id'] = user_id
 
         //search
@@ -85,7 +84,7 @@ export class CartController extends BaseController<ICart, IMCart> {
             }
         }
         const ProductRepo = new ProductRepository()
-        const include = [{ model: ProductRepo._model, as: "product", attributes: ['name', 'amount', 'product_id'] }];
+        const include = [{ model: ProductRepo._model, as: "product", attributes: ['name', 'selling_price', 'product_id'] }];
         const { page, data } = await new CartRepository().index({ where, attributes, include, order, pageNumber, pageSize })
         res.locals = { status: true, page, data, message: Messages.FETCH_SUCCESSFUL }
         return await JsonResponse.jsonSuccess(req, res, `{this.url}.indexBC`)

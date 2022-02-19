@@ -67,6 +67,7 @@ export class Errors {
     static readonly ALTERNATE_EMAIL_PRESENT: string = "Alternate Email already Present"
     static readonly UPER_IS_ALREADY_DELETED: string = "User is deleted, please contact administrator."
     static readonly INVALID_ALERT_SUB_CATEGORY_ID: string = "Invalid AlertSubCategoryId";
-
-
+    static readonly PRODUCT_NOT_FOUND: string = "Product not found";
+    static readonly INVALID_PRODUCT_ID: string = "Invalid ProductId";
+    static readonly PRODUCT_OUT_OF_STOCK: string = "Product out of stock";
 }

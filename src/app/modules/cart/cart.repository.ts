@@ -1,9 +1,10 @@
 import { Transaction } from "sequelize/types";
-import { Constant } from '../../constants';
+import { Constant, Errors } from '../../constants';
 import { BaseRepository } from "../BaseRepository";
 import { IProduct } from "../products/product.type";
 import { IUser } from "../user/user.types";
 import { WishlistRepository } from "../wishlist/wishlist.repository";
+import { ProductRepository } from './../products/product.repository';
 import { CartMd } from "./cart.model";
 import { ICart, IMCart } from "./cart.types";
 
@@ -14,7 +15,12 @@ export class CartRepository extends BaseRepository<ICart, IMCart> {
     }
 
     addToCart = async ({ product_id, quantity, user_id, transaction }: { product_id: IProduct['product_id'], quantity: ICart['quantity'], user_id: IUser['user_id'], transaction?: Transaction }) => {
-        const cart = await this.findOneBR({ where: { user_id, product_id }, attributes: ['cart_id', 'quantity'] });
+        const [cart, product] = await Promise.all([
+            await this.findOneBR({ where: { user_id, product_id }, attributes: ['cart_id', 'quantity'] }),
+            await new ProductRepository().findOneBR({ where: { product_id, out_of_stock: false }, attributes: ['product_id'] })
+        ]);
+        if (!product) throw new Error(Errors.INVALID_PRODUCT_ID)
+        if (product.out_of_stock) throw new Error(Errors.PRODUCT_OUT_OF_STOCK)
         if (cart) await this.updateByIdBR({ id: cart.cart_id, newData: { quantity: quantity || ++cart.quantity }, updated_by: user_id, transaction });
         else await this.createOneBR({ newData: { product_id, user_id, quantity: quantity || 1 }, created_by: user_id, transaction });
     }
@@ -57,7 +63,7 @@ export class CartRepository extends BaseRepository<ICart, IMCart> {
 
         for (let i = 0; i < carts.length; i++) {
             //@ts-expect-error
-            const amount = carts[i].product.amount * carts[i].quantity
+            const amount = carts[i].product.selling_price * carts[i].quantity
             totalAmount = totalAmount + amount;
         }
         return { data: { carts, totalAmount }, page: { hasNextPage, totalCount, currentPage: pageNumber, totalPage } }
