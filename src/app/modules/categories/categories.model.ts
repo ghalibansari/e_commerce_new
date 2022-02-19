@@ -31,4 +31,3 @@ CategoriesMd.hasMany(ProductMd, { foreignKey: 'category_id', as: 'products' });
 ProductMd.belongsTo(CategoriesMd, { foreignKey: 'category_id', as: 'category', targetKey: "category_id" });
 
 export { CategoriesMd };
-

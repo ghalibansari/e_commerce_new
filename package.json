@@ -12,7 +12,7 @@
     "start": "node ./dist/server",
     "delete": "rimraf ./dist",
     "copy": "node copyViews.js",
-    "tsc": "tsc",
+    "build": "yarn run predev",
     "copy-dev": "nodemon -e js,ejs -w src/public -w src/views copyViews.js"
   },
   "keywords": [],

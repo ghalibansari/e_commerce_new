@@ -6,6 +6,7 @@ import { BrandMd } from "../brand/brand.model";
 import { BrandRepository } from "../brand/brand.repository";
 import { CategoriesMd } from "../categories/categories.model";
 import { CategoriesRepository } from "../categories/categories.repository";
+import { ProductImagesMd } from "../product-images/product-images.model";
 import { ProductRepository } from "../products/product.repository";
 import { CustomRepository } from "./custom.repository";
 import { CustomValidation } from "./custom.validation";
@@ -133,6 +134,13 @@ export class CustomController {
                 attributes: ["category_name", "category_id"],
                 where: categoryWhere,
             },
+            {
+                model: ProductImagesMd,
+                as: "images",
+                attributes: ["image_url"],
+                where: { is_active: true },
+                limit: 1
+            }
         ];
 
         const { page, data } = await new ProductRepository().indexBR({

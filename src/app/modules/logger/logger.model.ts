@@ -24,7 +24,6 @@ const LoggerMd = DB.define<IMLogger>(
     cloneDeep(modelCommonOptions)
 );
 
-// LoggerMd.sync({ force: true });
 
 export { LoggerMd };
 
