@@ -25,7 +25,7 @@ export class CustomRepository {
     filter = async (): Promise<any> => {
         const CategoriesRepo = new CategoriesRepository();
         const [categories, brand, amountMinmax] = await Promise.all([
-            await CategoriesRepo.findBulkBR({ where: { parent_id: null }, include: [{ model: CategoriesRepo._model, as: 'sub_cat', attributes: ['category_name', 'category_id'] }], attributes: ['category_name', 'category_ids'] }),
+            await CategoriesRepo.findBulkBR({ where: { parent_id: null }, include: [{ model: CategoriesRepo._model, as: 'sub_cat', attributes: ['category_name', 'category_id'] }], attributes: ['category_name', 'category_id'] }),
             await new BrandRepository().findBulkBR({ where: { show_on_home_screen: true }, attributes: ["brand_image", "brand_name", "brand_id"] }),
             await new ProductRepository().findColumnMinMax({ columnName: 'selling_price' })
         ]);

@@ -8,6 +8,7 @@ import { CategoriesMd } from "../categories/categories.model";
 import { CategoriesRepository } from "../categories/categories.repository";
 import { ProductImagesMd } from "../product-images/product-images.model";
 import { ProductRepository } from "../products/product.repository";
+import { UnitMasterMd } from "../unit-master/unit-master.model";
 import { CustomRepository } from "./custom.repository";
 import { CustomValidation } from "./custom.validation";
 
@@ -69,11 +70,12 @@ export class CustomController {
 
     search = async (req: Request, res: Response): Promise<void> => {
         const { search } = req.query;
+        const CategoriesRepo = new CategoriesRepository();
 
         const [product, category, brand] = await Promise.all([
-            new ProductRepository().findBulkBR({ where: { [Op.or]: [{ name: { [Op.iLike]: `%${search}%` } }, { description: { [Op.like]: `%${search}%` } }] }, attributes: ['product_id', 'name', 'description'] }),
-            new CategoriesRepository().findBulkBR({ where: { category_name: { [Op.iLike]: `%${search}%` } }, attributes: ['category_id', 'category_name'] }),
-            new BrandRepository().findBulkBR({ where: { brand_name: { [Op.iLike]: `%${search}%` } }, attributes: ['brand_id', "brand_name"] }),
+            await new ProductRepository().findBulkBR({ where: { [Op.or]: [{ name: { [Op.iLike]: `%${search}%` } }, { description: { [Op.like]: `%${search}%` } }] }, attributes: ['product_id', 'name', 'description'] }),
+            await CategoriesRepo.findBulkBR({ where: { category_name: { [Op.iLike]: `%${search}%` } }, include: [{ model: CategoriesRepo._model, as: 'sub_cat', where: { is_active: true }, attributes: ['category_id'], required: false }], attributes: ['category_id', 'category_name', 'parent_id'] }),
+            await new BrandRepository().findBulkBR({ where: { brand_name: { [Op.iLike]: `%${search}%` } }, attributes: ['brand_id', "brand_name"] }),
         ])
         const data = { product, category, brand };
         res.locals = { status: true, data, message: Messages.FETCH_SUCCESSFUL };
@@ -140,6 +142,11 @@ export class CustomController {
                 attributes: ["image_url"],
                 where: { is_active: true },
                 limit: 1
+            },
+            {
+                model: UnitMasterMd,
+                as: "unit",
+                attributes: ["name"]
             }
         ];
 

@@ -15,3 +15,4 @@ interface ICart extends Optional<IBCart, 'cart_id'> { }
 interface IMCart extends Model<IBCart, ICart>, IBCart, IMCommon { }
 
 export { ICart, IMCart };
+
