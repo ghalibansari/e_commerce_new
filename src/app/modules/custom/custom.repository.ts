@@ -1,9 +1,11 @@
 import { Op } from "sequelize";
+import { DB } from '../../../configs/DB';
 import { BannerRepository } from "../banners/banner.repository";
 import { BrandRepository } from "../brand/brand.repository";
 import { CategoriesRepository } from "../categories/categories.repository";
 import { ProductRepository } from "../products/product.repository";
 import { TagRepository } from "../tags/tags.repository";
+const { fn, col } = DB
 
 
 
@@ -24,11 +26,38 @@ export class CustomRepository {
 
     filter = async (): Promise<any> => {
         const CategoriesRepo = new CategoriesRepository();
+        const ProductRepo = new ProductRepository();
         const [categories, brand, amountMinmax] = await Promise.all([
-            await CategoriesRepo.findBulkBR({ where: { parent_id: null }, include: [{ model: CategoriesRepo._model, as: 'sub_cat', attributes: ['category_name', 'category_id'] }], attributes: ['category_name', 'category_id'] }),
+            await CategoriesRepo.findBulkBR({
+                where: { parent_id: null },
+                attributes: ['category_name', 'category_id'],
+                include: [
+                    {
+                        model: CategoriesRepo._model,
+                        as: 'sub_cat',
+                        attributes: ['category_name', 'category_id'],
+                        include: {
+                            model: ProductRepo._model,
+                            as: 'products',
+                            attributes: ['product_id']
+                        }
+                    }
+                ]
+            }),
+
             await new BrandRepository().findBulkBR({ where: { show_on_home_screen: true }, attributes: ["brand_image", "brand_name", "brand_id"] }),
-            await new ProductRepository().findColumnMinMax({ columnName: 'selling_price' })
+            await ProductRepo.findColumnMinMax({ columnName: 'selling_price' }),
         ]);
-        return { categories, amountMinmax, brand };
+
+        const cat = JSON.parse(JSON.stringify(categories));
+
+        cat.forEach((cat: any) => {
+            cat.sub_cat?.forEach((subCat: any) => {
+                subCat.productCount = subCat.products.length;
+                delete subCat.products;
+            });
+        });
+
+        return { categories: cat, amountMinmax, brand };
     };
 }

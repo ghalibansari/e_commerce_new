@@ -1,6 +1,4 @@
-import { BaseController } from "app/modules/BaseController";
 import { Application, Request, Response, Router } from "express";
-import { JsonResponse, TryCatch } from "../helper";
 
 export class AdminRoutes {
     protected router: Router
