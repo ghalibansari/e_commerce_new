@@ -73,8 +73,8 @@ export class BaseRepository<T extends ModelCtor, U extends Model> implements IWr
     }
 
 
-    findByIdBR = async ({ id, attributes = this.attributes, include = this.include }: TFindByIdBR): Promise<U | null> => {
-        return await this.findOneBR({ where: { [this.primary_key]: id }, attributes, include })
+    findByIdBR = async ({ id, attributes = this.attributes, include = this.include, raw = true }: TFindByIdBR): Promise<U | null> => {
+        return await this.findOneBR({ where: { [this.primary_key]: id }, attributes, include, raw })
     };
 
 

@@ -8,6 +8,7 @@ export type TFindByIdBR = {
     id: string;
     attributes?: NonEmptyArray<string>
     include?: object[]
+    raw?: boolean
 };
 
 export type TCreateOneBR<T> = {
