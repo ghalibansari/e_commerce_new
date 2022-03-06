@@ -1,6 +1,6 @@
 import { Application, Request, Response } from "express";
 import { Messages } from "../../constants";
-import { AuthGuard, JsonResponse, TryCatch, validateParams } from "../../helper";
+import { JsonResponse, TryCatch, validateParams } from "../../helper";
 import { BaseController } from "../BaseController";
 import { ProductRepository } from "./product.repository";
 import { IMProduct, IProduct } from "./product.type";
@@ -15,7 +15,7 @@ export class ProductController extends BaseController<IProduct, IMProduct> {
         this.init()
     };
 
-    register = (express: Application) => express.use(`/api/v1/${this.url}`, AuthGuard, this.router)
+    register = (express: Application) => express.use(`/api/v1/${this.url}`, this.router)
 
     init() {
         this.router.get("/similar-products", TryCatch.tryCatchGlobe(this.similarProducts));
