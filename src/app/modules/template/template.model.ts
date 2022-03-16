@@ -25,39 +25,64 @@ const TemplateMd = DB.define<IMTemplate>(
   cloneDeep(modelCommonOptions)
 );
 
+const user_registration = {
+  template_id: uuidv4(),
+  name: "user_registration",
+  title: `Registration Email Verification`,
+  subject: `Hey {{NAME}} welcome to our family.`,
+  body: `<mjml>
+  <mj-body>
+    <mj-section>
+      <mj-column>
+        <mj-image width="400px" src=https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTkIiaSXe-txgAPqBdut2qFucVjp5D8-gN6tQ&usqp=CAU></mj-image>
+        <mj-divider border-color="#000080"></mj-divider>
+        <mj-text  align = "center" font-size="20px" color="black" font-family="perpetua"><h2><i>Your OTP for Email Verification is {{OTP}}</i></h2></mj-text>
+      </mj-column>
+    </mj-section>
+  </mj-body>
+</mjml>`,
+  params: ['NAME', 'OTP'],
+  to: [],
+  cc: [],
+  type: templateTypeEnum.email,
+  created_by: uuidv4(),
+  updated_by: uuidv4()
+}
+
+const forget_password = {
+  template_id: uuidv4(),
+  name: "forgot_password",
+  title: `Forget Password {{OTP}}`,
+  subject: `Hey {{NAME}}, forget password.`,
+  body: `<mjml>
+  <mj-body>
+    <mj-section>
+      <mj-column>
+        <mj-image width="400px" src=https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTkIiaSXe-txgAPqBdut2qFucVjp5D8-gN6tQ&usqp=CAU></mj-image>
+        <mj-divider border-color="#000080"></mj-divider>
+        <mj-text  align = "center" font-size="20px" color="black" font-family="perpetua"><h2><i>Your OTP for Forget Password is {{OTP}}</i></h2></mj-text>
+      </mj-column>
+    </mj-section>
+  </mj-body>
+</mjml>`,
+  params: ['NAME', 'OTP'],
+  to: [],
+  cc: [],
+  type: templateTypeEnum.email,
+  created_by: uuidv4(),
+  updated_by: uuidv4()
+}
+
 async function doStuffWithUserModel() {
   await TemplateMd.sync();
   const id = uuidv4();
 
-  const newUser = await TemplateMd.create({
-    template_id: id,
-    name: "user_registration",
-    title: `Registration Email Verification`,
-    subject: `Hey {{NAME}} welcome to our family.`,
-    body: `<mjml>
-    <mj-body>
-      <mj-section>
-        <mj-column>
-          <mj-image width="400px" src=https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTkIiaSXe-txgAPqBdut2qFucVjp5D8-gN6tQ&usqp=CAU></mj-image>
-          <mj-divider border-color="#000080"></mj-divider>
-          <mj-text  align = "center" font-size="20px" color="black" font-family="perpetua"><h2><i>Your OTP for Email Verification is {{OTP}}</i></h2></mj-text>
-        </mj-column>
-      </mj-section>
-    </mj-body>
-  </mjml>`,
-    params: ['NAME', 'OTP'],
-    to: ['ak8828979484@gmail.com'],
-    cc: [''],
-    type: templateTypeEnum.email,
-    created_by: id,
-    updated_by: id
-  })
+  const newUser = await TemplateMd.bulkCreate([user_registration, forget_password])
     .then(() => console.log("Created template..."))
     .catch(e => console.log('Error: ', e));
 };
-
-
 // doStuffWithUserModel();
+
 
 export { TemplateMd };
 

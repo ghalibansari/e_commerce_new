@@ -17,7 +17,7 @@ export class NotificationService {
             port: 465,
             auth: {
                 user: this.from,
-                pass: 'hTd88tpKnxdev$t'
+                pass: 'hTd88tpKnxdev$tx'
             }
         })
     };

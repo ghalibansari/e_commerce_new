@@ -1,22 +1,8 @@
-// // import { NotificationService, IMailOptions } from "../helper";
-
 import mjml2html from 'mjml'
 import { NotificationService } from "../helper/NotificationService"
 import { TemplateRepository } from "./template/template.repository"
 import { templateTypeEnum } from "./template/template.types"
 
-// import { IMailOptions } from "app/helper";
-// import { NotificationService } from "app/helper/NotificationService";
-// import * as _ from "lodash";
-// import { TemplateRepository } from "./template/template.repository";
-// import
-
-
-
-
-// // import TemplateBusiness from "../modules2/template/template.business";
-// // import TemplateBusiness from "../modules2"
-// // import { IRecipient } from "../modules2/recipient/recipient.types";
 
 
 // /*

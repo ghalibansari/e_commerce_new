@@ -20,7 +20,8 @@ export enum loggerLevelEnum {
     api = 'api',
     cron = 'cron',
     internal = 'internal',
-    frontend = 'frontend'
+    frontend = 'frontend',
+    email = 'email'
 }
 
 interface IMLogger extends Model<IBLogger, ILogger>, IBLogger, IMCommon { }

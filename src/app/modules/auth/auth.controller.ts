@@ -9,6 +9,8 @@ import { DBTransaction, JsonResponse, randomAlphaNumeric, TryCatch, validateBody
 import { AuthGuard } from '../../helper/Auth';
 import { BaseController } from '../BaseController';
 import { BaseHelper } from '../BaseHelper';
+import { LoggerMd } from '../logger/logger.model';
+import { loggerLevelEnum } from '../logger/logger.types';
 import { UserRepository } from '../user/user.repository';
 import { authActionEnum, IAuth, IMAuth } from './auth.types';
 import { AuthValidation } from "./auth.validation";
@@ -143,7 +145,14 @@ export class AuthController extends BaseController<IAuth, IMAuth> {
         const otp = randomAlphaNumeric(8)
 
         await new AuthRepository().createOneBR({ newData: { ip: "192.168.0.1", action: authActionEnum.forgot_pass, user_id: user.user_id, token: otp }, created_by: user.user_id });
-        new BaseHelper().sendEmail({ template_name: "forgot_password", to: email, paramsVariable: { OTP: otp, NAME: user.first_name } })
+        new BaseHelper().sendEmail({ template_name: "forgot_password", to: email, paramsVariable: { OTP: otp, NAME: user.first_name } }).catch(err => {
+            const { body, originalUrl, method, query, params }: any = req
+            const userId = (req as any).user?.user_id || v4()
+            const updated_by = userId
+            const created_by = userId
+            const [, , , module,] = originalUrl.split('/')
+            LoggerMd.create({ url: originalUrl, method, query: JSON.stringify(query), params: JSON.stringify(params), body: JSON.stringify(body), stack: JSON.stringify(err.stack), module, level: loggerLevelEnum.email, message: JSON.stringify(err.message), updated_by, created_by }).catch((e: any) => console.error(e, " Failed logging"))
+        })
 
         res.locals = { status: true, message: Messages.OTP_SENT_SUCCESSFULLY };
         return await JsonResponse.jsonSuccess(req, res, "forgot Password");
