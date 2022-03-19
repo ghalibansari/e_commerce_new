@@ -49,7 +49,7 @@ export class UserController extends BaseController<IUser, IMUser> {
 
     viewProfile = async (req: Request, res: Response): Promise<void> => {
         const { user: { user_id } }: any = req
-        const data = await new UserRepository().findBulkBR({ where: { user_id }, attributes: ['first_name', 'last_name', 'mobile', 'email', 'gender'], include: [{ model: UserAddressMd, as: 'addresses', attributes: ['is_default', 'address_1', 'address_2', 'city', 'state', 'pin_code'] }] })
+        const data = await new UserRepository().findOneBR({ where: { user_id }, attributes: ['first_name', 'last_name', 'mobile', 'email', 'gender'], include: [{ model: UserAddressMd, as: 'addresses', attributes: ['is_default', 'address_1', 'address_2', 'city', 'state', 'pin_code'] }] })
         res.locals = { status: true, data, message: Messages.FETCH_SUCCESSFUL }
         return await JsonResponse.jsonSuccess(req, res, `shop`);
     };
