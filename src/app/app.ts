@@ -30,6 +30,8 @@ class App {
         this.app.use(express.json({ limit: '100mb' }));
         this.app.use(bodyParser.urlencoded({ limit: "10mb", extended: true, parameterLimit: 50000 }));
         this.app.use(queryParser());
+        this.app.enable("strict routing");
+        // this.app.enable("case sensitive routing");
         // const env: Environment = new Environment();
         // this.app.use(session({ secret: env.getConfiguration().jwt_secret }));
         this.app.use(session({ secret: Constant.secret_key, saveUninitialized: true, resave: true }));//Todo find saveUninitialized n resave on google
