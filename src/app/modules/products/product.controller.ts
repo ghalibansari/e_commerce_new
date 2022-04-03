@@ -56,8 +56,7 @@ export class ProductController extends BaseController<IProduct, IMProduct> {
                 model: ProductImagesMd,
                 as: "images",
                 attributes: ["image_url"],
-                where: { is_active: true },
-                limit: 1
+                where: { is_active: true }
             },
             {
                 model: UnitMasterMd,

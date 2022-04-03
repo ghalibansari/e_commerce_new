@@ -2,6 +2,11 @@ import { Application, Request, Response } from "express";
 import { Messages } from "../../constants";
 import { AuthGuard, DBTransaction, JsonResponse, TryCatch, validateBody, validateParams } from "../../helper";
 import { BaseController } from "../BaseController";
+import { BrandMd } from "../brand/brand.model";
+import { CategoriesMd } from "../categories/categories.model";
+import { ProductImagesMd } from "../product-images/product-images.model";
+import { ProductRepository } from "../products/product.repository";
+import { UnitMasterMd } from "../unit-master/unit-master.model";
 import { WishlistRepository } from "./wishlist.repository";
 import { IMWishlist, IWishlist } from "./wishlist.type";
 import { WishlistValidation } from "./wishlist.validation";
@@ -32,9 +37,44 @@ export class WishlistController extends BaseController<IWishlist, IMWishlist> {
     };
 
     index = async (req: Request, res: Response) => {
+        let { pageSize, pageNumber }: any = req.query;
         const { user: { user_id } }: any = req;
-        req.query.where = { user_id };
-        await this.indexBC(req, res);
+        pageNumber ||= this.pageNumber;
+        pageSize ||= this.pageSize;
+
+        const include = [
+            {
+                model: BrandMd,
+                as: "brand",
+                attributes: ["brand_name", "brand_id"],
+                where: { is_active: true },
+            },
+            {
+                model: CategoriesMd,
+                as: "category",
+                attributes: ["category_name", "category_id"],
+                where: { is_active: true },
+            },
+            {
+                model: ProductImagesMd,
+                as: "images",
+                attributes: ["image_url"],
+                where: { is_active: true },
+                limit: 1
+            },
+            {
+                model: UnitMasterMd,
+                as: "unit",
+                attributes: ["name"]
+            }
+        ];
+
+        const ProductRepo = new ProductRepository()
+        const includeProduct = [{ model: ProductRepo._model, as: "product", include, attributes: ["name", "description", "selling_price", "weight", 'out_of_stock', 'base_price'] }];
+        const { page, data } = await new WishlistRepository().indexBR({ where: { user_id }, include: includeProduct, pageNumber, pageSize })
+        res.locals = { status: true, page, data, message: Messages.FETCH_SUCCESSFUL }
+        return await JsonResponse.jsonSuccess(req, res, `{this.url}.indexBC`)
+
     }
 
     addToWishlist = async (req: Request, res: Response) => {
