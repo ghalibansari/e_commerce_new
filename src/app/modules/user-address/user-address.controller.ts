@@ -1,6 +1,6 @@
 import { Application, Request, Response } from "express";
 import { Messages } from "../../constants";
-import { AuthGuard, DBTransaction, JsonResponse, TryCatch, validateBody, validateParams } from "../../helper";
+import { DBTransaction, JsonResponse, TryCatch, validateBody, validateParams } from "../../helper";
 import { BaseController } from "../BaseController";
 import { UserAddressRepository } from "./user-address.repository";
 import { IMUserAddress, IUserAddress } from "./user-address.type";
@@ -10,11 +10,11 @@ export class UserAddressController extends BaseController<IUserAddress, IMUserAd
 
     constructor() {
         //url, user0repo, attributes/columns, include/joints, sort, search-columns 
-        super("user-address", new UserAddressRepository())
+        super("address", new UserAddressRepository())
         this.init()
     }
 
-    register = (express: Application) => express.use(`/api/v1/${this.url}`, AuthGuard, this.router)
+    register = (express: Application) => express.use(`/api/v1/${this.url}`, this.router)
 
     init() {
         this.router.get("/", TryCatch.tryCatchGlobe(this.index));

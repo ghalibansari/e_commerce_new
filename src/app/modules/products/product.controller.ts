@@ -1,6 +1,7 @@
 import { Application, Request, Response } from "express";
+import { Op } from "sequelize";
 import { Messages } from "../../constants";
-import { JsonResponse, TryCatch, validateParams } from "../../helper";
+import { JsonResponse, TryCatch, validateParams, validateQuery } from "../../helper";
 import { BaseController } from "../BaseController";
 import { BrandMd } from "../brand/brand.model";
 import { CategoriesMd } from "../categories/categories.model";
@@ -25,6 +26,7 @@ export class ProductController extends BaseController<IProduct, IMProduct> {
         this.router.get("/similar-products", TryCatch.tryCatchGlobe(this.similarProducts));
 
         // this.router.get("/", TryCatch.tryCatchGlobe(this.indexBC));
+        this.router.get("/search", validateQuery(ProductValidation.search), TryCatch.tryCatchGlobe(this.search))
         this.router.get("/:id", validateParams(ProductValidation.findById), TryCatch.tryCatchGlobe(this.findById))
         // this.router.post("/", validateBody(ProductValidation.addProduct), TryCatch.tryCatchGlobe(this.createOneBC))
         // this.router.post("/bulk", validateBody(ProductValidation.addProductBulk), TryCatch.tryCatchGlobe(this.createBulkBC))
@@ -76,5 +78,13 @@ export class ProductController extends BaseController<IProduct, IMProduct> {
         res.locals = { data, message: Messages.FETCH_SUCCESSFUL, status: true }
         return await JsonResponse.jsonSuccess(req, res, "similarProducts");
 
+    };
+
+
+    search = async (req: Request, res: Response): Promise<void> => {
+        const { search } = req.query;
+        const products = await new ProductRepository().findBulkBR({ where: { [Op.or]: [{ name: { [Op.iLike]: `%${search}%` } }, { description: { [Op.like]: `%${search}%` } }] }, attributes: ['product_id', 'name', 'description'] });
+        res.locals = { status: true, data: products, message: Messages.FETCH_SUCCESSFUL };
+        return await JsonResponse.jsonSuccess(req, res, `search`);
     };
 };

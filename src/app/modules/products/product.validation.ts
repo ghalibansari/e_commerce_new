@@ -1,3 +1,4 @@
+import Joi from "joi";
 import { BaseValidation } from "../BaseValidation";
 
 export abstract class ProductValidation extends BaseValidation {
@@ -22,4 +23,8 @@ export abstract class ProductValidation extends BaseValidation {
     //     weight: Joi.number(),
     //     amount: Joi.number(),
     // });
+
+    static readonly search = Joi.object({
+        search: Joi.string().min(3).max(50).required(),
+    });
 };
