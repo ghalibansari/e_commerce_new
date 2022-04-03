@@ -21,8 +21,16 @@ export class CartRepository extends BaseRepository<ICart, IMCart> {
         ]);
         if (!product) throw new Error(Errors.INVALID_PRODUCT_ID)
         if (product.out_of_stock) throw new Error(Errors.PRODUCT_OUT_OF_STOCK)
-        if (cart) await this.updateByIdBR({ id: cart.cart_id, newData: { quantity: quantity || ++cart.quantity }, updated_by: user_id, transaction });
-        else await this.createOneBR({ newData: { product_id, user_id, quantity: quantity || 1 }, created_by: user_id, transaction });
+
+        if (!quantity) {
+            if (cart?.quantity) {
+                quantity = cart.quantity + 1;
+            } else {
+                quantity = 1;
+            }
+        }
+        if (cart) await this.updateByIdBR({ id: cart.cart_id, newData: { quantity }, updated_by: user_id, transaction });
+        else await this.createOneBR({ newData: { product_id, user_id, quantity }, created_by: user_id, transaction });
     }
 
     removeFromCart = async ({ product_id, user_id, delete_reason = "remove from cart by user", transaction }: { product_id: IProduct['product_id'], user_id: IUser['user_id'], delete_reason?: string, transaction?: Transaction }) => {
