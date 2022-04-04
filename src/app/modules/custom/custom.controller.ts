@@ -17,7 +17,6 @@ export class CustomController {
 
     constructor() {
         this.router = Router();
-        // super()
         this.init();
     }
 
