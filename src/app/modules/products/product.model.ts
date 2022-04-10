@@ -24,6 +24,8 @@ const ProductMd = DB.define<IMProduct>(
         weight: { allowNull: false, type: DataTypes.FLOAT },
         base_price: { allowNull: false, type: DataTypes.FLOAT },
         selling_price: { allowNull: false, type: DataTypes.FLOAT },
+        //@ts-expect-error
+        quantity: { default: 0, type: DataTypes.INTEGER },
         ...cloneDeep(modelCommonColumns)
     },
     cloneDeep(modelCommonOptions)

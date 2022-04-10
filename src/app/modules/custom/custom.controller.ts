@@ -96,7 +96,7 @@ export class CustomController {
         let where: any = {};
         let brandWhere: any = { is_active: true };
         let categoryWhere: any = { is_active: true };
-        const attributes: string[] = ["name", "description", "selling_price", "weight", 'out_of_stock', 'base_price'];
+        const attributes: string[] = ["name", "description", "selling_price", "weight", 'out_of_stock', 'base_price', 'quantity'];
         order ||= order;
         pageNumber ||= pageNumber;
         pageSize ||= pageSize;

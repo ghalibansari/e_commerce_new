@@ -16,7 +16,8 @@ interface IBProduct extends IBCommon {
     selling_price: number
     code: string
     out_of_stock: boolean
-    unit_id: string
+    unit_id: string,
+    quantity: number
 }
 
 interface IProduct extends Optional<IBProduct, 'product_id'> { }
