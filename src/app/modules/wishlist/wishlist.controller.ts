@@ -70,8 +70,8 @@ export class WishlistController extends BaseController<IWishlist, IMWishlist> {
         ];
 
         const ProductRepo = new ProductRepository()
-        const includeProduct = [{ model: ProductRepo._model, as: "product", include, attributes: ["name", "description", "selling_price", "weight", 'out_of_stock', 'base_price'] }];
-        const { page, data } = await new WishlistRepository().indexBR({ where: { user_id }, include: includeProduct, pageNumber, pageSize })
+        const includeProduct = [{ model: ProductRepo._model, as: "product", include, attributes: ["name", "description", "selling_price", "weight", 'out_of_stock', 'base_price', 'product_id'] }];
+        const { page, data } = await new WishlistRepository().indexBR({ where: { user_id }, include: includeProduct, pageNumber, pageSize, attributes: ["wishlist_id"] });
         res.locals = { status: true, page, data, message: Messages.FETCH_SUCCESSFUL }
         return await JsonResponse.jsonSuccess(req, res, `{this.url}.indexBC`)
 
