@@ -90,6 +90,4 @@ export abstract class BaseController<T, U extends Model> {
         res.locals = { status: !!data, message: !!data ? Messages.DELETE_SUCCESSFUL : Messages.DELETE_FAILED }
         return await JsonResponse.jsonSuccess(req, res, `{this.url}.deleteByIdBC`);
     };
-
-
 };

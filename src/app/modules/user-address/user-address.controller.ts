@@ -29,7 +29,7 @@ export class UserAddressController extends BaseController<IUserAddress, IMUserAd
     // this.router.post("/bulk", validateBody(UserAddressValidation.addUserAddressBulk), TryCatch.tryCatchGlobe(this.createBulkBC))
     this.router.put("/:id", validateBody(UserAddressValidation.updateUserAddress), DBTransaction.startTransaction, TryCatch.tryCatchGlobe(this.updateUserAddress));
     // this.router.put("/:id", validateParams(UserAddressValidation.findById), validateBody(UserAddressValidation.editUserAddress), TryCatch.tryCatchGlobe(this.updateByIdkBC))
-    this.router.delete("/:id", validateParams(UserAddressValidation.findById), TryCatch.tryCatchGlobe(this.deleteByIdBC));
+    this.router.delete("/:id", validateParams(UserAddressValidation.findById), TryCatch.tryCatchGlobe(this.deleteById));
   }
 
   index = async (req: Request, res: Response) => {
@@ -76,5 +76,13 @@ export class UserAddressController extends BaseController<IUserAddress, IMUserAd
     const { count } = await this.repo.updateByIdBR({ id, newData: body, updated_by: user_id });
     res.locals = { status: !!count, message: !!count ? Messages.UPDATE_SUCCESSFUL : Messages.UPDATE_FAILED };
     return await JsonResponse.jsonSuccess(req, res, `{this.url}.updateProfile`);
+  };
+
+  deleteById = async (req: Request, res: Response): Promise<void> => {
+    let { params: { id }, user: { user_id } }: any = req
+    const delete_reason = 'deleted by user';
+    const data = await this.repo.deleteByIdBR({ id, deleted_by: user_id, delete_reason })
+    res.locals = { status: !!data, message: !!data ? Messages.DELETE_SUCCESSFUL : Messages.DELETE_FAILED }
+    return await JsonResponse.jsonSuccess(req, res, `{this.url}.deleteByIdBC`);
   };
 }
