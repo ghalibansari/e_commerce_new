@@ -26,6 +26,7 @@ export abstract class UserAddressValidation extends BaseValidation {
     });
 
     static readonly updateUserAddress = Joi.object<IUserAddress>({
+        is_default: Joi.boolean(),
         address_1: Joi.string(),
         address_2: Joi.string(),
         city: Joi.string(),

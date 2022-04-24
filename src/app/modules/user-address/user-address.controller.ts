@@ -79,10 +79,17 @@ export class UserAddressController extends BaseController<IUserAddress, IMUserAd
   };
 
   deleteById = async (req: Request, res: Response): Promise<void> => {
-    let { params: { id }, user: { user_id } }: any = req
-    const delete_reason = 'deleted by user';
-    const data = await this.repo.deleteByIdBR({ id, deleted_by: user_id, delete_reason })
-    res.locals = { status: !!data, message: !!data ? Messages.DELETE_SUCCESSFUL : Messages.DELETE_FAILED }
+    const { params: { id }, user: { user_id } }: any = req;
+    const address = await this.repo.findByIdBR({ id, attributes: ["address_id", "is_default"] });
+    if (!address) throw new Error("Invalid address id");
+    if (address.is_default) {
+      const addresses = await this.repo.findBulkBR({ where: { user_id, is_default: false }, attributes: ["address_id"], order: [["updatedAt", "DESC"]] });
+      if (addresses.length) {
+        await this.repo.updateByIdBR({ id: addresses[0].address_id, newData: { is_default: true }, updated_by: user_id });
+      }
+    }
+    const data = await this.repo.deleteByIdBR({ id, deleted_by: user_id, delete_reason: 'deleted by user' });
+    res.locals = { status: !!data, message: !!data ? Messages.DELETE_SUCCESSFUL : Messages.DELETE_FAILED };
     return await JsonResponse.jsonSuccess(req, res, `{this.url}.deleteByIdBC`);
   };
 }
