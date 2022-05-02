@@ -73,7 +73,7 @@ export class UserAddressController extends BaseController<IUserAddress, IMUserAd
       await this.repo.updateBulkBR({ where: { address_id: emptyArray }, newData: { is_default: false }, updated_by: user_id, transaction });
     }
 
-    const { count } = await this.repo.updateByIdBR({ id, newData: body, updated_by: user_id });
+    const { count } = await this.repo.updateByIdBR({ id, newData: body, updated_by: user_id, transaction });
     res.locals = { status: !!count, message: !!count ? Messages.UPDATE_SUCCESSFUL : Messages.UPDATE_FAILED };
     return await JsonResponse.jsonSuccess(req, res, `{this.url}.updateProfile`);
   };
