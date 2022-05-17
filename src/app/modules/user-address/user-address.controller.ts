@@ -83,7 +83,7 @@ export class UserAddressController extends BaseController<IUserAddress, IMUserAd
     const address = await this.repo.findByIdBR({ id, attributes: ["address_id", "is_default"] });
     if (!address) throw new Error("Invalid address id");
     if (address.is_default) {
-      const addresses = await this.repo.findBulkBR({ where: { user_id, is_default: false }, attributes: ["address_id"], order: [["updatedAt", "DESC"]] });
+      const addresses = await this.repo.findBulkBR({ where: { user_id, is_default: false }, attributes: ["address_id"], order: [["updated_at", "DESC"]] });
       if (addresses.length) {
         await this.repo.updateByIdBR({ id: addresses[0].address_id, newData: { is_default: true }, updated_by: user_id });
       }

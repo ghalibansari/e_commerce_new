@@ -27,7 +27,7 @@ export abstract class UserValidation extends BaseValidation {
     static readonly editProfile = Joi.object<IUser>({
         first_name: Joi.string().min(3).max(100),
         last_name: Joi.string().min(3).max(100),
-        gender: Joi.string().required().valid(...Object.values(UserGenderEnum)),
+        gender: Joi.string().default(UserGenderEnum.m).valid(...Object.values(UserGenderEnum)),
         mobile: Joi.number()
     });
 };
