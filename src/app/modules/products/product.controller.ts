@@ -81,9 +81,31 @@ export class ProductController extends BaseController<IProduct, IMProduct> {
 
 
     search = async (req: Request, res: Response): Promise<void> => {
-        const { search } = req.query;
-        const products = await new ProductRepository().findBulkBR({ where: { [Op.or]: [{ name: { [Op.iLike]: `%${search}%` } }, { description: { [Op.like]: `%${search}%` } }] }, attributes: ['product_id', 'name', 'description'] });
-        res.locals = { status: true, data: products, message: Messages.FETCH_SUCCESSFUL };
+        let { search, pageSize, pageNumber }:any = req.query;
+
+        pageNumber ||= pageNumber;
+        pageSize ||= pageSize;
+
+        const attributes: string[] = ["name", "description", "selling_price", "weight", "out_of_stock", "base_price", "quantity", "product_id"];
+        const include = [
+            {
+                model: ProductImagesMd,
+                as: "images",
+                attributes: ["image_url"],
+                where: { is_active: true },
+                limit: 1
+            }
+        ];
+
+        const {page, data} = await new ProductRepository().indexBR({ 
+            where: { [Op.or]: [{ name: { [Op.iLike]: `%${search}%` } }, 
+            { description: { [Op.like]: `%${search}%` } }] }, 
+            pageNumber,
+            pageSize,
+            include, 
+            //@ts-expect-error 
+            attributes });
+        res.locals = { status: true, page, data, message: Messages.FETCH_SUCCESSFUL };
         return await JsonResponse.jsonSuccess(req, res, `search`);
     };
 };
