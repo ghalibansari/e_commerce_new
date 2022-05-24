@@ -26,5 +26,7 @@ export abstract class ProductValidation extends BaseValidation {
 
     static readonly search = Joi.object({
         search: Joi.string().min(3).max(50).required(),
+        pageSize: Joi.number().min(0).max(100),
+        pageNumber: Joi.number().min(0).max(100)
     });
 };

@@ -89,11 +89,26 @@ export class ProductController extends BaseController<IProduct, IMProduct> {
         const attributes: string[] = ["name", "description", "selling_price", "weight", "out_of_stock", "base_price", "quantity", "product_id"];
         const include = [
             {
+                model: BrandMd,
+                as: "brand",
+                attributes: ["brand_name", "brand_id"]
+            },
+            {
+                model: CategoriesMd,
+                as: "category",
+                attributes: ["category_name", "category_id"]
+            },
+            {
                 model: ProductImagesMd,
                 as: "images",
                 attributes: ["image_url"],
                 where: { is_active: true },
                 limit: 1
+            },
+            {
+                model: UnitMasterMd,
+                as: "unit",
+                attributes: ["name"]
             }
         ];
 
