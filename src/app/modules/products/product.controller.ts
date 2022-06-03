@@ -38,7 +38,7 @@ export class ProductController extends BaseController<IProduct, IMProduct> {
 
     findById = async (req: Request, res: Response): Promise<void> => {
         const { params: { id } }: any = req
-        const attributes = ["name", "description", "selling_price", "weight", 'out_of_stock', 'base_price'];
+        const attributes = ["product_id", "name", "description", "selling_price", "weight", 'out_of_stock', 'base_price'];
         const include = [
             {
                 model: BrandMd,
@@ -56,7 +56,8 @@ export class ProductController extends BaseController<IProduct, IMProduct> {
                 model: ProductImagesMd,
                 as: "images",
                 attributes: ["image_url"],
-                where: { is_active: true }
+                where: { is_active: true },
+                required: false
             },
             {
                 model: UnitMasterMd,
