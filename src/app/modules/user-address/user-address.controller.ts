@@ -9,6 +9,9 @@ import {
   validateParams
 } from "../../helper";
 import { BaseController } from "../BaseController";
+import { CityMd } from "../city/city.model";
+import { PinCodeMd } from "../pincode/pincode.model";
+import { StatesMd } from "../state/state.model";
 import { UserAddressRepository } from "./user-address.repository";
 import { IMUserAddress, IUserAddress } from "./user-address.type";
 import { UserAddressValidation } from "./user-address.validation";
@@ -24,7 +27,7 @@ export class UserAddressController extends BaseController<IUserAddress, IMUserAd
 
   init() {
     // this.router.get("/", TryCatch.tryCatchGlobe(this.index));
-    this.router.get("/:id", validateParams(UserAddressValidation.findById), TryCatch.tryCatchGlobe(this.findByIdBC));
+    this.router.get("/:id", validateParams(UserAddressValidation.findById), TryCatch.tryCatchGlobe(this.getUserAddress));
     this.router.post("/", validateBody(UserAddressValidation.addUserAddress), DBTransaction.startTransaction, TryCatch.tryCatchGlobe(this.addUserAddress));
     // this.router.post("/bulk", validateBody(UserAddressValidation.addUserAddressBulk), TryCatch.tryCatchGlobe(this.createBulkBC))
     this.router.put("/:id", validateParams(UserAddressValidation.findById), validateBody(UserAddressValidation.updateUserAddress), DBTransaction.startTransaction, TryCatch.tryCatchGlobe(this.updateUserAddress));
@@ -91,5 +94,34 @@ export class UserAddressController extends BaseController<IUserAddress, IMUserAd
     const data = await this.repo.deleteByIdBR({ id, deleted_by: user_id, delete_reason: 'deleted by user' });
     res.locals = { status: !!data, message: !!data ? Messages.DELETE_SUCCESSFUL : Messages.DELETE_FAILED };
     return await JsonResponse.jsonSuccess(req, res, `{this.url}.deleteByIdBC`);
+  };
+
+  getUserAddress = async (req: Request, res: Response): Promise<void> => {
+    const { params: { id }, user: { user_id } }: any = req;
+    const address = await this.repo.findByIdBR({ 
+      id, 
+      attributes: ["address_id", "is_default", "address_1", "address_2", "city_id", "state_id", "pincode_id"],
+      include: [
+        {
+          model: CityMd,
+          as: "city",
+          attributes: ["name"]
+        },
+        {
+          model: StatesMd,
+          as: "state",
+          attributes: ["name"]
+        },
+        {
+          model: PinCodeMd,
+          as: "pincode",
+          attributes: ["pincode", "area_name"]
+        }
+      ],
+      raw: false
+    });
+    if (!address) throw new Error("Invalid address id");
+    res.locals = { status: true, data: address, message: Messages.FETCH_SUCCESSFUL }
+    return await JsonResponse.jsonSuccess(req, res, `{this.url}.findByIdBC`)
   };
 }

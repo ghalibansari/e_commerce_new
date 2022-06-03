@@ -1,5 +1,8 @@
 import { Model, Optional } from "sequelize";
 import { IBCommon, IMCommon } from "../baseTypes";
+import { ICity } from "../city/city.types";
+import { IPinCode } from "../pincode/pincode.types";
+import { IStates } from "../state/state.types";
 import { IUser } from "../user/user.types";
 
 
@@ -9,9 +12,9 @@ interface IBUserAddress extends IBCommon {
     is_default: boolean
     address_1: string
     address_2: string
-    city: string
-    state: string
-    pin_code: string
+    city_id: ICity['city_id']
+    state_id: IStates['state_id']
+    pincode_id: IPinCode['pincode_id']
 }
 
 interface IUserAddress extends Optional<IBUserAddress, 'address_id'> { }

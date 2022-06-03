@@ -4,6 +4,6 @@ import { IMUserAddress, IUserAddress } from "./user-address.type";
 
 export class UserAddressRepository extends BaseRepository<IUserAddress, IMUserAddress> {
     constructor() {
-        super(UserAddressMd, 'address_id', ['address_1', 'address_2', 'city', 'state', 'pin_code'], ['created_at'], []);
+        super(UserAddressMd, 'address_id', ['address_1', 'address_2', 'city_id', 'state_id', 'pincode_id'], ['created_at'], []);
     }
 }

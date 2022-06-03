@@ -6,9 +6,9 @@ export abstract class OrderAddressValidation extends BaseValidation {
     static readonly addOrderAddress = Joi.object<IOrderAddress>({
         address_1: Joi.string().required(),
         address_2: Joi.string().required(),
-        city: Joi.string().required(),
-        state: Joi.string().required(),
-        pin_code: Joi.string().required(),
+        city_id: Joi.string().required(),
+        state_id: Joi.string().required(),
+        pincode_id: Joi.string().required()
 
         });
 
@@ -17,8 +17,8 @@ export abstract class OrderAddressValidation extends BaseValidation {
     static readonly editOrderAddress = Joi.object<IOrderAddress>({
         address_1: Joi.string(),
         address_2: Joi.string(),
-        city: Joi.string(),
-        state: Joi.string(),
-        pin_code: Joi.string(),
+        city_id: Joi.string(),
+        state_id: Joi.string(),
+        pincode_id: Joi.string(),
     });
 };

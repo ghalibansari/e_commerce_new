@@ -7,9 +7,9 @@ export abstract class UserAddressValidation extends BaseValidation {
         is_default: Joi.boolean(),
         address_1: Joi.string().required(),
         address_2: Joi.string().required(),
-        city: Joi.string().required(),
-        state: Joi.string().required(),
-        pin_code: Joi.string().required()
+        city_id: Joi.string().required(),
+        state_id: Joi.string().required(),
+        pincode_id: Joi.string().required()
     });
 
     static readonly addUserAddressBulk = Joi.array().items(this.addUserAddress)
@@ -20,17 +20,17 @@ export abstract class UserAddressValidation extends BaseValidation {
         is_default: Joi.boolean(),
         address_1: Joi.string(),
         address_2: Joi.string(),
-        city: Joi.string(),
-        state: Joi.string(),
-        pin_code: Joi.string(),
+        city_id: Joi.string(),
+        state_id: Joi.string(),
+        pincode_id: Joi.string(),
     });
 
     static readonly updateUserAddress = Joi.object<IUserAddress>({
         is_default: Joi.boolean(),
         address_1: Joi.string(),
         address_2: Joi.string(),
-        city: Joi.string(),
-        state: Joi.string(),
-        pin_code: Joi.string(),
+        city_id: Joi.string(),
+        state_id: Joi.string(),
+        pincode_id: Joi.string(),
     });
 };

@@ -13,9 +13,9 @@ const OrderAddressMd = DB.define<IMOrderAddress>(
         order_id: { allowNull: false, type: DataTypes.UUID },
         address_1: { allowNull: false, type: DataTypes.STRING },
         address_2: { allowNull: false, type: DataTypes.STRING, },
-        city: { allowNull: false, type: DataTypes.STRING, },
-        state: { allowNull: false, type: DataTypes.STRING, },
-        pin_code: { allowNull: false, type: DataTypes.STRING, },
+        city_id: { allowNull: false, type: DataTypes.STRING, },
+        state_id: { allowNull: false, type: DataTypes.STRING, },
+        pincode_id: { allowNull: false, type: DataTypes.STRING, },
         ...cloneDeep(modelCommonColumns)
     },
     cloneDeep(modelCommonOptions)
