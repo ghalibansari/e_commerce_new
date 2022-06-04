@@ -2,6 +2,7 @@ import { Application, Request, Response, Router } from "express";
 import { Op } from "sequelize";
 import { Messages } from "../../constants";
 import { JsonResponse, TryCatch, validateQuery } from "../../helper";
+import { BaseHelper } from "../BaseHelper";
 import { BrandMd } from "../brand/brand.model";
 import { BrandRepository } from "../brand/brand.repository";
 import { CategoriesMd } from "../categories/categories.model";
@@ -29,6 +30,7 @@ export class CustomController {
         this.router.get("/test", TryCatch.tryCatchGlobe(this.test));
         this.router.get("/shop", TryCatch.tryCatchGlobe(this.shop)); //todo amir validation
         this.router.get("/search", validateQuery(CustomValidation.search), TryCatch.tryCatchGlobe(this.search));
+        this.router.post("/admin-email", TryCatch.tryCatchGlobe(this.adminEmail))
     }
 
     home = async (req: Request, res: Response): Promise<void> => {
@@ -71,8 +73,33 @@ export class CustomController {
         const { search } = req.query;
         const CategoriesRepo = new CategoriesRepository();
 
+        const include = [
+            {
+                model: BrandMd,
+                as: "brand",
+                attributes: ["brand_name", "brand_id"]
+            },
+            {
+                model: CategoriesMd,
+                as: "category",
+                attributes: ["category_name", "category_id"]
+            },
+            {
+                model: ProductImagesMd,
+                as: "images",
+                attributes: ["image_url"],
+                where: { is_active: true },
+                limit: 1
+            },
+            {
+                model: UnitMasterMd,
+                as: "unit",
+                attributes: ["name"]
+            }
+        ];
+
         const [product, category, brand] = await Promise.all([
-            await new ProductRepository().findBulkBR({ where: { [Op.or]: [{ name: { [Op.iLike]: `%${search}%` } }, { description: { [Op.like]: `%${search}%` } }] }, attributes: ['product_id', 'name', 'description'] }),
+            await new ProductRepository().findBulkBR({ where: { [Op.or]: [{ name: { [Op.iLike]: `%${search}%` } }, { description: { [Op.like]: `%${search}%` } }] }, attributes: ['product_id', 'name', 'description','selling_price','weight','out_of_stock','base_price','quantity'], include }),
             await CategoriesRepo.findBulkBR({ where: { category_name: { [Op.iLike]: `%${search}%` } }, include: [{ model: CategoriesRepo._model, as: 'sub_cat', where: { is_active: true }, attributes: ['category_id'], required: false }], attributes: ['category_id', 'category_name', 'parent_id'] }),
             await new BrandRepository().findBulkBR({ where: { brand_name: { [Op.iLike]: `%${search}%` } }, attributes: ['brand_id', "brand_name"] }),
         ])
@@ -166,4 +193,15 @@ export class CustomController {
         };
         return await JsonResponse.jsonSuccess(req, res, `{this.url}.indexBC`);
     };
+
+    adminEmail = async (req: Request, res: Response): Promise<void> => {
+        const {
+            template_name, to, cc, bcc, subject, paramsVariable = {}
+        }: any = req.body;
+
+        const data = await new BaseHelper().sendEmail({template_name, to, cc, bcc, subject, paramsVariable});
+        res.locals = { status: true, data, message: Messages.FETCH_SUCCESSFUL };
+        return await JsonResponse.jsonSuccess(req, res, `homePage`);
+    };
+
 }
