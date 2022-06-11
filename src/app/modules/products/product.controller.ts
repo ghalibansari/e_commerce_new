@@ -38,7 +38,7 @@ export class ProductController extends BaseController<IProduct, IMProduct> {
 
     findById = async (req: Request, res: Response): Promise<void> => {
         const { params: { id } }: any = req
-        const attributes = ["product_id", "name", "description", "selling_price", "weight", 'out_of_stock', 'base_price'];
+        const attributes = ["product_id", "name", "description", "selling_price", "weight", 'out_of_stock', 'base_price', 'quantity'];
         const include = [
             {
                 model: BrandMd,
