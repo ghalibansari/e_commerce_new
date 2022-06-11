@@ -3,6 +3,9 @@ import { Messages } from "../../constants";
 import { AuthGuard, JsonResponse, TryCatch, validateBody } from "../../helper";
 import { BaseController } from "../BaseController";
 import { BaseHelper } from "../BaseHelper";
+import { CityMd } from "../city/city.model";
+import { PinCodeMd } from "../pincode/pincode.model";
+import { StatesMd } from "../state/state.model";
 import { UserAddressMd } from "../user-address/user-address.model";
 import { UserRepository } from "./user.repository";
 import { IMUser, IUser } from "./user.types";
@@ -49,7 +52,35 @@ export class UserController extends BaseController<IUser, IMUser> {
 
     viewProfile = async (req: Request, res: Response): Promise<void> => {
         const { user: { user_id } }: any = req
-        const data = await new UserRepository().findOneBR({ where: { user_id }, raw: false, attributes: ['first_name', 'last_name', 'mobile', 'email', 'gender'], include: [{ model: UserAddressMd, as: 'addresses', attributes: ['is_default', 'address_1', 'address_2', 'city', 'state', 'pin_code', 'address_id'] }] })
+        const data = await new UserRepository().findOneBR({ 
+            where: { user_id }, 
+            raw: false, 
+            attributes: ['first_name', 'last_name', 'mobile', 'email', 'gender'], 
+            include: [
+                { 
+                    model: UserAddressMd, 
+                    as: 'addresses', 
+                    attributes: ['is_default', 'address_1', 'address_2', 'city_id', 'state_id', 'pincode_id', 'address_id'],
+                    include: [
+                        {
+                            model: CityMd,
+                            as: "city",
+                            attributes: ["name"]
+                        },
+                        {
+                            model: StatesMd,
+                            as: "state",
+                            attributes: ["name"]
+                        },
+                        {
+                            model: PinCodeMd,
+                            as: "pincode",
+                            attributes: ["pincode", "area_name"]
+                        }
+                    ]
+                }
+            ] 
+        })
         res.locals = { status: true, data, message: Messages.FETCH_SUCCESSFUL }
         return await JsonResponse.jsonSuccess(req, res, `shop`);
     };
