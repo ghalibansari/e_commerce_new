@@ -13,6 +13,7 @@ const PinCodeMd = DB.define<IMPinCode>(
         city_id: { allowNull: false, type: DataTypes.UUID },
         area_name: { allowNull: false, type: DataTypes.TEXT },
         pincode: { allowNull: false, type: DataTypes.INTEGER },
+        shipping_charges : { allowNull: false, type: DataTypes.INTEGER },
         ...cloneDeep(modelCommonColumns)
     },
     cloneDeep(modelCommonOptions)

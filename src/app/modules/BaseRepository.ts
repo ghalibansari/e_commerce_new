@@ -34,8 +34,8 @@ export class BaseRepository<T extends ModelCtor, U extends Model> implements IWr
 
         //get total count and count based on condition
         const [totalCount, count] = await Promise.all([
-            await this.CountAllBR(),
-            await this.CountBR(where)
+            this.CountAllBR(),
+            this.CountBR(where)
         ])
 
         //calculate pagination.

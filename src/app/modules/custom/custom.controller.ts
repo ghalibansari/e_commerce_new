@@ -7,6 +7,7 @@ import { BrandMd } from "../brand/brand.model";
 import { BrandRepository } from "../brand/brand.repository";
 import { CategoriesMd } from "../categories/categories.model";
 import { CategoriesRepository } from "../categories/categories.repository";
+import { ICategories } from "../categories/categories.type";
 import { ProductImagesMd } from "../product-images/product-images.model";
 import { ProductRepository } from "../products/product.repository";
 import { UnitMasterMd } from "../unit-master/unit-master.model";
@@ -99,9 +100,9 @@ export class CustomController {
         ];
 
         const [product, category, brand] = await Promise.all([
-            await new ProductRepository().findBulkBR({ where: { [Op.or]: [{ name: { [Op.iLike]: `%${search}%` } }, { description: { [Op.like]: `%${search}%` } }] }, attributes: ['product_id', 'name', 'description','selling_price','weight','out_of_stock','base_price','quantity'], include }),
-            await CategoriesRepo.findBulkBR({ where: { category_name: { [Op.iLike]: `%${search}%` } }, include: [{ model: CategoriesRepo._model, as: 'sub_cat', where: { is_active: true }, attributes: ['category_id'], required: false }], attributes: ['category_id', 'category_name', 'parent_id'] }),
-            await new BrandRepository().findBulkBR({ where: { brand_name: { [Op.iLike]: `%${search}%` } }, attributes: ['brand_id', "brand_name"] }),
+            new ProductRepository().findBulkBR({ where: { [Op.or]: [{ name: { [Op.iLike]: `%${search}%` } }, { description: { [Op.like]: `%${search}%` } }] }, attributes: ['product_id', 'name', 'description','selling_price','weight','out_of_stock','base_price','quantity'], include }),
+            CategoriesRepo.findBulkBR({ where: { category_name: { [Op.iLike]: `%${search}%` } }, include: [{ model: CategoriesRepo._model, as: 'sub_cat', where: { is_active: true }, attributes: ['category_id'], required: false }], attributes: ['category_id', 'category_name', 'parent_id'] }),
+            new BrandRepository().findBulkBR({ where: { brand_name: { [Op.iLike]: `%${search}%` } }, attributes: ['brand_id', "brand_name"] }),
         ])
         const data = { product, category, brand };
         res.locals = { status: true, data, message: Messages.FETCH_SUCCESSFUL };
@@ -122,7 +123,7 @@ export class CustomController {
 
         let where: any = {};
         let brandWhere: any = { is_active: true };
-        let categoryWhere: any = { is_active: true };
+        let categoryWhere: Partial<ICategories> = { is_active: true };
         const attributes: string[] = ["name", "description", "selling_price", "weight", 'out_of_stock', 'base_price', 'quantity'];
         order ||= order;
         pageNumber ||= pageNumber;
@@ -138,11 +139,13 @@ export class CustomController {
 
         if (category_id) {
             category_id = JSON.parse(category_id);
-            categoryWhere["category_id"] = category_id;
+            //categoryWhere["category_id"] = category_id;
+            where["category_id"] = category_id;
         }
         if (brand_id) {
             brand_id = JSON.parse(brand_id);
-            brandWhere["brand_id"] = brand_id;
+            //brandWhere["brand_id"] = brand_id;
+            where["brand_id"] = brand_id;
         }
 
         if (order) {

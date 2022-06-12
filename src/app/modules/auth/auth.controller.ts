@@ -4,7 +4,7 @@ import jwt from "jsonwebtoken";
 import moment from 'moment';
 import { Op } from 'sequelize';
 import { v4 } from 'uuid';
-import { Constant, Messages } from '../../constants';
+import { Constant, Errors, Messages } from '../../constants';
 import { DBTransaction, JsonResponse, randomAlphaNumeric, TryCatch, validateBody } from '../../helper';
 import { AuthGuard } from '../../helper/Auth';
 import { BaseController } from '../BaseController';
@@ -69,15 +69,15 @@ export class AuthController extends BaseController<IAuth, IMAuth> {
     changePassword = async (req: Request, res: Response): Promise<void> => {
         const { user: { user_id }, body: { email, oldPassword, newPassword } }: any = req
 
-        if (oldPassword == newPassword) throw new Error("Old And New Password is Same");
+        if (oldPassword == newPassword) throw new Error(Errors.OLD_AND_NEW_PASSWORD_CANNOT_BE_SAME);
 
         const userRepo = new UserRepository()
 
-        const user = await userRepo.findOneBR({ where: { email }, attributes: ['user_id', 'email', 'password'] })
-        if (!user) throw new Error('Invalid Email');
+        const user = await userRepo.findOneBR({ where: { email, user_id }, attributes: ['user_id', 'email', 'password'] })
+        if (!user) throw new Error(Errors.INVALID_EMAIL_ID);
 
         const compareOldPassword = await compare(oldPassword, user.password)
-        if (!compareOldPassword) throw new Error("Invalid oldPassword!!");
+        if (!compareOldPassword) throw new Error(Errors.INVALID_OLD_PASSWORD);
 
         await userRepo.updateByIdBR({ id: user.user_id, newData: { password: newPassword }, updated_by: user_id })
         new AuthRepository().createOneBR({ newData: { ip: '192.168.0.1', action: authActionEnum.change_pass, user_id: user_id }, created_by: user_id })
@@ -122,8 +122,8 @@ export class AuthController extends BaseController<IAuth, IMAuth> {
         if (!verify) throw new Error("Invalid email or otp");
 
         await Promise.all([
-            await authRepo.updateByIdBR({ id: verify.auth_id, newData: { is_active: false }, updated_by: user.user_id, transaction }),
-            await userRepo.updateByIdBR({ id: user.user_id, newData: { email_verified_at: new Date() }, updated_by: user.user_id, transaction })
+            authRepo.updateByIdBR({ id: verify.auth_id, newData: { is_active: false }, updated_by: user.user_id, transaction }),
+            userRepo.updateByIdBR({ id: user.user_id, newData: { email_verified_at: new Date() }, updated_by: user.user_id, transaction })
         ])
 
         res.locals = { status: true, message: Messages.SUCCESS };
@@ -171,8 +171,8 @@ export class AuthController extends BaseController<IAuth, IMAuth> {
         if (!auth) throw new Error("Invalid email or otp");
 
         await Promise.all([
-            await authRepo.updateByIdBR({ id: auth.auth_id, newData: { is_active: false }, updated_by: user.user_id }),
-            await userRepo.updateByIdBR({ id: user.user_id, newData: { password }, updated_by: user.user_id })
+            authRepo.updateByIdBR({ id: auth.auth_id, newData: { is_active: false }, updated_by: user.user_id }),
+            userRepo.updateByIdBR({ id: user.user_id, newData: { password }, updated_by: user.user_id })
         ]);
 
         res.locals = { status: true, message: Messages.PASSWORD_RESET_SUCCESS_PLEASE_LOGIN_WITH_YOUR_NEW_PASSWORD };

@@ -7,13 +7,13 @@ import { UserGenderEnum } from "../user/user.types";
 export abstract class AuthValidation extends BaseValidation {
     static readonly login = Joi.object({
         email: Joi.string().email().max(50).required().error(new Error(Errors.EMAIL_ID)),
-        password: Joi.string().max(50).required().error(new Error(Errors.PASSWORD)),
+        password: this.JOI_PASSWORD_VALIDATION(),
     });
 
     static readonly changePassword = Joi.object({
         email: Joi.string().email().max(50).required().error(new Error(Errors.EMAIL_ID)),
         oldPassword: Joi.string().min(8).max(50).required().error(new Error(Errors.PASSWORD)),
-        newPassword: Joi.string().min(8).max(50).required().error(new Error(Errors.PASSWORD))
+        newPassword: this.JOI_PASSWORD_VALIDATION(Errors.NEW_PASSWORD),
     });
 
     static readonly register = Joi.object({
@@ -22,7 +22,7 @@ export abstract class AuthValidation extends BaseValidation {
         gender: Joi.string().required().valid(...Object.values(UserGenderEnum)),
         email: Joi.string().email().required(),
         mobile: Joi.number().required(),
-        password: Joi.string().min(8).max(40).required().error(new Error(Errors.PASSWORD)),
+        password: this.JOI_PASSWORD_VALIDATION(),
     });
 
     static readonly forgotPassword = Joi.object({
@@ -31,7 +31,7 @@ export abstract class AuthValidation extends BaseValidation {
 
     static readonly resetPassword = Joi.object({
         email: Joi.string().email().required(),
-        password: Joi.string().min(8).max(50).required(),
+        password: this.JOI_PASSWORD_VALIDATION(),
         otp: Joi.string().min(8).max(8).required()
     });
 

@@ -70,4 +70,8 @@ export class Errors {
     static readonly PRODUCT_NOT_FOUND: string = "Product not found";
     static readonly INVALID_PRODUCT_ID: string = "Invalid ProductId";
     static readonly PRODUCT_OUT_OF_STOCK: string = "Product out of stock";
+
+    // user profile
+    static readonly INVALID_OLD_PASSWORD: string = "Invalid Old Password";
+    static readonly OLD_AND_NEW_PASSWORD_CANNOT_BE_SAME = "Old And New Password Cannot be Same";
 }

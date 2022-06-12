@@ -6,7 +6,8 @@ interface IBPinCode extends IBCommon {
     pincode_id: string
     area_name: string
     city_id: ICity['city_id']
-    pincode: number
+    pincode: number,
+    shipping_charges: number
 }
 
 interface IPinCode extends Optional<IBPinCode, 'pincode_id'> { }

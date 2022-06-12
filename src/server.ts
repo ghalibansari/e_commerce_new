@@ -36,7 +36,7 @@ server.listen(4000, async () => {
 
     /*.then(async () => {
         await Promise.all([
-            await aclModel.createCollection(), await aclModuleModel.createCollection(),
+            aclModel.createCollection(), await aclModuleModel.createCollection(),
         ])
     })*/
     //  .then(async() => {
