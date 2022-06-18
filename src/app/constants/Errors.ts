@@ -44,7 +44,7 @@ export class Errors {
     static readonly LASTNAME_ERROR: string = "Last Name Required";
     static readonly AMOUNT_ERROR: string = "Amount Required";
     static readonly NO_ACTION: string = "there are no action for all inventories";
-    static readonly INVALID_PHONE_NUMBER: string = "Invalid phone number"
+    static readonly INVALID_PHONE_NUMBER: string = "Invalid mobile number"
     static readonly INVALID_RECIEVER: string = "Invalid reciever";
     static readonly INVALID_CC: string = "Invalid cc";
     static readonly INVALID_ALERT_CATEGORY_ID: string = "Invalid AlertCategoryId";

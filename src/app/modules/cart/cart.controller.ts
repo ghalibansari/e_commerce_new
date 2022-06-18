@@ -84,7 +84,7 @@ export class CartController extends BaseController<ICart, IMCart> {
             }
         }
         const ProductRepo = new ProductRepository()
-        const include = [{ model: ProductRepo._model, as: "product", attributes: ['name', 'selling_price', 'product_id'] }];
+        const include = [{ model: ProductRepo._model, as: "product", attributes: ['name', 'selling_price', 'product_id'], where: {is_active: true}, required: true }];
         const { page, data } = await new CartRepository().index({ where, attributes, include, order, pageNumber, pageSize })
         res.locals = { status: true, page, data, message: Messages.FETCH_SUCCESSFUL }
         return await JsonResponse.jsonSuccess(req, res, `{this.url}.indexBC`)

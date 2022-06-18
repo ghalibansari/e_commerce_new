@@ -164,6 +164,7 @@ export class CustomController {
                 as: "category",
                 attributes: ["category_name", "category_id"],
                 where: categoryWhere,
+                required: false
             },
             {
                 model: ProductImagesMd,

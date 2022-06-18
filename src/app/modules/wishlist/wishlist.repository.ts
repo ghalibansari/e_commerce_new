@@ -15,8 +15,8 @@ export class WishlistRepository extends BaseRepository<IWishlist, IMWishlist> {
 
     addToWishlist = async ({ product_id, user_id, transaction }: { product_id: IProduct['product_id'], user_id: IUser['user_id'], transaction?: Transaction }) => {
         const [wishlist, product] = await Promise.all([
-            await this.findOneBR({ where: { user_id, product_id }, attributes: ['wishlist_id'] }),
-            await new ProductRepository().findOneBR({ where: { product_id, out_of_stock: false }, attributes: ['product_id'] })
+            this.findOneBR({ where: { user_id, product_id }, attributes: ['wishlist_id'] }),
+            new ProductRepository().findOneBR({ where: { product_id, out_of_stock: false }, attributes: ['product_id'] })
         ]);
         if (wishlist) throw new Error("Already in Wishlist")
         if (!product) throw new Error(Errors.INVALID_PRODUCT_ID)

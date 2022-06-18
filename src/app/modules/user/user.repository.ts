@@ -15,12 +15,9 @@ export class UserRepository extends BaseRepository<IUser, IMUser> {
         for (let i = 0; i < newData.length; i++) {
             const salt = await genSalt(8);
             newData[i].password = await hash(newData[i].password, salt);
-            //@ts-expect-error
-            newData[i].created_by = created_by
-            //@ts-expect-error
-            newData[i].updated_by = created_by
         }
-        return await this._model.bulkCreate(newData, { transaction });
+        //return await this._model.bulkCreate(newData, { transaction });
+        return await super.createBulkBR({ newData, created_by,  transaction });
     };
 
     updateBulkBR = async ({ where, newData, updated_by, transaction }: TUpdateBulkBR<IMUser>): Promise<{ count: number, data: IMUser[] }> => {
@@ -28,9 +25,7 @@ export class UserRepository extends BaseRepository<IUser, IMUser> {
             const salt = await genSalt(8);
             newData.password = await hash(newData.password, salt);
         }
-        //@ts-expect-error
-        newData.updated_by = updated_by
-        const data = await this._model.update(newData, { where, returning: true, transaction })
-        return { count: data[0], data: data[1] || [] };
+        //const data = await this._model.update(newData, { where, returning: true, transaction })
+        return await super.updateBulkBR({ where, newData, updated_by, transaction })
     };
 }

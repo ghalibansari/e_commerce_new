@@ -21,7 +21,7 @@ export abstract class AuthValidation extends BaseValidation {
         last_name: Joi.string().min(3).max(20).required(),
         gender: Joi.string().required().valid(...Object.values(UserGenderEnum)),
         email: Joi.string().email().required(),
-        mobile: Joi.number().required(),
+        mobile: Joi.number().integer().min((10**9) * 5).max(10**10 - 1).required().error(new Error(Errors.INVALID_PHONE_NUMBER)),
         password: this.JOI_PASSWORD_VALIDATION(),
     });
 

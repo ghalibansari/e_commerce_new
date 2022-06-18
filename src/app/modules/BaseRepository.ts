@@ -34,8 +34,8 @@ export class BaseRepository<T extends ModelCtor, U extends Model> implements IWr
 
         //get total count and count based on condition
         const [totalCount, count] = await Promise.all([
-            this.CountAllBR(),
-            this.CountBR(where)
+            this.CountAllBR({}),
+            this.CountBR({where})
         ])
 
         //calculate pagination.
@@ -136,16 +136,16 @@ export class BaseRepository<T extends ModelCtor, U extends Model> implements IWr
     };
 
 
-    CountBR = async (where: Partial<U["_attributes"]> = {}): Promise<number> => {
+    CountBR = async ({ where = {}, include = [] } : { where?: Partial<U["_attributes"]> , include?: any[] }): Promise<number> => {
         //@ts-expect-error
         where['is_active'] === undefined && (where['is_active'] = true);
         //@ts-expect-error
-        return await this._model.count({ where })
+        return await this._model.count({ where, include })
     };
 
 
-    CountAllBR = async (where: Partial<U["_attributes"]> = {}): Promise<number> => {
-        return await this.CountBR(where)
+    CountAllBR = async ({ where = {}, include = [] } : { where?: Partial<U["_attributes"]> , include?: any[] }): Promise<number> => {
+        return await this.CountBR({where, include})
     };
 
     findColumnMinMax = async ({ columnName }: { columnName: keyof T & string }) => {

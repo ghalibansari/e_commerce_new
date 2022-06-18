@@ -16,8 +16,8 @@ export class CartRepository extends BaseRepository<ICart, IMCart> {
 
     addToCart = async ({ product_id, quantity, user_id, transaction }: { product_id: IProduct['product_id'], quantity: ICart['quantity'], user_id: IUser['user_id'], transaction?: Transaction }) => {
         const [cart, product] = await Promise.all([
-            await this.findOneBR({ where: { user_id, product_id }, attributes: ['cart_id', 'quantity'] }),
-            await new ProductRepository().findOneBR({ where: { product_id, out_of_stock: false }, attributes: ['product_id'] })
+            this.findOneBR({ where: { user_id, product_id }, attributes: ['cart_id', 'quantity'] }),
+            new ProductRepository().findOneBR({ where: { product_id, out_of_stock: false }, attributes: ['product_id', 'quantity'] })
         ]);
         if (!product) throw new Error(Errors.INVALID_PRODUCT_ID)
         if (product.out_of_stock) throw new Error(Errors.PRODUCT_OUT_OF_STOCK)
@@ -29,6 +29,9 @@ export class CartRepository extends BaseRepository<ICart, IMCart> {
                 quantity = 1;
             }
         }
+
+        if(product.quantity < quantity) throw new Error(`Only ${product.quantity} quantity left. Can't add more quantity`)
+
         if (cart) await this.updateByIdBR({ id: cart.cart_id, newData: { quantity }, updated_by: user_id, transaction });
         else await this.createOneBR({ newData: { product_id, user_id, quantity }, created_by: user_id, transaction });
     }
@@ -57,8 +60,8 @@ export class CartRepository extends BaseRepository<ICart, IMCart> {
 
         const [totalCount, count] = await Promise.all([
             //@ts-expect-error
-            await this.CountAllBR({ user_id: where.user_id }),
-            await this.CountBR(where)
+            this.CountAllBR({where : { user_id: where.user_id }, include}),
+            this.CountBR({where, include})
         ])
 
         //calculate pagination.
@@ -77,5 +80,21 @@ export class CartRepository extends BaseRepository<ICart, IMCart> {
         return { data: { carts, totalAmount }, page: { hasNextPage, totalCount, currentPage: pageNumber, totalPage } }
     };
 
+    getCartTotalAmount = async ({user_id}:{user_id:string}): Promise<{carts: IMCart[]; cartTotalAmount: number;}> => {
+        const ProductRepo = new ProductRepository()
+        const include = [{ model: ProductRepo._model, as: "product", attributes: ['name', 'selling_price', 'product_id'] }];
+        const carts = await this.findBulkBR({ where: { user_id }, attributes: ["quantity"], include });
 
+        let cartTotalAmount = 0;
+
+        for (let i = 0; i < carts.length; i++) {
+            //@ts-expect-error
+            const selling_price = carts[i].product.selling_price * carts[i].quantity
+            cartTotalAmount = cartTotalAmount + selling_price;
+        }
+
+        const data = { carts, cartTotalAmount }   
+
+        return data;
+    }
 };
