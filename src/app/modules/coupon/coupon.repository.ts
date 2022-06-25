@@ -1,10 +1,7 @@
-import { Messages } from "app/constants";
-import { JsonResponse } from "app/helper";
 import { Op } from "sequelize";
 import { BaseRepository } from "../BaseRepository";
 import { CartRepository } from "../cart/cart.repository";
 import { IMCart } from "../cart/cart.types";
-import { ProductRepository } from "../products/product.repository";
 import { CouponMd } from "./coupon.model";
 import { CouponEnum, ICoupon, IMCoupon } from "./coupon.type";
 

@@ -89,6 +89,7 @@ export class Messages {
     static readonly SUCCESSFULLY_ADDED_TO_CART: string = "Product successfully added to cart"
 
     static readonly ADD_TO_CART: string = "Added in cart"
+    static readonly ORDER_PLACED_SUCCESSFULLY: string = "Order Placed Successfully"
 
 
 }

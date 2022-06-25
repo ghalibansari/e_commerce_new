@@ -8,7 +8,7 @@ export abstract class OrderProductValidation extends BaseValidation {
         order_id: Joi.string(),
         product_id: Joi.string(),
         quantity: Joi.number().required(),
-        amount: Joi.number()
+        base_price: Joi.number()
     });
 
     static readonly addOrderProductBulk = Joi.array().items(this.addOrderProduct)
@@ -18,6 +18,6 @@ export abstract class OrderProductValidation extends BaseValidation {
         order_id: Joi.string(),
         product_id: Joi.string(),
         quantity: Joi.number(),
-        amount: Joi.number()
+        base_price: Joi.number()
     });
 };

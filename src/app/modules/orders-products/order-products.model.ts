@@ -13,7 +13,15 @@ const OrderProductMd = DB.define<IMOrderProduct>(
         product_id: { type: DataTypes.UUID, },
         order_id: { type: DataTypes.UUID, },
         quantity: { type: DataTypes.INTEGER, },
-        amount: { type: DataTypes.FLOAT, },
+        base_price: { type: DataTypes.FLOAT, },
+        selling_price: { type: DataTypes.FLOAT, },
+        category_id: { type: DataTypes.UUID, },
+        brand_id: { type: DataTypes.UUID, },
+        unit_id: { type: DataTypes.UUID, },
+        category: {type: DataTypes.STRING},
+        brand: {type: DataTypes.STRING},
+        unit: {type: DataTypes.STRING},
+        weight: {type: DataTypes.FLOAT},
         ...cloneDeep(modelCommonColumns)
     },
     cloneDeep(modelCommonOptions)

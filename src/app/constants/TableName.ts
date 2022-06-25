@@ -24,5 +24,6 @@ export enum TableName {
     PRODUCT = 'products',
     AUTH = "auths",
     EMAIL_HISTORY = "email_history",
+    ORDER_HISTORY = "order_history",
 }
 

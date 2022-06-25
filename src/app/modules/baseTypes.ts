@@ -59,7 +59,7 @@ export type TDeleteOneBR = {
 };
 
 export type TDeleteBulkBR<U extends Model> = {
-    where: U['_attributes'];
+    where: Partial<U['_attributes']>;
     deleted_by: IUser['user_id']
     delete_reason: string
     transaction?: Transaction

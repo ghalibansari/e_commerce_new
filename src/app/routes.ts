@@ -21,6 +21,7 @@ import { TemplateController } from "./modules/template/template.controller";
 import { UserAddressController } from "./modules/user-address/user-address.controller";
 import { UserController } from "./modules/user/user.controller";
 import { WishlistController } from "./modules/wishlist/wishlist.controller";
+import { OrderHistoryController } from "./modules/orders-history/order-history.controller";
 
 export function registerRoutes(app: Application): void {
     new UserController().register(app)
@@ -44,6 +45,7 @@ export function registerRoutes(app: Application): void {
     new TagController().register(app)
     new EmailHistoryController().register(app)
     new WishlistController().register(app)
+    new OrderHistoryController().register(app)
 
 
     new CustomController().register(app);

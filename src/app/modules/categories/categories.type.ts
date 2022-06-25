@@ -6,7 +6,6 @@ interface IBCategories extends IBCommon {
     category_id: string
     category_name: string
     parent_id?: IBCategories["category_id"]
-    is_active?: boolean
     order_sequence: number
     show_on_home_screen?: boolean
     category_image: string

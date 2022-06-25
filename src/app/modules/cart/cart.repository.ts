@@ -82,8 +82,12 @@ export class CartRepository extends BaseRepository<ICart, IMCart> {
 
     getCartTotalAmount = async ({user_id}:{user_id:string}): Promise<{carts: IMCart[]; cartTotalAmount: number;}> => {
         const ProductRepo = new ProductRepository()
-        const include = [{ model: ProductRepo._model, as: "product", attributes: ['name', 'selling_price', 'product_id'] }];
+        const include = [{ model: ProductRepo._model, as: "product", attributes: ['name', 'selling_price', 'product_id'], where: {is_active: true} }];
         const carts = await this.findBulkBR({ where: { user_id }, attributes: ["quantity"], include });
+
+        if(!carts.length){
+            throw new Error(Errors.EMPTY_CART);
+        }
 
         let cartTotalAmount = 0;
 

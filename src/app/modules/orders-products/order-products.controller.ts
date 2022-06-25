@@ -4,11 +4,11 @@ import { BaseController } from "../BaseController";
 import { OrderProductRepository } from "./order-products.repository";
 import { IMOrderProduct, IOrderProduct } from "./order-products.type";
 
-export class OrderProductController extends BaseController<IOrderProduct, IMOrderProduct> {
+export class OrderProductController extends BaseController<IOrderProduct, IMOrderProduct, OrderProductRepository> {
 
     constructor() {
         //url, user0repo, attributes/columns, include/joints, sort, search-columns 
-        super("order-product", new OrderProductRepository(), ['order_product_id', 'order_id', 'quantity', 'amount'], [['quantity', 'DESC']], [],)
+        super("order-product", new OrderProductRepository(), ['order_product_id', 'order_id', 'quantity', 'base_price', 'selling_price'], [['quantity', 'DESC']], [],)
         this.init()
     }
 

@@ -5,7 +5,7 @@ import { JsonResponse } from "../helper";
 import { BaseRepository } from './BaseRepository';
 import { BaseValidation } from "./BaseValidation";
 
-export abstract class BaseController<T, U extends Model> {
+export abstract class BaseController<T, U extends Model, R extends BaseRepository<T,U> = BaseRepository<T,U> > {
 
     protected router: Router
     protected readonly pageNumber = Constant.DEFAULT_PAGE_NUMBER
@@ -15,7 +15,7 @@ export abstract class BaseController<T, U extends Model> {
 
     public constructor(
         protected readonly url: string,
-        protected readonly repo: BaseRepository<T, U>,
+        protected readonly repo: R,
         public readonly attributes = repo.attributes,
         public readonly order = repo.order,
         protected readonly include = repo.include,

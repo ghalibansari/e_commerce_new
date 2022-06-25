@@ -13,6 +13,7 @@ const OrderMd = DB.define<IMOrder>(
     TableName.ORDER,
     {
         order_id: cloneDeep(modelCommonPrimaryKeyProperty),
+        order_number: { type: DataTypes.STRING },
         user_id: { type: DataTypes.UUID, },
         transaction_id: { type: DataTypes.UUID, },
         grand_total: { type: DataTypes.FLOAT, },

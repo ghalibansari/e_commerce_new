@@ -14,6 +14,9 @@ interface IBOrderAddress extends IBCommon {
     city_id: ICity['city_id']
     state_id: IStates['state_id']
     pincode_id: IPinCode['pincode_id']
+    state: string
+    city: string
+    pincode: string
 }
 
 interface IOrderAddress extends Optional<IBOrderAddress, 'order_address_id'> { }
