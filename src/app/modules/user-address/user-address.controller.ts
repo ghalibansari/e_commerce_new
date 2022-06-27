@@ -55,8 +55,9 @@ export class UserAddressController extends BaseController<IUserAddress, IMUserAd
       //@ts-expect-error
       await this.repo.updateBulkBR({ where: { address_id: emptyArray }, newData: { is_default: false }, updated_by: user_id, transaction });
     }
-    await this.repo.createOneBR({ newData: { ...body, user_id }, created_by: user_id, transaction });
-    res.locals = { status: true, message: Messages.CREATE_SUCCESSFUL };
+    const {address_id} = await this.repo.createOneBR({ newData: { ...body, user_id }, created_by: user_id, transaction });
+    const data = await new UserAddressRepository().fetchUserAddress({address_id, transaction});
+    res.locals = { status: true, data, message: Messages.CREATE_SUCCESSFUL };
     return await JsonResponse.jsonSuccess(req, res, "addUserAddress");
   };
 
@@ -77,7 +78,9 @@ export class UserAddressController extends BaseController<IUserAddress, IMUserAd
     }
 
     const { count } = await this.repo.updateByIdBR({ id, newData: body, updated_by: user_id, transaction });
-    res.locals = { status: !!count, message: !!count ? Messages.UPDATE_SUCCESSFUL : Messages.UPDATE_FAILED };
+    const data = await new UserAddressRepository().fetchUserAddress({address_id: id});
+    
+    res.locals = { status: !!count, data, message: !!count ? Messages.UPDATE_SUCCESSFUL : Messages.UPDATE_FAILED };
     return await JsonResponse.jsonSuccess(req, res, `{this.url}.updateProfile`);
   };
 
@@ -98,28 +101,7 @@ export class UserAddressController extends BaseController<IUserAddress, IMUserAd
 
   getUserAddress = async (req: Request, res: Response): Promise<void> => {
     const { params: { id }, user: { user_id } }: any = req;
-    const address = await this.repo.findByIdBR({ 
-      id, 
-      attributes: ["address_id", "is_default", "address_1", "address_2", "city_id", "state_id", "pincode_id"],
-      include: [
-        {
-          model: CityMd,
-          as: "city",
-          attributes: ["name"]
-        },
-        {
-          model: StatesMd,
-          as: "state",
-          attributes: ["name"]
-        },
-        {
-          model: PinCodeMd,
-          as: "pincode",
-          attributes: ["pincode", "area_name"]
-        }
-      ],
-      raw: false
-    });
+    const address = await new UserAddressRepository().fetchUserAddress({address_id: id});
     if (!address) throw new Error("Invalid address id");
     res.locals = { status: true, data: address, message: Messages.FETCH_SUCCESSFUL }
     return await JsonResponse.jsonSuccess(req, res, `{this.url}.findByIdBC`)

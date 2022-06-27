@@ -3,7 +3,7 @@ import { DB } from "../../configs/DB";
 import { Constant } from "../constants";
 import { IRead } from '../interfaces/IRead';
 import { IWrite } from "../interfaces/IWrite";
-import { NonEmptyArray, TCreateBulkBR, TCreateOneBR, TDeleteBulkBR, TDeleteByIdBR, TFindByIdBR, TRestoreBulkBR, TRestoreByIdBR, TUpdateBulkBR, TUpdateByIdBR } from "./baseTypes";
+import { NonEmptyArray, TCreateBulkBR, TCreateOneBR, TDeleteBulkBR, TDeleteByIdBR, TFindByIdBR, TFindOneBR, TRestoreBulkBR, TRestoreByIdBR, TUpdateBulkBR, TUpdateByIdBR } from "./baseTypes";
 
 
 const { fn, col } = DB
@@ -65,16 +65,14 @@ export class BaseRepository<T extends ModelCtor, U extends Model> implements IWr
     };
 
 
-    findOneBR = async ({ where = {}, attributes = this.attributes, order = this.order, include = this.include, raw = true }): Promise<U | null> => {
-        //@ts-expect-error
+    findOneBR = async ({ where = {}, attributes = this.attributes, order = this.order, include = this.include, raw = true, transaction}: TFindOneBR<U>): Promise<U | null> => {
         where['is_active'] === undefined && (where['is_active'] = true);
-        //@ts-expect-error
-        return await this._model.findOne({ where, attributes, include, order, raw })
+        return await this._model.findOne({ where, attributes, include, order, raw, transaction })
     }
 
 
-    findByIdBR = async ({ id, attributes = this.attributes, include = this.include, raw = true }: TFindByIdBR): Promise<U | null> => {
-        return await this.findOneBR({ where: { [this.primary_key]: id }, attributes, include, raw })
+    findByIdBR = async ({ id, attributes = this.attributes, include = this.include, raw = true, transaction }: TFindByIdBR): Promise<U | null> => {
+        return await this.findOneBR({ where: { [this.primary_key]: id }, attributes, include, raw, transaction })
     };
 
 

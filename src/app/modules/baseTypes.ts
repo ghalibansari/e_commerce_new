@@ -8,7 +8,17 @@ export type TFindByIdBR = {
     id: string;
     attributes?: NonEmptyArray<string>
     include?: object[]
-    raw?: boolean
+    raw?: boolean,
+    transaction?: Transaction
+};
+
+export type TFindOneBR<U> = {
+    where: Partial<U> | any
+    attributes?: NonEmptyArray<string>
+    include?: object[]
+    raw?: boolean,
+    order?: any,
+    transaction?: Transaction
 };
 
 export type TCreateOneBR<T> = {

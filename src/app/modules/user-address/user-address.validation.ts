@@ -6,7 +6,7 @@ export abstract class UserAddressValidation extends BaseValidation {
     static readonly addUserAddress = Joi.object<IUserAddress>({
         is_default: Joi.boolean(),
         address_1: Joi.string().required(),
-        address_2: Joi.string().required(),
+        address_2: Joi.string(),
         city_id: Joi.string().required(),
         state_id: Joi.string().required(),
         pincode_id: Joi.string().required()
