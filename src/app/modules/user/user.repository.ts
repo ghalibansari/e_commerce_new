@@ -29,7 +29,7 @@ export class UserRepository extends BaseRepository<IUser, IMUser> {
             const salt = await genSalt(8);
             newData.password = await hash(newData.password, salt);
             //@ts-expect-error
-            newData[i].updated_by = updated_by
+            newData.updated_by = updated_by
         }
         const data = await this._model.update(newData, { where, returning: true, transaction })
         return { count: data[0], data: data[1] || [] }
