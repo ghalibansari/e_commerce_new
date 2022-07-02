@@ -29,7 +29,7 @@ export abstract class CustomValidation extends BaseValidation {
   static readonly shop = Joi.object<any>({
     order: Joi.array(),
     pageSize: Joi.number().min(0).max(100),
-    pageNumber: Joi.number().min(0).max(100),
+    pageNumber: Joi.number().min(0),
     category_id: Joi.string(),
     minAmount: Joi.number().min(0).max(100000),
     maxAmount: Joi.number().min(0).max(100000),

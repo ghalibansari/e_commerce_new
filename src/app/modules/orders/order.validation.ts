@@ -24,4 +24,9 @@ export abstract class OrderValidation extends BaseValidation {
         coupon_code: Joi.string(),
         address_id: Joi.string().custom(idValidate),
     });
+
+    static readonly list = Joi.object({
+        pageSize: Joi.number().min(0).max(100),
+        pageNumber: Joi.number().min(0)
+    });
 };

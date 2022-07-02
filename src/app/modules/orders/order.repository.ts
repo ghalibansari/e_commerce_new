@@ -12,11 +12,16 @@ import { CategoriesMd } from "../categories/categories.model";
 import { CityMd } from "../city/city.model";
 import { CouponRepository } from "../coupon/coupon.repository";
 import { CouponEnum } from "../coupon/coupon.type";
+import { OrderAddressMd } from "../order-address/order-address.model";
 import { OrderAddressRepository } from "../order-address/order-address.repository";
 import { IOrderAddress } from '../order-address/order-address.types';
+import { OrderCouponMd } from "../order-coupon/order-coupon.model";
 import { OrderCouponRepository } from "../order-coupon/order-coupon.repository";
 import { IOrderCoupon } from "../order-coupon/order-coupon.type";
+import { OrderStatusMd } from "../order-status/order-status.model";
+import { OrderStatusRepository } from "../order-status/order-status.repository";
 import { OrderHistoryRepository } from "../orders-history/order-history.repository";
+import { OrderProductMd } from "../orders-products/order-products.model";
 import { OrderProductRepository } from "../orders-products/order-products.repository";
 import { IOrderProduct } from "../orders-products/order-products.type";
 import { PinCodeMd } from "../pincode/pincode.model";
@@ -25,6 +30,7 @@ import { ProductRepository } from "../products/product.repository";
 import { StatesMd } from "../state/state.model";
 import { UnitMasterMd } from "../unit-master/unit-master.model";
 import { UserAddressRepository } from "../user-address/user-address.repository";
+import { IMUser } from "../user/user.types";
 import { OrderMd } from "./order.model";
 import { IMOrder, IOrder, IPrepareOrder } from "./order.type";
 
@@ -121,12 +127,12 @@ export class OrderRepository extends BaseRepository<IOrder, IMOrder> {
         const { carts, discountAmount, shippingCharge, finalAmount } = await this.orderCheckout({ user_id, coupon_code, address_id });
         
         //1. generate unique order number for each order
-        let order_number = null;
+        let orderNumber = null;
         let orderResult = null;
 
         do {
-            order_number = randomAlphaNumeric(8);
-            orderResult = await this.findOneBR({ where: { order_number } });
+            orderNumber = randomAlphaNumeric(8);
+            orderResult = await this.findOneBR({ where: { order_number: orderNumber } });
         } while (orderResult);
         
         let productCartHash: Record<string, number> = {};
@@ -187,7 +193,7 @@ export class OrderRepository extends BaseRepository<IOrder, IMOrder> {
         
         const address: TCreateOneBR<Omit<IOrderAddress, 'order_id'>>['newData'] = {state: state.name, city: city.name, pincode: `${pincode.pincode} (${pincode.area_name})`, address_1, address_2, state_id, city_id, pincode_id};
         
-        const products: TCreateBulkBR<Omit<IOrderProduct, 'order_id'>>['newData'] = productsData.map(({ product_id, base_price, selling_price, category_id, brand_id, unit_id, weight, brand, category: {category_name}, unit: {name}  }: any) => {
+        const products: TCreateBulkBR<Omit<IOrderProduct, 'order_id'>>['newData'] = productsData.map(({ product_id, base_price, selling_price, category_id, brand_id, unit_id, weight, brand, category: {category_name}, unit, name, images  }: any) => {
             return {
                 product_id,
                 base_price,
@@ -198,8 +204,10 @@ export class OrderRepository extends BaseRepository<IOrder, IMOrder> {
                 weight,
                 brand:brand.brand_name,
                 category:category_name,
-                unit:name,
-                quantity: productCartHash[product_id]
+                unit: unit.name,
+                quantity: productCartHash[product_id],
+                name,
+                image_url: images[0]['image_url']
             }
         })
 
@@ -209,9 +217,23 @@ export class OrderRepository extends BaseRepository<IOrder, IMOrder> {
             coupon = { ...couponData, discount_amount: discountAmount };
         }
 
+        // order type
+        const type = Constant.order_type;
+        const appcode = Constant.appcode;
+
+        // order default status
+        const orderCurrentStatus = await new OrderStatusRepository().findOneBR({
+            where:{sequence: 1},
+            attributes: ['status_id']
+        });
+
+        if(!orderCurrentStatus){
+            throw new Error(`Order statuses not found.`);
+        }
+
         const [newOrder] = await Promise.all([
             this.createBulkBR({
-                newData: [{ user_id, order_number, transaction_id: null, grand_total: finalAmount, shipping_charges: shippingCharge, type: 'COD', address, coupon , products }],
+                newData: [{ user_id, order_number: orderNumber, transaction_id: null, grand_total: finalAmount, shipping_charges: shippingCharge, type, current_status: orderCurrentStatus.status_id, appcode, address, coupon , products }],
                 created_by: user_id,
                 transaction
             }),
@@ -220,13 +242,25 @@ export class OrderRepository extends BaseRepository<IOrder, IMOrder> {
 
         // prepare order email 
     };
+
+
+    orderList = async ({user_id, pageNumber, pageSize } :{ user_id: IMUser['user_id'], pageNumber ?: number, pageSize ?: number  }): Promise<any> => {
+
+        const include = [
+            { model: OrderStatusMd, as: "order_status", attributes: ['title']},
+            { model: OrderAddressMd, as: "order_addresses", attributes: ['address_1', 'address_2', 'state', 'city', 'pincode'] },
+            { model: OrderProductMd, as: "order_product", attributes: ['product_id', 'quantity', 'base_price', 'selling_price', 'category', 'brand', 'unit', 'weight', 'name', 'image_url']},
+            { model: OrderCouponMd, as: "order_coupon", attributes: ['type', 'discount', 'discount_amount', 'name'] }
+        ];
+
+        return await this.indexBR({
+            where: {user_id},
+            include,
+            pageNumber,
+            pageSize,
+            attributes: ['order_id', 'shipping_charges', 'type', 'order_number', 'grand_total', 'current_status'],
+            //raw: true
+        });
+
+    }
 }
-
-async function checkOrder(){
-    const transaction = await DB.transaction()
-    await new OrderRepository().placeOrder({ user_id: "d8fcb401-14dc-4e31-af9e-628b10ba9ea5", coupon_code: "NEW10", address_id:    "29a15f22-7d75-430b-931e-62da39869a90", transaction })
-
-    await transaction.commit();
-}
-
-//checkOrder();

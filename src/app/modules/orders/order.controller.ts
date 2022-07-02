@@ -1,18 +1,10 @@
 import { Application, Request, Response } from "express";
-import { AuthGuard, DBTransaction, JsonResponse, randomAlphaNumeric, TryCatch, validateBody } from "../../helper";
+import { Constant, Messages } from "../../constants";
+import { AuthGuard, DBTransaction, JsonResponse, TryCatch, validateBody, validateQuery } from "../../helper";
 import { BaseController } from "../BaseController";
-import { CouponRepository } from "../coupon/coupon.repository";
-import { UserAddressRepository } from "../user-address/user-address.repository";
 import { OrderRepository } from "./order.repository";
-import { CartRepository } from "../cart/cart.repository";
 import { IMOrder, IOrder } from "./order.type";
 import { OrderValidation } from "./order.validation";
-import { Constant, Messages } from "../../constants";
-import { ProductRepository } from "../products/product.repository";
-import { BrandMd } from "../brand/brand.model";
-import { CategoriesMd } from "../categories/categories.model";
-import { UnitMasterMd } from "../unit-master/unit-master.model";
-import { ProductImagesMd } from "../product-images/product-images.model";
 
 // @ts-expect-error
 export class OrderController extends BaseController<IOrder, IMOrder, OrderRepository> {
@@ -30,6 +22,7 @@ export class OrderController extends BaseController<IOrder, IMOrder, OrderReposi
         // this.router.get("/:id", validateParams(OrderValidation.findById), TryCatch.tryCatchGlobe(this.findByIdBC))
         this.router.post("/place-order", validateBody(OrderValidation.placeOrder), DBTransaction.startTransaction, TryCatch.tryCatchGlobe(this.placeOrder))
         this.router.post("/checkout", validateBody(OrderValidation.checkout), TryCatch.tryCatchGlobe(this.checkout))
+        this.router.get("/list", validateQuery(OrderValidation.list), TryCatch.tryCatchGlobe(this.list))
         // this.router.post("/bulk", validateBody(OrderValidation.addOrderBulk), TryCatch.tryCatchGlobe(this.createBulkBC))
         // this.router.put("/:id", validateParams(OrderValidation.findById), validateBody(OrderValidation.editOrder), TryCatch.tryCatchGlobe(this.updateByIdkBC))
         // this.router.delete("/:id", validateParams(OrderValidation.findById), TryCatch.tryCatchGlobe(this.deleteByIdBC))
@@ -59,5 +52,18 @@ export class OrderController extends BaseController<IOrder, IMOrder, OrderReposi
 
         res.locals = { data, message: Messages.ORDER_PLACED_SUCCESSFULLY, status: true }
         return await JsonResponse.jsonSuccess(req, res, "checkout");
+    };
+
+    list = async (req: Request, res: Response): Promise<void> => {
+        let { pageSize, pageNumber }:any = req.query;
+        const { user: { user_id } }: any = req;
+
+        pageNumber ||= Constant.DEFAULT_PAGE_NUMBER;
+        pageSize ||= Constant.DEFAULT_PAGE_SIZE;
+
+        const {page, data} = await new OrderRepository().orderList({user_id, pageNumber, pageSize });
+
+        res.locals = { status: true, page, data, message: Messages.FETCH_SUCCESSFUL };
+        return await JsonResponse.jsonSuccess(req, res, `list`);
     };
 };

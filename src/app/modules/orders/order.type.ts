@@ -1,6 +1,7 @@
 import { Model, Optional } from "sequelize";
 import { IBCommon, IMCommon } from "../baseTypes";
 import { ICoupon } from "../coupon/coupon.type";
+import { IOrderStatus } from "../order-status/order-status.types";
 import { IUserAddress } from "../user-address/user-address.type";
 import { IUser } from "../user/user.types";
 
@@ -12,6 +13,8 @@ export interface IBOrder extends IBCommon {
     grand_total: number
     shipping_charges: number
     type: string
+    current_status: IOrderStatus['status_id']
+    appcode: string
 }
 
 export interface IOrder extends Optional<IBOrder, 'order_id'> { }

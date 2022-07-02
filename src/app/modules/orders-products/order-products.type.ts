@@ -19,6 +19,8 @@ interface IBOrderProduct extends IBCommon {
     brand: string
     unit: string
     weight: number
+    name: string
+    image_url: string
 }
 
 interface IOrderProduct extends Optional<IBOrderProduct, 'order_product_id'> { }

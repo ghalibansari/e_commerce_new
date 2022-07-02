@@ -21,4 +21,6 @@ export class Constant {
     static readonly limit: number = 1
     static readonly startIndex: number = 0
     static readonly order_product_limit: number = 1000
+    static readonly order_type: string = 'COD'
+    static readonly appcode: string = 'Web'
 }

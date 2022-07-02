@@ -3,6 +3,7 @@ import { DataTypes } from 'sequelize';
 import { DB } from "../../../configs/DB";
 import { TableName } from "../../constants";
 import { modelCommonColumns, modelCommonOptions, modelCommonPrimaryKeyProperty } from '../BaseModel';
+import { ProductImagesMd } from '../product-images/product-images.model';
 import { IMOrderProduct } from './order-products.type';
 
 
@@ -22,10 +23,15 @@ const OrderProductMd = DB.define<IMOrderProduct>(
         brand: {type: DataTypes.STRING},
         unit: {type: DataTypes.STRING},
         weight: {type: DataTypes.FLOAT},
+        name: {type: DataTypes.STRING},
+        image_url: {type: DataTypes.STRING},
         ...cloneDeep(modelCommonColumns)
     },
     cloneDeep(modelCommonOptions)
 );
+
+OrderProductMd.hasMany(ProductImagesMd, { foreignKey: 'product_id', as: 'images' });
+
 
 export { OrderProductMd };
 

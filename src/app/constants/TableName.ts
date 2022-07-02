@@ -19,6 +19,7 @@ export enum TableName {
     CART = 'cart',
     ENQUIRY = 'enquires',
     ORDER_ADDRESS = 'order_address',
+    ORDER_STATUS = 'order_statuses',
     BANNER = 'banners',
     PRODUCT_IMAGES = 'product_images',
     PRODUCT = 'products',
