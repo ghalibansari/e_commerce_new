@@ -29,4 +29,8 @@ export abstract class OrderValidation extends BaseValidation {
         pageSize: Joi.number().min(0).max(100),
         pageNumber: Joi.number().min(0)
     });
+
+    static readonly downloadInvoice = Joi.object<Pick<IOrder, 'order_id'>>({
+        order_id: Joi.string().required().custom(idValidate)
+    });
 };

@@ -1,8 +1,9 @@
+import { Response } from "express";
 import { Transaction } from "sequelize";
 import { v4 } from 'uuid';
-import { DB } from "../../../configs/DB";
-import { Constant } from "../../constants";
+import { Constant, Messages } from "../../constants";
 import { randomAlphaNumeric } from "../../helper";
+import { BaseHelper } from "../BaseHelper";
 import { BaseRepository } from "../BaseRepository";
 import { TCreateBulkBR, TCreateOneBR } from "../baseTypes";
 import { BrandMd } from "../brand/brand.model";
@@ -119,9 +120,9 @@ export class OrderRepository extends BaseRepository<IOrder, IMOrder> {
         return data;
     }
 
-    /**
-     * prepare order data
-    */
+    /* 1. It is creating a new order.
+    2. It is updating the product quantity.
+    3. It is sending an email to the user. */
     placeOrder = async ({ user_id, address_id, coupon_code, transaction }: Omit<IPrepareOrder, 'address_id'> & Required<Pick<IPrepareOrder, 'address_id'>> & { transaction: Transaction }) => {
 
         const { carts, discountAmount, shippingCharge, finalAmount } = await this.orderCheckout({ user_id, coupon_code, address_id });
@@ -179,10 +180,10 @@ export class OrderRepository extends BaseRepository<IOrder, IMOrder> {
                 where: { product_id: productIds },
                 include,
                 limit: Constant.order_product_limit,
-                attributes: ['category_id', 'brand_id', 'unit_id', 'weight', 'selling_price', 'base_price', 'quantity']
+                attributes: ['name', 'category_id', 'brand_id', 'unit_id', 'weight', 'selling_price', 'base_price', 'quantity']
             }),
             new UserAddressRepository().findByIdBR({ id: address_id, include: addressInclude, raw: false  }),
-            new CouponRepository().findOneBR({ where: { name: coupon_code }})
+            new CouponRepository().findOneBR({ where: { name: coupon_code ?? '' }})
         ])
 
         productsData.forEach(product => { productsHash[product.product_id] = product['quantity']; })
@@ -240,6 +241,10 @@ export class OrderRepository extends BaseRepository<IOrder, IMOrder> {
             ...ProductsUpdateQuanity
         ])
 
+        const {order_id, order_number} = newOrder[0];
+
+        return {order_id, order_number};
+
         // prepare order email 
     };
 
@@ -263,4 +268,52 @@ export class OrderRepository extends BaseRepository<IOrder, IMOrder> {
         });
 
     }
+
+    orderDetails = async ({user_id, order_id } :{ user_id: IMUser['user_id'], order_id : Required<IOrder['order_id']> }): Promise<any> => {
+        const include = [
+            { model: OrderStatusMd, as: "order_status", attributes: ['title']},
+            { model: OrderAddressMd, as: "order_addresses", attributes: ['address_1', 'address_2', 'state', 'city', 'pincode'] },
+            { model: OrderProductMd, as: "order_product", attributes: ['product_id', 'quantity', 'base_price', 'selling_price', 'category', 'brand', 'unit', 'weight', 'name', 'image_url']},
+            { model: OrderCouponMd, as: "order_coupon", attributes: ['type', 'discount', 'discount_amount', 'name'] }
+        ];
+
+        return await this.findOneBR({
+            where: {user_id, order_id},
+            include,
+            attributes: ['order_id', 'shipping_charges', 'type', 'order_number', 'grand_total', 'current_status'],
+            raw: false
+        });
+    }
+
+    /* Downloading a pdf file with the name invoice.pdf */
+    downloadInvoice = async ({user_id, order_id, res } :{ user_id: IMUser['user_id'], order_id : Required<IOrder['order_id']>, res:Response }): Promise<any> => {
+        const include = [
+            { model: OrderStatusMd, as: "order_status", attributes: ['title']},
+            { model: OrderAddressMd, as: "order_addresses", attributes: ['address_1', 'address_2', 'state', 'city', 'pincode'] },
+            { model: OrderProductMd, as: "order_product", attributes: ['product_id', 'quantity', 'base_price', 'selling_price', 'category', 'brand', 'unit', 'weight', 'name', 'image_url']},
+            { model: OrderCouponMd, as: "order_coupon", attributes: ['type', 'discount', 'discount_amount', 'name'] }
+        ];
+        
+        const orderData = await this.findOneBR({
+            where: {
+                order_id,
+                user_id
+            },
+            attributes: ['order_id', 'shipping_charges', 'type', 'order_number', 'grand_total', 'current_status'],
+            include,
+            raw:false
+        });
+
+        if(!orderData){
+            throw new Error(Messages.INVALID_ORDER);
+        }
+        
+        console.log('---------------',orderData);
+        
+        const html = '<div><p>Testing PDF</p></div>';
+
+        //await new BaseHelper().downloadPdf({res, html, fileName: 'invoice.pdf'});
+    }
 }
+
+ //new OrderRepository().downloadInvoice({order_id: "d967b50c-62ba-4500-98be-d2acd818b388", user_id: "d8fcb401-14dc-4e31-af9e-628b10ba9ea5"});

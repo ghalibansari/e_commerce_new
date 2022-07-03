@@ -90,6 +90,7 @@ export class Messages {
 
     static readonly ADD_TO_CART: string = "Added in cart"
     static readonly ORDER_PLACED_SUCCESSFULLY: string = "Order Placed Successfully"
+    static readonly INVALID_ORDER: string = "Invalid Order Id Given"
 
 
 }

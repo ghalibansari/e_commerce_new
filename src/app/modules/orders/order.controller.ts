@@ -23,6 +23,8 @@ export class OrderController extends BaseController<IOrder, IMOrder, OrderReposi
         this.router.post("/place-order", validateBody(OrderValidation.placeOrder), DBTransaction.startTransaction, TryCatch.tryCatchGlobe(this.placeOrder))
         this.router.post("/checkout", validateBody(OrderValidation.checkout), TryCatch.tryCatchGlobe(this.checkout))
         this.router.get("/list", validateQuery(OrderValidation.list), TryCatch.tryCatchGlobe(this.list))
+        this.router.get("/:id", validateQuery(OrderValidation.findById), TryCatch.tryCatchGlobe(this.findById))
+        this.router.get("/download-invoice", validateQuery(OrderValidation.downloadInvoice),  TryCatch.tryCatchGlobe(this.downloadInvoice))
         // this.router.post("/bulk", validateBody(OrderValidation.addOrderBulk), TryCatch.tryCatchGlobe(this.createBulkBC))
         // this.router.put("/:id", validateParams(OrderValidation.findById), validateBody(OrderValidation.editOrder), TryCatch.tryCatchGlobe(this.updateByIdkBC))
         // this.router.delete("/:id", validateParams(OrderValidation.findById), TryCatch.tryCatchGlobe(this.deleteByIdBC))
@@ -66,4 +68,21 @@ export class OrderController extends BaseController<IOrder, IMOrder, OrderReposi
         res.locals = { status: true, page, data, message: Messages.FETCH_SUCCESSFUL };
         return await JsonResponse.jsonSuccess(req, res, `list`);
     };
+
+    findById = async (req: Request, res: Response): Promise<void> => {
+        const { params: { id } }: any = req
+        const { user: { user_id } }: any = req;
+
+        const data = await new OrderRepository().orderDetails({user_id, order_id: id });
+
+        res.locals = { status: true, data, message: Messages.FETCH_SUCCESSFUL };
+        return await JsonResponse.jsonSuccess(req, res, `findById`);
+    }
+
+    downloadInvoice = async (req: Request, res: Response): Promise<void> => {
+        const { order_id }:any = req.query;
+        const { user: { user_id } }: any = req;
+
+        await new OrderRepository().downloadInvoice({user_id, order_id, res });
+    }
 };
