@@ -79,6 +79,10 @@ export class UserController extends BaseController<IUser, IMUser> {
                         }
                     ]
                 }
+            ],
+            order: [
+                [{model: UserAddressMd, as: 'addresses'}, 'is_default', 'desc'],
+                [{model: UserAddressMd, as: 'addresses'}, 'created_at', 'asc']
             ] 
         })
         res.locals = { status: true, data, message: Messages.FETCH_SUCCESSFUL }
