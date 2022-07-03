@@ -78,7 +78,7 @@ export class UserAddressController extends BaseController<IUserAddress, IMUserAd
     }
 
     const { count } = await this.repo.updateByIdBR({ id, newData: body, updated_by: user_id, transaction });
-    const data = await new UserAddressRepository().fetchUserAddress({address_id: id});
+    const data = await new UserAddressRepository().fetchUserAddress({address_id: id, transaction});
     
     res.locals = { status: !!count, data, message: !!count ? Messages.UPDATE_SUCCESSFUL : Messages.UPDATE_FAILED };
     return await JsonResponse.jsonSuccess(req, res, `{this.url}.updateProfile`);
