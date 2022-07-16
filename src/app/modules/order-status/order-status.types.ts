@@ -7,6 +7,7 @@ interface IBOrderStatus extends IBCommon {
     title: string
     description: string
     sequence: number
+    slug: string
 }
 
 interface IOrderStatus extends Optional<IBOrderStatus, 'status_id'> { }

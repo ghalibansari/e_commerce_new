@@ -13,6 +13,7 @@ const OrderStatusMd = DB.define<IMOrderStatus>(
         title: { allowNull: false, type: DataTypes.STRING },
         description: { allowNull: false, type: DataTypes.STRING },
         sequence: { allowNull: false, type: DataTypes.NUMBER, },
+        slug: { allowNull: false, type: DataTypes.STRING },
         ...cloneDeep(modelCommonColumns)
     },
     cloneDeep(modelCommonOptions)

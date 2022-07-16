@@ -208,7 +208,7 @@ export class OrderRepository extends BaseRepository<IOrder, IMOrder> {
                 unit: unit.name,
                 quantity: productCartHash[product_id],
                 name,
-                image_url: images[0]['image_url']
+                image_url: images[0].dataValues.image_url
             }
         })
 
@@ -271,7 +271,7 @@ export class OrderRepository extends BaseRepository<IOrder, IMOrder> {
 
     orderDetails = async ({user_id, order_id } :{ user_id: IMUser['user_id'], order_id : Required<IOrder['order_id']> }): Promise<any> => {
         const include = [
-            { model: OrderStatusMd, as: "order_status", attributes: ['title']},
+            { model: OrderStatusMd, as: "order_status", attributes: ['status_id','title','sequence','slug']},
             { model: OrderAddressMd, as: "order_addresses", attributes: ['address_1', 'address_2', 'state', 'city', 'pincode'] },
             { model: OrderProductMd, as: "order_product", attributes: ['product_id', 'quantity', 'base_price', 'selling_price', 'category', 'brand', 'unit', 'weight', 'name', 'image_url']},
             { model: OrderCouponMd, as: "order_coupon", attributes: ['type', 'discount', 'discount_amount', 'name'] }

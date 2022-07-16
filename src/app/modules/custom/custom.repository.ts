@@ -4,6 +4,7 @@ import { BannerRepository } from "../banners/banner.repository";
 import { BrandRepository } from "../brand/brand.repository";
 import { CategoriesRepository } from "../categories/categories.repository";
 import { CityRepository } from "../city/city.repository";
+import { OrderStatusRepository } from "../order-status/order-status.repository";
 import { PinCodeRepository } from "../pincode/pincode.repository";
 import { ProductRepository } from "../products/product.repository";
 import { StateRepository } from "../state/state.repository";
@@ -14,8 +15,8 @@ const { fn, col } = DB
 
 export class CustomRepository {
     home = async (): Promise<any> => {
-        const BrandRepo = new BrandRepository(), CategoriesRepo = new CategoriesRepository(), TagRepo = new TagRepository(), StateRepo = new StateRepository(), CityRepo = new CityRepository(), PincodeRepo = new PinCodeRepository();
-        const [brandHeader, categoriesHeader, banner, categories, subCategories, brand, state] = await Promise.all([
+        const BrandRepo = new BrandRepository(), CategoriesRepo = new CategoriesRepository(), TagRepo = new TagRepository(), StateRepo = new StateRepository(), CityRepo = new CityRepository(), PincodeRepo = new PinCodeRepository(), OrderStatusRepo = new OrderStatusRepository();
+        const [brandHeader, categoriesHeader, banner, categories, subCategories, brand, state, orderStatus] = await Promise.all([
             BrandRepo.findBulkBR({ where: { show_on_header: true }, attributes: ['brand_id', 'brand_name'], include: [{ model: TagRepo._model, as: 'tag', attributes: ['tag_id', 'name', 'text_color_code', 'background_color_code'] }, { model: TagRepo._model, as: 'tag', attributes: ['tag_id', 'name', 'text_color_code', 'background_color_code'] }], order: [['order_sequence', 'ASC']] }),
             CategoriesRepo.findBulkBR({ where: { show_on_header: true, parent_id: null }, include: [{ model: CategoriesRepo._model, as: 'sub_cat', where: { show_on_header: true }, attributes: ['category_name', 'category_id'], include: { model: TagRepo._model, as: 'tag', attributes: ['tag_id', 'name', 'text_color_code', 'background_color_code'] }, order: [['order_sequence', 'ASC']] }, { model: TagRepo._model, as: 'tag', attributes: ['tag_id', 'name', 'text_color_code', 'background_color_code'] }], attributes: ['category_name', 'category_id', 'order_sequence'], order: [['order_sequence', 'ASC']] }),
 
@@ -23,9 +24,10 @@ export class CustomRepository {
             CategoriesRepo.findBulkBR({ where: { show_on_home_screen: true, parent_id: null }, include: [{ model: CategoriesRepo._model, as: 'sub_cat', attributes: ['category_name', 'category_id'], include: { model: TagRepo._model, as: 'tag', attributes: ['tag_id', 'name', 'text_color_code', 'background_color_code'] }, order: [['order_sequence', 'ASC']] }, { model: TagRepo._model, as: 'tag', attributes: ['tag_id', 'name', 'text_color_code', 'background_color_code'] }], attributes: ['category_name', "category_image", 'category_id', 'order_sequence'], order: [['order_sequence', 'ASC']] }),
             CategoriesRepo.findBulkBR({ where: { show_on_home_screen: true, parent_id: { [Op.ne]: null } }, attributes: ["category_image", "category_id", "category_name"], include: [{ model: TagRepo._model, as: 'tag', attributes: ['tag_id', 'name', 'text_color_code', 'background_color_code'] }], order: [['order_sequence', 'ASC']] }),
             BrandRepo.findBulkBR({ where: { show_on_home_screen: true }, attributes: ["brand_id", "brand_name", "brand_image", 'order_sequence'], include: [{ model: TagRepo._model, as: 'tag', attributes: ['tag_id', 'name', 'text_color_code', 'background_color_code'] }], order: [['order_sequence', 'ASC']] }),
-            StateRepo.findBulkBR({ attributes: ["state_id", "name"], limit: 40, order: [["name", "ASC"]] , include: [{ model: CityRepo._model, as: "cities", attributes: ["state_id", "city_id", "name"], order: [['name', 'ASC']], include: [{ model:PincodeRepo._model, as: "pincodes", attributes:["pincode_id", "city_id", "pincode", "area_name", "shipping_charges"], order:[["area_name","ASC"]] }] }] })
+            StateRepo.findBulkBR({ attributes: ["state_id", "name"], limit: 40, order: [["name", "ASC"]] , include: [{ model: CityRepo._model, as: "cities", attributes: ["state_id", "city_id", "name"], order: [['name', 'ASC']], include: [{ model:PincodeRepo._model, as: "pincodes", attributes:["pincode_id", "city_id", "pincode", "area_name", "shipping_charges"], order:[["area_name","ASC"]] }] }] }),
+            OrderStatusRepo.findBulkBR({ attributes: ["status_id", "title", "sequence", "slug"], limit: 40, order: [["sequence", "ASC"]]  })
         ])
-        return { header: { brand: brandHeader, categories: categoriesHeader }, banner, categories, subCategories, brand, state };
+        return { header: { brand: brandHeader, categories: categoriesHeader }, banner, categories, subCategories, brand, state, orderStatus };
     };
 
     filter = async (): Promise<any> => {
